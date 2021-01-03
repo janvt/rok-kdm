@@ -6,12 +6,14 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
-class User
+class User implements UserInterface, EquatableInterface
 {
     /**
      * @ORM\Id
@@ -28,11 +30,6 @@ class User
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $username;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
     private $slug;
 
     /**
@@ -45,9 +42,15 @@ class User
      */
     private $governors;
 
+    /**
+     * @ORM\Column(type="string", length=65535, nullable=true)
+     */
+    private $roles;
+
     public function __construct()
     {
         $this->governors = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -74,14 +77,7 @@ class User
 
     public function getUsername(): ?string
     {
-        return $this->username;
-    }
-
-    public function setUsername(?string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
+        return $this->email;
     }
 
     public function getSlug(): ?string
@@ -136,5 +132,35 @@ class User
         }
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = array_map('trim', explode(',', $this->roles));
+        $roles[] = ROLE_USER;
+
+        return array_unique($roles);
+    }
+
+    public function setRoles($roles): self
+    {
+        $this->roles = is_array($roles) ? implode(',', $roles) : $roles;
+
+        return $this;
+    }
+
+    public function getSalt()
+    {
+        return 'horse';
+    }
+
+    public function eraseCredentials()
+    {
+        $this->password = '';
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        return $this->email === $user->getUsername() && $this->getSalt() === $user->getSalt();
     }
 }
