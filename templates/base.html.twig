@@ -12,9 +12,9 @@
     </head>
     <body>
         {% if app.user %}
-            Hello {{ app.user.username }} <a href="{{ path('app_logout') }}">logout</a>
+            Hello {{ app.user.discordUsername }}#{{ app.user.discordDiscriminator }} <a href="{{ path('app_logout') }}">logout</a>
         {% else %}
-            <a href="{{ path('app_login') }}">login</a>
+            <a href="{{ path('connect_discord_start') }}">login with Discord</a>
         {% endif %}
 
         {% block body %}{% endblock %}

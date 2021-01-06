@@ -33,11 +33,6 @@ class User implements UserInterface, EquatableInterface
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
-
-    /**
      * @ORM\OneToMany(targetEntity=Governor::class, mappedBy="user_id")
      */
     private $governors;
@@ -47,15 +42,39 @@ class User implements UserInterface, EquatableInterface
      */
     private $roles;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $discordId;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $discordUsername;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $discordDiscriminator;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $discordAvatarHash;
+
     public function __construct()
     {
         $this->governors = new ArrayCollection();
-        $this->roles = new ArrayCollection();
     }
 
     public function __toString(): string
     {
         return $this->getEmail();
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        return $this->email === $user->getUsername() && $this->getSalt() === $user->getSalt();
     }
 
     public function getId(): ?int
@@ -88,18 +107,6 @@ class User implements UserInterface, EquatableInterface
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
 
         return $this;
     }
@@ -156,11 +163,58 @@ class User implements UserInterface, EquatableInterface
 
     public function eraseCredentials()
     {
-        $this->password = '';
     }
 
-    public function isEqualTo(UserInterface $user)
+    public function getDiscordId(): ?string
     {
-        return $this->email === $user->getUsername() && $this->getSalt() === $user->getSalt();
+        return $this->discordId;
+    }
+
+    public function setDiscordId(?string $discordId): self
+    {
+        $this->discordId = $discordId;
+
+        return $this;
+    }
+
+    public function getPassword()
+    {
+        return null;
+    }
+
+    public function getDiscordUsername(): ?string
+    {
+        return $this->discordUsername;
+    }
+
+    public function setDiscordUsername(?string $discordUsername): self
+    {
+        $this->discordUsername = $discordUsername;
+
+        return $this;
+    }
+
+    public function getDiscordDiscriminator(): ?string
+    {
+        return $this->discordDiscriminator;
+    }
+
+    public function setDiscordDiscriminator(?string $discordDiscriminator): self
+    {
+        $this->discordDiscriminator = $discordDiscriminator;
+
+        return $this;
+    }
+
+    public function getDiscordAvatarHash(): ?string
+    {
+        return $this->discordAvatarHash;
+    }
+
+    public function setDiscordAvatarHash(?string $discordAvatarHash): self
+    {
+        $this->discordAvatarHash = $discordAvatarHash;
+
+        return $this;
     }
 }
