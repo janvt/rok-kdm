@@ -1,4 +1,5 @@
 @import "~bootstrap/scss/bootstrap";
+@import "_variables.scss";
 
 body {
     text-align: center;
@@ -14,7 +15,27 @@ body {
     float: right;
 }
 
+.welcome {
+    text-align: center;
+}
+
 .welcome-title {
     font-size: 4em;
 }
 
+a.login-with-discord, a:active.login-with-discord, a:hover.login-with-discord,  a:visited.login-with-discord {
+    display: block;
+    width: 490px;
+    text-decoration: none;
+    color: $blurple;
+    margin: 40px auto;
+    padding: 10px;
+    border: 5px solid $blurple;
+    border-radius: 20px;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.login-with-discord img {
+    width: 200px;
+}
