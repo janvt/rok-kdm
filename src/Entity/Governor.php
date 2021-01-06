@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\GovernorRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=GovernorRepository::class)
@@ -29,6 +30,7 @@ class Governor
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="governors")
+     * @Ignore()
      */
     private $user_id;
 

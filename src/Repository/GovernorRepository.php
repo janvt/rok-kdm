@@ -19,32 +19,15 @@ class GovernorRepository extends ServiceEntityRepository
         parent::__construct($registry, Governor::class);
     }
 
-    // /**
-    //  * @return Governor[] Returns an array of Governor objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Governor $gov
+     * @return Governor
+     */
+    public function save(Governor $gov): Governor
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $this->_em->persist($gov);
+        $this->_em->flush();
 
-    /*
-    public function findOneBySomeField($value): ?Governor
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $gov;
     }
-    */
 }
