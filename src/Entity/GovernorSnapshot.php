@@ -88,6 +88,11 @@ class GovernorSnapshot
      */
     private $created;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $alliance;
+
     public function __construct(Governor $governor, \DateTime $created)
     {
         $this->governor_id = $governor;
@@ -251,5 +256,17 @@ class GovernorSnapshot
     public function getCreated(): \DateTime
     {
         return $this->created;
+    }
+
+    public function getAlliance(): ?string
+    {
+        return $this->alliance;
+    }
+
+    public function setAlliance(?string $alliance): self
+    {
+        $this->alliance = $alliance;
+
+        return $this;
     }
 }

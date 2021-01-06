@@ -7,6 +7,7 @@ namespace App\Service\Governor;
 use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
 use App\Exception\APIException;
+use App\Exception\GovDataException;
 use App\Repository\GovernorRepository;
 use App\Repository\GovernorSnapshotRepository;
 
@@ -38,9 +39,16 @@ class GovernorDataService
             throw new APIException('Gov id already exists: ' . $govId);
         }
 
-        $gov = new Governor();
-        $gov->setGovernorId($govId);
-        $gov->setName($data->name);
+        try{
+            $status = $this->getField($data, 'status') ?: STATUS_UNKNOWN;
+
+            $gov = new Governor($govId, $status);
+            $gov->setGovernorId($govId);
+            $gov->setName($this->getField($data, 'name'));
+            $gov->setAlliance($this->getField($data, 'alliance'));
+        } catch (GovDataException $e) {
+            throw new APIException($e->getMessage());
+        }
 
         return $this->govRepo->save($gov);
     }
@@ -62,6 +70,7 @@ class GovernorDataService
         $created = isset($data->created) ? new \DateTime($data->created) : new \DateTime();
 
         $snapshot = new GovernorSnapshot($existingGovs[0], $created);
+        $snapshot->setAlliance($this->getField($data, 'alliance'));
         $snapshot->setKingdom($this->getField($data, 'kingdom'));
         $snapshot->setPower($this->getField($data, 'power'));
         $snapshot->setHighestPower($this->getField($data, 'highest_power'));

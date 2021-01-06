@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Exception\GovDataException;
 use App\Repository\GovernorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -41,9 +42,28 @@ class Governor
      */
     private $snapshots;
 
-    public function __construct()
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $alliance;
+
+    /**
+     * Governor constructor.
+     * @param string $id
+     * @param string $status
+     * @throws GovDataException
+     */
+    public function __construct(string $id, string $status)
     {
         $this->snapshots = new ArrayCollection();
+
+        $this->id = $id;
+        $this->setStatus($status);
     }
 
     public function getId(): ?int
@@ -118,6 +138,34 @@ class Governor
                 $snapshot->setGovernorId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        if (!in_array($status, GovernorStatus::GOV_STATUSES)) {
+            throw new GovDataException('Invalid governor status: ' . $status);
+        }
+
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getAlliance(): ?string
+    {
+        return $this->alliance;
+    }
+
+    public function setAlliance(?string $alliance): self
+    {
+        $this->alliance = $alliance;
 
         return $this;
     }
