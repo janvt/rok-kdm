@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block user_login %}{% endblock %}
+
 {% block body %}
-    <h1>Hello</h1>
+    <h1 class="welcome-title">Welcome to K75 Lugal!</h1>
+    <a class="login-with-discord" href="{{ path('connect_discord_start') }}">
+        <span class="login-with">login with</span>
+        <img src="{{ asset('images/discord.png') }}" alt=" Discord" />
+    </a>
 {% endblock %}

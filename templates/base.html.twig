@@ -11,13 +11,20 @@
         {% endblock %}
     </head>
     <body>
-        {% if app.user %}
-            Hello {{ app.user.discordUsername }}#{{ app.user.discordDiscriminator }} <a href="{{ path('app_logout') }}">logout</a>
-        {% else %}
-            <a href="{{ path('connect_discord_start') }}">login with Discord</a>
-        {% endif %}
+        <div class="wrapper">
+            {% block user_login %}
+                <div class="user-login">
+                {% if app.user %}
+                    <a href="{{ path('app_logout') }}">logout</a>
+                {% else %}
+                    <a href="{{ path('connect_discord_start') }}">login with Discord</a>
+                {% endif %}
+                </div>
+            {% endblock %}
 
-        {% block body %}{% endblock %}
+            {% block body %}{% endblock %}
+        </div>
+
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
