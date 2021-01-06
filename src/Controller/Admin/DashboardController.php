@@ -33,7 +33,8 @@ class DashboardController extends AbstractDashboardController
 
     public function configureCrud(): Crud
     {
-        return Crud::new();
+        return Crud::new()
+            ->setPaginatorPageSize(100);
     }
 
     public function configureMenuItems(): iterable

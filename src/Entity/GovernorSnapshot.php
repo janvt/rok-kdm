@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\GovernorSnapshotRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=GovernorSnapshotRepository::class)
@@ -20,8 +21,9 @@ class GovernorSnapshot
     /**
      * @ORM\ManyToOne(targetEntity=Governor::class, inversedBy="snapshots")
      * @ORM\JoinColumn(nullable=false)
+     * @Ignore()
      */
-    private $governor_id;
+    private $governor;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -93,10 +95,18 @@ class GovernorSnapshot
      */
     private $alliance;
 
-    public function __construct(Governor $governor, \DateTime $created)
+    public static function fromGov(Governor $governor, \DateTime $created): GovernorSnapshot
     {
-        $this->governor_id = $governor;
-        $this->created = $created;
+        $snapshot = new self();
+        $snapshot->setGovernor($governor);
+        $snapshot->setCreated($created);
+
+        return $snapshot;
+    }
+
+    public function __toString(): string
+    {
+        return $this->id;
     }
 
     public function getId(): ?int
@@ -104,9 +114,28 @@ class GovernorSnapshot
         return $this->id;
     }
 
-    public function getGovernorId(): string
+    public function getGovernor(): ?Governor
     {
-        return $this->governor_id;
+        return $this->governor;
+    }
+
+    public function setGovernor(Governor $governor): GovernorSnapshot
+    {
+        $this->governor = $governor;
+
+        return $this;
+    }
+
+    public function getCreated(): \DateTime
+    {
+        return $this->created;
+    }
+
+    public function setCreated(\DateTime $created): GovernorSnapshot
+    {
+        $this->created = $created;
+
+        return $this;
     }
 
     public function getKingdom(): ?string
@@ -251,11 +280,6 @@ class GovernorSnapshot
         $this->helps = $helps;
 
         return $this;
-    }
-
-    public function getCreated(): \DateTime
-    {
-        return $this->created;
     }
 
     public function getAlliance(): ?string

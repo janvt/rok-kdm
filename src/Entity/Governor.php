@@ -35,10 +35,10 @@ class Governor
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="governors")
      * @Ignore()
      */
-    private $user_id;
+    private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=GovernorSnapshot::class, mappedBy="governor_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=GovernorSnapshot::class, mappedBy="governor", orphanRemoval=true)
      */
     private $snapshots;
 
@@ -52,18 +52,24 @@ class Governor
      */
     private $alliance;
 
-    /**
-     * Governor constructor.
-     * @param string $id
-     * @param string $status
-     * @throws GovDataException
-     */
-    public function __construct(string $id, string $status)
+    public function __construct()
     {
         $this->snapshots = new ArrayCollection();
+    }
 
-        $this->id = $id;
-        $this->setStatus($status);
+    /**
+     * @param string $id
+     * @param string $status
+     * @return Governor
+     * @throws GovDataException
+     */
+    public static function createFromId(string $id, string $status): Governor
+    {
+        $gov = new self();
+        $gov->setGovernorId($id);
+        $gov->setStatus($status);
+
+        return $gov;
     }
 
     public function getId(): ?int
@@ -95,14 +101,14 @@ class Governor
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
@@ -118,28 +124,6 @@ class Governor
     public function getSnapshots(): Collection
     {
         return $this->snapshots;
-    }
-
-    public function addSnapshot(GovernorSnapshot $snapshot): self
-    {
-        if (!$this->snapshots->contains($snapshot)) {
-            $this->snapshots[] = $snapshot;
-            $snapshot->setGovernorId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSnapshot(GovernorSnapshot $snapshot): self
-    {
-        if ($this->snapshots->removeElement($snapshot)) {
-            // set the owning side to null (unless already changed)
-            if ($snapshot->getGovernorId() === $this) {
-                $snapshot->setGovernorId(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getStatus(): ?string

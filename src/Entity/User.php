@@ -28,12 +28,7 @@ class User implements UserInterface, EquatableInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $slug;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Governor::class, mappedBy="user_id")
+     * @ORM\OneToMany(targetEntity=Governor::class, mappedBy="user")
      */
     private $governors;
 
@@ -75,6 +70,11 @@ class User implements UserInterface, EquatableInterface
     public function isEqualTo(UserInterface $user)
     {
         return $this->email === $user->getUsername() && $this->getSalt() === $user->getSalt();
+    }
+
+    public function discordDisplayName(): string
+    {
+        return $this->discordUsername . '#' . $this->discordDiscriminator;
     }
 
     public function getId(): ?int
@@ -123,7 +123,7 @@ class User implements UserInterface, EquatableInterface
     {
         if (!$this->governors->contains($governor)) {
             $this->governors[] = $governor;
-            $governor->setUserId($this);
+            $governor->setUser($this);
         }
 
         return $this;
@@ -133,8 +133,8 @@ class User implements UserInterface, EquatableInterface
     {
         if ($this->governors->removeElement($governor)) {
             // set the owning side to null (unless already changed)
-            if ($governor->getUserId() === $this) {
-                $governor->setUserId(null);
+            if ($governor->getUser() === $this) {
+                $governor->setUser(null);
             }
         }
 

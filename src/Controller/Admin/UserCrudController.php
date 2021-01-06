@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Role;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -22,26 +23,35 @@ class UserCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('User')
             ->setEntityLabelInPlural('User')
-            ->setSearchFields(['id', 'email', 'username', 'slug']);
+            ->setSearchFields(['id', 'email', 'discordUsername', 'governors.name']);
     }
 
     public function configureFields(string $pageName): iterable
     {
+        $hasRoleAdmin = $this->isGranted(Role::ROLE_ADMIN);
+
+        $id = IntegerField::new('id');
         $email = TextField::new('email');
-        $username = TextField::new('username');
-        $slug = TextField::new('slug');
-        $roles = ArrayField::new('roles');
+        $discordDisplayName = TextField::new('discordDisplayName', 'Discord');
+        $roles = ArrayField::new('roles')->setPermission(Role::ROLE_EDIT_ROLES);
         $governors = AssociationField::new('governors');
-        $id = IntegerField::new('id', 'ID');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $email, $username, $roles, $governors];
-        } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $email, $username, $slug, $roles, $governors];
-        } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$email, $username, $slug, $roles, $governors];
-        } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$email, $username, $slug, $roles, $governors];
+            if ($hasRoleAdmin) {
+                yield $id;
+            }
+
+            yield $email;
+            yield $discordDisplayName;
+        }
+
+        yield $email;
+        if ($hasRoleAdmin) {
+            yield $governors;
+        }
+
+        if ($this->isGranted(Role::ROLE_EDIT_ROLES)) {
+            yield $roles;
         }
     }
 }

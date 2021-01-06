@@ -23,7 +23,7 @@ class GovernorCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Governor')
             ->setEntityLabelInPlural('Governor')
-            ->setSearchFields(['id', 'governor_id', 'name', 'status', 'alliance']);
+            ->setSearchFields(['id', 'governor_id', 'name', 'status', 'alliance', 'user.email', 'user.discordUsername']);
     }
 
     public function configureFields(string $pageName): iterable
@@ -39,17 +39,18 @@ class GovernorCrudController extends AbstractCrudController
             ->setChoices($statusChoices)
             ->allowMultipleChoices(false);
         $alliance = TextField::new('alliance');
-        $userId = AssociationField::new('user_id');
-        $id = IntegerField::new('id', 'ID');
+        $user = AssociationField::new('user');
+        $snapshots = AssociationField::new('snapshots');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$governorId, $name, $status, $alliance, $userId];
-        } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $governorId, $name, $status, $alliance, $userId];
-        } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$governorId, $name, $status, $alliance, $userId];
-        } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$governorId, $name, $status, $alliance, $userId];
+            return [$governorId, $name, $status, $alliance, $user];
         }
+
+        return [$governorId, $name, $status, $alliance, $user, $snapshots];
+    }
+
+    public function createEntity(string $entityFqcn)
+    {
+        return new $entityFqcn();
     }
 }

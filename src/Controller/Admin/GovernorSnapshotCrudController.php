@@ -2,12 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
-use App\Entity\GovernorStatus;
+use App\Entity\Role;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -24,12 +24,14 @@ class GovernorSnapshotCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Governor Snapshot')
             ->setEntityLabelInPlural('Governor Snapshots')
-            ->setSearchFields(['id', 'governor_id']);
+            ->setSearchFields(['governor.name', 'alliance', 'kingdom'])
+            ->setEntityPermission(Role::ROLE_SCRIBE);
     }
 
     public function configureFields(string $pageName): iterable
     {
-        $governor = TextField::new('governor_id');
+        $governor = AssociationField::new('governor')
+            ->setFieldFqcn(Governor::class);
         $created = DateTimeField::new('created');
         $alliance = TextField::new('alliance');
         $kingdom = TextField::new('kingdom');
@@ -71,5 +73,13 @@ class GovernorSnapshotCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return $allFields;
         }
+    }
+
+    public function createEntity(string $entityFqcn)
+    {
+        $snapshot = new GovernorSnapshot();
+        $snapshot->setCreated(new \DateTime);
+
+        return $snapshot;
     }
 }
