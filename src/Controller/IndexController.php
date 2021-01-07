@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Role;
+use App\Exception\SearchException;
 use App\Service\Search\SearchService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,9 +47,12 @@ class IndexController extends AbstractController
         $searchResult = null;
         $searchTerm = $request->get('search');
         if ($searchTerm) {
-            $searchResult = $this->searchService->search($searchTerm);
+            try {
+                $searchResult = $this->searchService->search($searchTerm);
+            } catch (SearchException $e) {
+                return new Response(null, Response::HTTP_BAD_REQUEST);
+            }
         }
-        dump($searchResult);
 
         return $this->render('indexLugalMember.html.twig', [
             'searchTerm' => $searchTerm,
