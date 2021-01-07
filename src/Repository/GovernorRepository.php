@@ -20,6 +20,20 @@ class GovernorRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param string $searchTerm
+     * @return Governor[]
+     */
+    public function search(string $searchTerm): array
+    {
+        return $this->createQueryBuilder('g')
+            ->select()
+            ->where('g.name LIKE :name')
+            ->setParameter('name', '%' . $searchTerm . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @param Governor $gov
      * @return Governor
      */

@@ -3,7 +3,7 @@
 namespace App\Controller\API;
 
 use App\Exception\APIException;
-use App\Service\Governor\GovernorDataService;
+use App\Service\Governor\GovernorImportService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,12 +20,12 @@ class APIController extends AbstractController
     /**
      * @Route("/governor", methods={"POST"}, name="create_governor")
      * @param Request $request
-     * @param GovernorDataService $governorService
+     * @param GovernorImportService $governorService
      * @return Response
      */
     public function governorCreateAction(
         Request $request,
-        GovernorDataService $governorService
+        GovernorImportService $governorService
     ): Response
     {
         if (!$this->validateHeaderToken($request)) {
@@ -45,12 +45,12 @@ class APIController extends AbstractController
     /**
      * @Route("/governor/snapshot", methods={"POST"}, name="create_governor_snapshot")
      * @param Request $request
-     * @param GovernorDataService $governorService
+     * @param GovernorImportService $governorService
      * @return Response
      */
     public function governorAddSnapshotAction(
         Request $request,
-        GovernorDataService $governorService
+        GovernorImportService $governorService
     ): Response
     {
         if (!$this->validateHeaderToken($request)) {

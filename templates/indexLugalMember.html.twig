@@ -2,5 +2,36 @@
 
 {% block body %}
     <h1>Lugal Member Search</h1>
-    <input class="member-search" type="text" />
+    <form>
+        <div class="input-group mb-3">
+            <input
+                type="text"
+                name="search"
+                value="{{ searchTerm }}"
+                class="form-control-lg"
+                placeholder="Player name"
+                aria-label="Player name"
+                aria-describedby="button-search"
+            />
+            <button class="btn btn-outline-secondary" type="submit" id="button-search">Search</button>
+        </div>
+    </form>
+
+    {% if searchResult is not empty %}
+        {% for gov in searchResult.governors %}
+            <div class="search-gov card mb-3">
+                <div class="card-header">
+                    <h5 class="">{{ gov.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="">
+                        <span class="">Power</span> {{ gov.power }}
+                    </div>
+                    <div class="">
+                        <span class="">Kills</span> {{ gov.kills }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

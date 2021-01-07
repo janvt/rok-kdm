@@ -38,7 +38,12 @@ class Governor
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=GovernorSnapshot::class, mappedBy="governor", orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity=GovernorSnapshot::class,
+     *     mappedBy="governor",
+     *     orphanRemoval=true,
+     *     fetch="LAZY"
+     * )
      */
     private $snapshots;
 

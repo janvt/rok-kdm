@@ -12,7 +12,7 @@ use App\Exception\GovDataException;
 use App\Repository\GovernorRepository;
 use App\Repository\GovernorSnapshotRepository;
 
-class GovernorDataService
+class GovernorImportService
 {
     private $govRepo;
     private $govSnapshotRepo;
