@@ -22,7 +22,10 @@
             <div class="search-gov card status-{{ gov.displayStatus }} mb-3">
                 <div class="card-header">
                     <h5 class="title-pill">
-                        <a href="{{ path('governor', {id: gov.id}) }}">{{ gov.name }}</a>
+                        <a href="{{ path('governor', {id: gov.id}) }}">
+                            {{ gov.name }}
+                            <span class="gov-id pill-border">{{ gov.id }}</span>
+                        </a>
                     </h5>
                     {% if gov.alliance %}
                     <div class="title-pill pill-border">
