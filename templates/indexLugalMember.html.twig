@@ -21,26 +21,34 @@
         {% for gov in searchResult.governors %}
             <div class="search-gov card status-{{ gov.displayStatus }} mb-3">
                 <div class="card-header">
-                    <h5 class="title-pill">
+                    <h5 class="search-pill">
                         <a href="{{ path('governor', {id: gov.id}) }}">
                             {{ gov.name }}
                             <span class="gov-id pill-border">{{ gov.id }}</span>
                         </a>
                     </h5>
                     {% if gov.alliance %}
-                    <div class="title-pill pill-border">
+                    <div class="search-pill pill-border">
                         <span class="pill-label">{{ gov.alliance }}</span>
                     </div>
                     {% endif %}
-                    <div class="title-pill pill-border">
+                    <div class="search-pill pill-border">
                         <span class="pill-label">Power</span> {{ gov.power|number_format }}
-                    </div>
-                    <div class="title-pill pill-border">
-                        <span class="pill-label">Kills</span> {{ gov.kills|number_format }}
                     </div>
                 </div>
                 <div class="card-body">
-
+                    <div class="search-pill pill-border">
+                        <span class="pill-label">Kills</span> {{ gov.kills|number_format }}
+                    </div>
+                    <div class="search-pill pill-border">
+                        <span class="pill-label">Deads</span> {{ gov.deads|number_format }}
+                    </div>
+                    <div class="search-pill pill-border">
+                        <span class="pill-label">Helps</span> {{ gov.helps|number_format }}
+                    </div>
+                    <div class="search-pill pill-border">
+                        <span class="pill-label">RSS Assistance</span> {{ gov.rssAssistance|number_format }}
+                    </div>
                 </div>
             </div>
         {% endfor %}
