@@ -144,7 +144,7 @@ class User implements UserInterface, EquatableInterface
     public function getRoles(): array
     {
         $roles = array_map('trim', explode(',', $this->roles));
-        $roles[] = ROLE_USER;
+        $roles[] = Role::ROLE_USER;
 
         return array_unique($roles);
     }

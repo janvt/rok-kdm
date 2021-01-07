@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+  app:
+    image: lugal:dev
+    env_file:
+      - .env.local
+    volumes:
+      - phpsocket:/var/run/php
+    links:
+      - db
+
+  web:
+    image: lugal-nginx:dev
+    ports:
+      - 80:80
+    volumes:
+      - phpsocket:/var/run/php
+      - ./var/log/nginx:/var/log/nginx
+    depends_on:
+      - app
+    links:
+      - app
+
+  db:
+    image: postgres:13.1-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: woof
+      POSTGRES_DB: lugal
+    volumes:
+      - ./var/db:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    links:
+      - db
+
+volumes:
+  phpsocket:

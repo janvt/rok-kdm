@@ -1,0 +1,10 @@
+ARG ASSET_IMAGE
+
+FROM ${ASSET_IMAGE} AS assets
+
+
+FROM nginx:1.19.6-alpine
+
+COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=assets /var/www/public /var/www/public
