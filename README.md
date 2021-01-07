@@ -4,6 +4,11 @@
 
 https://sagikazarmark.hu/blog/containerizing-a-symfony-application/
 
-### Building DEV
-`docker build -t lugal:dev --build-arg APP_ENV=dev .`
-`docker build -t lugal-nginx:dev --build-arg ASSET_IMAGE=lugal:dev -f Dockerfile.nginx .`
+### Running DEV
+`docker-compose up`
+
+This mounts the current dir into the app / nginx containers.
+
+### Building prod
+`docker build -t lugal-app:prod -f Dockerfile.prod .`
+`docker build -t lugal-web:prod --build-arg ASSET_IMAGE=lugal-app:prod -f Dockerfile.prod.nginx .`
