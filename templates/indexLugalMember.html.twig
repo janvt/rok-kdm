@@ -21,7 +21,9 @@
         {% for gov in searchResult.governors %}
             <div class="search-gov card status-{{ gov.displayStatus }} mb-3">
                 <div class="card-header">
-                    <h5 class="title-pill">{{ gov.name }}</h5>
+                    <h5 class="title-pill">
+                        <a href="{{ path('governor', {id: gov.id}) }}">{{ gov.name }}</a>
+                    </h5>
                     {% if gov.alliance %}
                     <div class="title-pill pill-border">
                         <span class="pill-label">{{ gov.alliance }}</span>
