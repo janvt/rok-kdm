@@ -31,57 +31,57 @@ class GovernorSnapshot
     private $kingdom;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $power;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $highest_power;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $t1_kills;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $t2_kills;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $t3_kills;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $t4_kills;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $t5_kills;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $deads;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $rss_gathered;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $rss_assistance;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $helps;
 
