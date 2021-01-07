@@ -1,0 +1,26 @@
+.title-pill {
+  float:left;
+  margin: -2px 20px 0 0;
+}
+
+.pill-label {
+  font-weight: 600;
+}
+
+.pill-border {
+  border-radius: 20px;
+  border: 1px solid $card-border-color;
+  padding: 1px 14px;
+}
+
+.status-active {
+  border-color: $status-active;
+}
+
+.status-inactive {
+  border-color: $status-inactive;
+}
+
+.status-blacklisted {
+  border-color: $status-blacklisted;
+}

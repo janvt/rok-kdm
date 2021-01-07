@@ -19,17 +19,23 @@
 
     {% if searchResult is not empty %}
         {% for gov in searchResult.governors %}
-            <div class="search-gov card mb-3">
+            <div class="search-gov card status-{{ gov.displayStatus }} mb-3">
                 <div class="card-header">
-                    <h5 class="">{{ gov.name }}</h5>
+                    <h5 class="title-pill">{{ gov.name }}</h5>
+                    {% if gov.alliance %}
+                    <div class="title-pill pill-border">
+                        <span class="pill-label">{{ gov.alliance }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="title-pill pill-border">
+                        <span class="pill-label">Power</span> {{ gov.power|number_format }}
+                    </div>
+                    <div class="title-pill pill-border">
+                        <span class="pill-label">Kills</span> {{ gov.kills|number_format }}
+                    </div>
                 </div>
                 <div class="card-body">
-                    <div class="">
-                        <span class="">Power</span> {{ gov.power }}
-                    </div>
-                    <div class="">
-                        <span class="">Kills</span> {{ gov.kills }}
-                    </div>
+
                 </div>
             </div>
         {% endfor %}

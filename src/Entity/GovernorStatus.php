@@ -12,6 +12,10 @@ class GovernorStatus {
     const STATUS_ARCHIVED = 'archived';
     const STATUS_BLACKLISTED = 'blacklisted';
 
+    const DISPLAY_STATUS_ACTIVE = 'active';
+    const DISPLAY_STATUS_INACTIVE = 'inactive';
+    const DISPLAY_STATUS_BLACKLISTED = 'blacklisted';
+
     const GOV_STATUSES = [
         self::STATUS_ACTIVE,
         self::STATUS_UNKNOWN,
@@ -21,6 +25,19 @@ class GovernorStatus {
         self::STATUS_MIGRATED,
         self::STATUS_BLACKLISTED
     ];
+
+    public static function getDisplayStatus(string $status): string
+    {
+        if ($status === self::STATUS_ACTIVE) {
+            return self::DISPLAY_STATUS_ACTIVE;
+        }
+        
+        if ($status === self::STATUS_BLACKLISTED) {
+            return self::DISPLAY_STATUS_BLACKLISTED;
+        }
+
+        return self::DISPLAY_STATUS_INACTIVE;
+    }
 }
 
 

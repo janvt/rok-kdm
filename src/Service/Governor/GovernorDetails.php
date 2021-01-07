@@ -6,17 +6,24 @@ namespace App\Service\Governor;
 
 use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
+use App\Entity\GovernorStatus;
 
 class GovernorDetails
 {
     public $name;
+    public $alliance;
     public $power;
     public $kills;
 
+    public $status;
+    public $displayStatus;
+
     public function __construct(Governor $gov, GovernorSnapshot $mergedSnapshot)
     {
-        dump($mergedSnapshot);
         $this->name = $gov->getName();
+        $this->status = $gov->getStatus();
+        $this->displayStatus = GovernorStatus::getDisplayStatus($gov->getStatus());
+        $this->alliance = $gov->getAlliance();
         $this->power = $mergedSnapshot->getPower();
         $this->kills = $this->sumKills($mergedSnapshot);
     }
