@@ -57,9 +57,15 @@ class Governor
      */
     private $alliance;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OfficerNote::class, mappedBy="governor", orphanRemoval=true)
+     */
+    private $officerNotes;
+
     public function __construct()
     {
         $this->snapshots = new ArrayCollection();
+        $this->officerNotes = new ArrayCollection();
     }
 
     /**
@@ -155,6 +161,36 @@ class Governor
     public function setAlliance(?string $alliance): self
     {
         $this->alliance = $alliance;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OfficerNote[]
+     */
+    public function getOfficerNotes(): Collection
+    {
+        return $this->officerNotes;
+    }
+
+    public function addOfficerNote(OfficerNote $officerNote): self
+    {
+        if (!$this->officerNotes->contains($officerNote)) {
+            $this->officerNotes[] = $officerNote;
+            $officerNote->setGovernor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOfficerNote(OfficerNote $officerNote): self
+    {
+        if ($this->officerNotes->removeElement($officerNote)) {
+            // set the owning side to null (unless already changed)
+            if ($officerNote->getGovernor() === $this) {
+                $officerNote->setGovernor(null);
+            }
+        }
 
         return $this;
     }

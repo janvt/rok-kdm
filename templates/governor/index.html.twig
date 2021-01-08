@@ -5,7 +5,7 @@
     {% if gov.alliance %}
         <h2>{{ gov.alliance }}</h2>
     {% endif %}
-    <div class="gov-stats">
+    <div class="gov-stats clearfix">
         <div class="search-pill pill-border mb-3">
             <span class="pill-label">Power</span> {{ gov.power|number_format }}
         </div>
@@ -31,4 +31,20 @@
             <span class="pill-label">RSS Assistance</span> {{ gov.rssAssistance|number_format }}
         </div>
     </div>
+    {% if is_granted('ROLE_OFFICER') and gov.officerNotes %}
+    <div class="officer-notes">
+        {% for officerNote in gov.officerNotes %}
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        {{ officerNote.tldr }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ officerNote.note }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 {% endblock %}

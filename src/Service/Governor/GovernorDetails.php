@@ -29,6 +29,8 @@ class GovernorDetails
     public $status;
     public $displayStatus;
 
+    public $officerNotes;
+
     public function __construct(Governor $gov, GovernorSnapshot $mergedSnapshot)
     {
         $this->id = $gov->getGovernorId();
@@ -50,6 +52,11 @@ class GovernorDetails
         $this->t3kills = $mergedSnapshot->getT3Kills();
         $this->t4kills = $mergedSnapshot->getT4Kills();
         $this->t5kills = $mergedSnapshot->getT5Kills();
+    }
+    
+    public function setOfficerNotes(array $notes)
+    {
+        $this->officerNotes = $notes;
     }
 
     private function sumKills(GovernorSnapshot $snapshot): int

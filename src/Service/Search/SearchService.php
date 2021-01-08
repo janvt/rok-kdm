@@ -36,7 +36,7 @@ class SearchService
 
         $govs = $this->govRepo->search($searchTerm);
         foreach ($govs as $gov) {
-            $searchResult->governors[] = $this->detailsService->createGovernorDetails($gov);
+            $searchResult->governors[] = $this->detailsService->createGovernorDetails($gov, $this->getUser());
         }
 
         return $searchResult;
