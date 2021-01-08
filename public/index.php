@@ -15,6 +15,10 @@ if ($_SERVER['APP_DEBUG']) {
     Debug::enable();
 }
 
+if ($_SERVER['SENTRY_DSN']) {
+    Sentry\init(['dsn' => $_SERVER['SENTRY_DSN'] ]);
+}
+
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
