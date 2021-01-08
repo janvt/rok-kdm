@@ -4,9 +4,11 @@
 namespace App\Service\Search;
 
 
+use App\Entity\User;
 use App\Exception\SearchException;
 use App\Repository\GovernorRepository;
 use App\Service\Governor\GovernorDetailsService;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class SearchService
 {
@@ -23,10 +25,11 @@ class SearchService
 
     /**
      * @param string $searchTerm
+     * @param User|UserInterface $user
      * @return SearchResult
      * @throws SearchException
      */
-    public function search(string $searchTerm): SearchResult
+    public function search(string $searchTerm, User $user): SearchResult
     {
         if (\mb_strlen($searchTerm) < self::MINIMUM_SEARCH_TERM_LENGTH) {
             throw new SearchException();
@@ -36,7 +39,7 @@ class SearchService
 
         $govs = $this->govRepo->search($searchTerm);
         foreach ($govs as $gov) {
-            $searchResult->governors[] = $this->detailsService->createGovernorDetails($gov, $this->getUser());
+            $searchResult->governors[] = $this->detailsService->createGovernorDetails($gov, $user);
         }
 
         return $searchResult;

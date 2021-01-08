@@ -48,7 +48,7 @@ class IndexController extends AbstractController
         $searchTerm = $request->get('search');
         if ($searchTerm) {
             try {
-                $searchResult = $this->searchService->search($searchTerm);
+                $searchResult = $this->searchService->search($searchTerm, $this->getUser());
             } catch (SearchException $e) {
                 return new Response(null, Response::HTTP_BAD_REQUEST);
             }
