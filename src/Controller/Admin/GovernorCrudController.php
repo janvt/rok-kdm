@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Governor;
 use App\Entity\GovernorStatus;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -24,6 +25,14 @@ class GovernorCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Governor')
             ->setEntityLabelInPlural('Governor')
             ->setSearchFields(['id', 'governor_id', 'name', 'status', 'alliance', 'user.email', 'user.discordUsername']);
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('status')
+            ->add('alliance')
+        ;
     }
 
     public function configureFields(string $pageName): iterable

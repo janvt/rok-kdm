@@ -11,19 +11,23 @@ use App\Exception\APIException;
 use App\Exception\GovDataException;
 use App\Repository\GovernorRepository;
 use App\Repository\GovernorSnapshotRepository;
+use App\Repository\SnapshotRepository;
 
 class GovernorImportService
 {
     private $govRepo;
     private $govSnapshotRepo;
+    private $snapshotRepo;
 
     public function __construct(
         GovernorRepository $govRepo,
-        GovernorSnapshotRepository $govSnapshotRepo
+        GovernorSnapshotRepository $govSnapshotRepo,
+        SnapshotRepository $snapshotRepo
     )
     {
         $this->govRepo = $govRepo;
         $this->govSnapshotRepo = $govSnapshotRepo;
+        $this->snapshotRepo = $snapshotRepo;
     }
 
     /**
@@ -60,31 +64,68 @@ class GovernorImportService
      */
     public function addSnapshot(object $data): GovernorSnapshot
     {
-        $govId = $this->checkGovId($data);
+        try {
+            $govId = $this->checkGovId($data);
 
-        $existingGovs = $this->govRepo->findBy(['governor_id' => $govId]);
-        if (count($existingGovs) !== 1) {
-            throw new APIException('Could not find gov: ' . $govId);
+            $gov = null;
+            $existingGovs = $this->govRepo->findBy(['governor_id' => $govId]);
+
+            if (count($existingGovs) === 0) {
+                throw new APIException('Could not find gov by id: ' . $govId);
+            }
+        } catch (APIException $e) {
+            $govName = $this->getField($data, 'name');
+            if ($govName) {
+                $existingGovs = $this->govRepo->findBy(['name' => $govName]);
+                if (count($existingGovs) === 0) {
+                    throw new APIException('Could not find gov by name: ' . $govName);
+                }
+            } else {
+                throw $e;
+            }
+        }
+
+        $gov = $existingGovs[0];
+
+        $snapshot = null;
+        $snapshotUid = $this->getField($data, 'snapshot');
+        if ($snapshotUid) {
+            $snapshot = $this->snapshotRepo->findOneBy(['uid' => $snapshotUid]);
+            if (!$snapshot) {
+                throw new APIException('Could not find snapshot: ' . $snapshotUid);
+            }
         }
 
         $created = isset($data->created) ? new \DateTime($data->created) : new \DateTime();
 
-        $snapshot = GovernorSnapshot::fromGov($existingGovs[0], $created);
-        $snapshot->setAlliance($this->getField($data, 'alliance'));
-        $snapshot->setKingdom($this->getField($data, 'kingdom'));
-        $snapshot->setPower($this->getField($data, 'power'));
-        $snapshot->setHighestPower($this->getField($data, 'highest_power'));
-        $snapshot->setT1Kills($this->getField($data, 't1_kills'));
-        $snapshot->setT2Kills($this->getField($data, 't2_kills'));
-        $snapshot->setT3Kills($this->getField($data, 't3_kills'));
-        $snapshot->setT4Kills($this->getField($data, 't4_kills'));
-        $snapshot->setT5Kills($this->getField($data, 't5_kills'));
-        $snapshot->setDeads($this->getField($data, 'deads'));
-        $snapshot->setHelps($this->getField($data, 'helps'));
-        $snapshot->setRssGathered($this->getField($data, 'rss_gathered'));
-        $snapshot->setRssAssistance($this->getField($data, 'rss_assistance'));
+        $govSnapshot = GovernorSnapshot::fromGov($gov, $created);
+        $govSnapshot->setAlliance($this->getField($data, 'alliance'));
+        $govSnapshot->setKingdom($this->getField($data, 'kingdom'));
+        $govSnapshot->setPower($this->getField($data, 'power'));
+        $govSnapshot->setHighestPower($this->getField($data, 'highest_power'));
+        $govSnapshot->setKills($this->getField($data, 'kills'));
+        $govSnapshot->setT1Kills($this->getField($data, 't1_kills'));
+        $govSnapshot->setT2Kills($this->getField($data, 't2_kills'));
+        $govSnapshot->setT3Kills($this->getField($data, 't3_kills'));
+        $govSnapshot->setT4Kills($this->getField($data, 't4_kills'));
+        $govSnapshot->setT5Kills($this->getField($data, 't5_kills'));
+        $govSnapshot->setDeads($this->getField($data, 'deads'));
+        $govSnapshot->setHelps($this->getField($data, 'helps'));
+        $govSnapshot->setRssGathered($this->getField($data, 'rss_gathered'));
+        $govSnapshot->setRssAssistance($this->getField($data, 'rss_assistance'));
+        $govSnapshot->setRank($this->getField($data, 'rank'));
+        $govSnapshot->setContribution($this->getField($data, 'contribution'));
 
-        return $this->govSnapshotRepo->save($snapshot);
+        if ($snapshot){
+            $govSnapshotForUid = $this->govSnapshotRepo->getGovSnapshotForSnapshot($gov, $snapshot);
+            if ($govSnapshotForUid) {
+                return $this->govSnapshotRepo->save($govSnapshotForUid->merge($govSnapshot));
+            } else {
+                $govSnapshot->setSnapshot($snapshot);
+            }
+        }
+
+        return $this->govSnapshotRepo->save($govSnapshot);
     }
 
     /**
@@ -94,7 +135,7 @@ class GovernorImportService
      */
     private function checkGovId(object $data)
     {
-        $govId = $data->id;
+        $govId = isset($data->id) ? $data->id : null;
         if (!$govId) {
             throw new APIException('Missing gov id!');
         }

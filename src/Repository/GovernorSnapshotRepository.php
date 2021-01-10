@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
+use App\Entity\Snapshot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +19,14 @@ class GovernorSnapshotRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, GovernorSnapshot::class);
+    }
+
+    public function getGovSnapshotForSnapshot(Governor $gov, Snapshot $snapshot): ?GovernorSnapshot
+    {
+        return $this->findOneBy([
+            'governor' => $gov,
+            'snapshot' => $snapshot
+        ]);
     }
 
     /**

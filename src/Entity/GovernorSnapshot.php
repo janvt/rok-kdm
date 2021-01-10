@@ -11,6 +11,24 @@ use Symfony\Component\Serializer\Annotation\Ignore;
  */
 class GovernorSnapshot
 {
+    const MERGE_FIELDS = [
+        'Kingdom',
+        'Power',
+        'HighestPower',
+        'Kills',
+        'T1Kills',
+        'T2Kills',
+        'T3Kills',
+        'T4Kills',
+        'T5Kills',
+        'Deads',
+        'RssGathered',
+        'RssAssistance',
+        'Helps',
+        'Rank',
+        'Contribution',
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -95,6 +113,26 @@ class GovernorSnapshot
      */
     private $alliance;
 
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $kills;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Snapshot::class, inversedBy="governorSnapshots")
+     */
+    private $snapshot;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rank;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $contribution;
+
     public static function fromGov(Governor $governor, \DateTime $created): GovernorSnapshot
     {
         $snapshot = new self();
@@ -107,6 +145,18 @@ class GovernorSnapshot
     public function __toString(): string
     {
         return $this->id;
+    }
+
+    public function merge(GovernorSnapshot $source): GovernorSnapshot
+    {
+        foreach (self::MERGE_FIELDS as $field) {
+            $newValue = $source->{'get' . $field}();
+            if ($newValue) {
+                $this->{'set' . $field}($newValue);
+            }
+        }
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -155,7 +205,7 @@ class GovernorSnapshot
         return $this->power;
     }
 
-    public function setPower(int $power): self
+    public function setPower(?int $power): self
     {
         $this->power = $power;
 
@@ -290,6 +340,54 @@ class GovernorSnapshot
     public function setAlliance(?string $alliance): self
     {
         $this->alliance = $alliance;
+
+        return $this;
+    }
+
+    public function getKills(): ?string
+    {
+        return $this->kills;
+    }
+
+    public function setKills(?string $kills): self
+    {
+        $this->kills = $kills;
+
+        return $this;
+    }
+
+    public function getSnapshot(): ?Snapshot
+    {
+        return $this->snapshot;
+    }
+
+    public function setSnapshot(Snapshot $snapshot): self
+    {
+        $this->snapshot = $snapshot;
+
+        return $this;
+    }
+
+    public function getRank(): ?int
+    {
+        return $this->rank;
+    }
+
+    public function setRank(?int $rank): self
+    {
+        $this->rank = $rank;
+
+        return $this;
+    }
+
+    public function getContribution(): ?int
+    {
+        return $this->contribution;
+    }
+
+    public function setContribution(?int $contribution): self
+    {
+        $this->contribution = $contribution;
 
         return $this;
     }

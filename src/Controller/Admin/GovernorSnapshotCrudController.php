@@ -24,7 +24,7 @@ class GovernorSnapshotCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Governor Snapshot')
             ->setEntityLabelInPlural('Governor Snapshots')
-            ->setSearchFields(['governor.name', 'alliance', 'kingdom'])
+            ->setSearchFields(['governor.name', 'snapshot.name', 'snapshot.uid', 'alliance', 'kingdom'])
             ->setEntityPermission(Role::ROLE_SCRIBE);
     }
 
@@ -33,16 +33,20 @@ class GovernorSnapshotCrudController extends AbstractCrudController
         $governor = AssociationField::new('governor')
             ->setFieldFqcn(Governor::class);
         $created = DateTimeField::new('created');
+        $snapshot = AssociationField::new('snapshot');
         $alliance = TextField::new('alliance');
         $kingdom = TextField::new('kingdom');
         $power = IntegerField::new('power');
         $highestPower = IntegerField::new('highest_power');
+        $kills = IntegerField::new('kills');
+        $deads = IntegerField::new('deads');
+        $rank = IntegerField::new('rank');
+        $contribution = IntegerField::new('contribution');
         $t1kills = IntegerField::new('t1_kills');
         $t2kills = IntegerField::new('t2_kills');
         $t3kills = IntegerField::new('t3_kills');
         $t4kills = IntegerField::new('t4_kills');
         $t5kills = IntegerField::new('t5_kills');
-        $deads = IntegerField::new('deads');
         $helps = IntegerField::new('helps');
         $rssGathered = IntegerField::new('rss_gathered');
         $rssAssistance = IntegerField::new('rss_assistance');
@@ -53,26 +57,29 @@ class GovernorSnapshotCrudController extends AbstractCrudController
             $kingdom,
             $power,
             $highestPower,
+            $deads,
+            $kills,
             $t1kills,
             $t2kills,
             $t3kills,
             $t4kills,
             $t5kills,
-            $deads,
+            $rank,
+            $contribution,
             $rssGathered,
             $rssAssistance,
             $helps
         ];
 
-        if (Crud::PAGE_INDEX === $pageName) {
-            return [$governor, $alliance, $created, $power, $t4kills, $t5kills, $deads];
-        } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return $allFields;
-        } elseif (Crud::PAGE_NEW === $pageName) {
-            return $allFields;
-        } elseif (Crud::PAGE_EDIT === $pageName) {
-            return $allFields;
+        if ($this->isGranted(Role::ROLE_SUPERADMIN)) {
+            $allFields[] = $snapshot;
         }
+
+        if (Crud::PAGE_INDEX === $pageName) {
+            return [$governor, $created, $snapshot, $power, $kills, $t4kills, $t5kills, $deads];
+        }
+
+        return $allFields;
     }
 
     public function createEntity(string $entityFqcn)
