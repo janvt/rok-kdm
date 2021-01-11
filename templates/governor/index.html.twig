@@ -31,6 +31,9 @@
             <span class="pill-label">RSS Assistance</span> {{ gov.rssAssistance|number_format }}
         </div>
     </div>
+    <div class="gov-rankings">
+        {% include 'governor/kvk_rankings.html.twig' with {gov: gov} only %}
+    </div>
     {% if is_granted('ROLE_OFFICER') and gov.officerNotes %}
     <div class="officer-notes">
         {% for officerNote in gov.officerNotes %}

@@ -29,6 +29,11 @@ class GovernorDetails
     public $status;
     public $displayStatus;
 
+    public $kvk4Ranking;
+    public $kvk4Contribution;
+    public $kvk5Ranking;
+    public $kvk5Contribution;
+
     public $officerNotes;
 
     public function __construct(Governor $gov, GovernorSnapshot $mergedSnapshot)
@@ -57,6 +62,18 @@ class GovernorDetails
     public function setOfficerNotes(array $notes)
     {
         $this->officerNotes = $notes;
+    }
+
+    public function setKvk4Data(int $ranking, int $contribution)
+    {
+        $this->kvk4Ranking = $ranking;
+        $this->kvk4Contribution = $contribution;
+    }
+
+    public function setKvk5Data(int $ranking, int $contribution)
+    {
+        $this->kvk5Ranking = $ranking;
+        $this->kvk5Contribution = $contribution;
     }
 
     private function sumKills(GovernorSnapshot $snapshot): int

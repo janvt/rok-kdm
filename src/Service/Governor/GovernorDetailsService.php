@@ -7,10 +7,12 @@ namespace App\Service\Governor;
 use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
 use App\Entity\Role;
+use App\Entity\Snapshot;
 use App\Entity\User;
 use App\Repository\GovernorRepository;
 use App\Repository\GovernorSnapshotRepository;
 use App\Repository\OfficerNoteRepository;
+use App\Repository\SnapshotRepository;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -18,8 +20,10 @@ class GovernorDetailsService
 {
     private $govRepo;
     private $govSnapshotRepo;
-    private $authChecker;
     private $officerNoteRepo;
+    private $snapshotRepo;
+
+    private $authChecker;
 
     const FIELDS = [
         'Power',
@@ -37,14 +41,17 @@ class GovernorDetailsService
 
     public function __construct(
         GovernorRepository $govRepo,
-        AuthorizationCheckerInterface $authChecker,
         GovernorSnapshotRepository $govSnapshotRepo,
-        OfficerNoteRepository $officerNoteRepo
+        OfficerNoteRepository $officerNoteRepo,
+        SnapshotRepository $snapshotRepo,
+        AuthorizationCheckerInterface $authChecker
     ) {
         $this->govRepo = $govRepo;
-        $this->authChecker = $authChecker;
         $this->govSnapshotRepo = $govSnapshotRepo;
         $this->officerNoteRepo = $officerNoteRepo;
+        $this->snapshotRepo = $snapshotRepo;
+
+        $this->authChecker = $authChecker;
     }
 
     /**
@@ -64,6 +71,9 @@ class GovernorDetailsService
         }
 
         $details = new GovernorDetails($governor, $mergedSnapshot);
+
+        $this->setKvk4Ranking($governor, $details);
+        $this->setKvk5Ranking($governor, $details);
 
         if ($this->authChecker->isGranted(Role::ROLE_OFFICER, $user)) {
             $details->setOfficerNotes(
@@ -89,5 +99,31 @@ class GovernorDetailsService
         }
 
         return null;
+    }
+
+    private function setKvk4Ranking(Governor $governor, GovernorDetails $details)
+    {
+        $kvk4Snapshot = $this->snapshotRepo->findOneBy(['uid' => Snapshot::UID_KVK4]);
+        if (!$kvk4Snapshot) {
+            return;
+        }
+
+        $govKvk4Snapshot = $this->govSnapshotRepo->findOneBy(['governor' => $governor, 'snapshot' => $kvk4Snapshot]);
+        if ($govKvk4Snapshot) {
+            $details->setKvk4Data($govKvk4Snapshot->getRank(), $govKvk4Snapshot->getContribution());
+        }
+    }
+
+    private function setKvk5Ranking(Governor $governor, GovernorDetails $details)
+    {
+        $kvk5Snapshot = $this->snapshotRepo->findOneBy(['uid' => Snapshot::UID_KVK5]);
+        if (!$kvk5Snapshot) {
+            return;
+        }
+
+        $govKvk5Snapshot = $this->govSnapshotRepo->findOneBy(['governor' => $governor, 'snapshot' => $kvk5Snapshot]);
+        if ($govKvk5Snapshot) {
+            $details->setKvk5Data($govKvk5Snapshot->getRank(), $govKvk5Snapshot->getContribution());
+        }
     }
 }

@@ -49,6 +49,16 @@
                     <div class="search-pill pill-border">
                         <span class="pill-label">RSS Assistance</span> {{ gov.rssAssistance|number_format }}
                     </div>
+                    {% if gov.kvk4Ranking %}
+                    <div class="search-pill pill-border">
+                        <span class="pill-label">KVK 4 Rank</span> {{ gov.kvk4Ranking }}
+                    </div>
+                    {% endif %}
+                    {% if gov.kvk5Ranking %}
+                    <div class="search-pill pill-border">
+                        <span class="pill-label">KVK 5 Rank</span> {{ gov.kvk5Ranking }}
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
