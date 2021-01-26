@@ -15,6 +15,7 @@ class Snapshot
 {
     const UID_KVK4 = 'kvk4';
     const UID_KVK5 = 'kvk5';
+    const UID_KVK6 = 'kvk6';
 
     /**
      * @ORM\Id

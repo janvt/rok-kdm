@@ -126,4 +126,17 @@ class GovernorDetailsService
             $details->setKvk5Data($govKvk5Snapshot->getRank(), $govKvk5Snapshot->getContribution());
         }
     }
+
+    private function setKvk6Ranking(Governor $governor, GovernorDetails $details)
+    {
+        $kvk6Snapshot = $this->snapshotRepo->findOneBy(['uid' => Snapshot::UID_KVK6]);
+        if (!$kvk6Snapshot) {
+            return;
+        }
+
+        $govKvk6Snapshot = $this->govSnapshotRepo->findOneBy(['governor' => $governor, 'snapshot' => $kvk6Snapshot]);
+        if ($govKvk6Snapshot) {
+            $details->setKvk6Data($govKvk6Snapshot->getRank(), $govKvk6Snapshot->getContribution());
+        }
+    }
 }

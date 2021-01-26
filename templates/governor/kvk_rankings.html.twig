@@ -1,21 +1,28 @@
-<table class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th scope="col">KVK #</th>
-        <th scope="col">Rank</th>
-        <th scope="col">Contribution</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <th scope="row">4</th>
-        <td>{{ gov.kvk4Ranking|default('-') }}</td>
-        <td>{% if gov.kvk4Contribution > 0 %}{{ gov.kvk4Contribution|number_format }}{% else %}-{% endif %}</td>
-    </tr>
-    <tr>
-        <th scope="row">5</th>
-        <td>{{ gov.kvk5Ranking|default('-') }}</td>
-        <td>{% if gov.kvk5Contribution > 0 %}{{ gov.kvk5Contribution|number_format }}{% else %}-{% endif %}</td>
-    </tr>
-    </tbody>
-</table>
+<div class="gov-rankings">
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">KVK #</th>
+            <th scope="col">Rank</th>
+            <th scope="col">Contribution</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">4</th>
+            <td>{{ gov.kvk4Ranking|default('-') }}</td>
+            <td>{% if gov.kvk4Contribution > 0 %}{{ gov.kvk4Contribution|number_format }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <th scope="row">5</th>
+            <td>{{ gov.kvk5Ranking|default('-') }}</td>
+            <td>{% if gov.kvk5Contribution > 0 %}{{ gov.kvk5Contribution|number_format }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <th scope="row">6</th>
+            <td>{{ gov.kvk6Ranking|default('-') }}</td>
+            <td>{% if gov.kvk6Contribution > 0 %}{{ gov.kvk6Contribution|number_format }}{% else %}-{% endif %}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
