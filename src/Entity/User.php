@@ -69,7 +69,23 @@ class User implements UserInterface, EquatableInterface
 
     public function isEqualTo(UserInterface $user)
     {
-        return $this->email === $user->getUsername() && $this->getSalt() === $user->getSalt();
+        if (!($this->email === $user->getUsername() && $this->getSalt() === $user->getSalt())) {
+            return false;
+        }
+
+        if ($user instanceof User) {
+            // Check that the roles are the same, in any order
+            $hasSameRoles = count($this->getRoles()) == count($user->getRoles());
+            if ($hasSameRoles) {
+                foreach($this->getRoles() as $role) {
+                    $hasSameRoles = $hasSameRoles && in_array($role, $user->getRoles());
+                }
+            }
+
+            return $hasSameRoles;
+        }
+
+        return false;
     }
 
     public function discordDisplayName(): string
@@ -97,18 +113,6 @@ class User implements UserInterface, EquatableInterface
     public function getUsername(): ?string
     {
         return $this->email;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     /**
