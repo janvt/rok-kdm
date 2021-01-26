@@ -35,10 +35,6 @@ class GovernorRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * @param Governor $gov
-     * @return Governor
-     */
     public function save(Governor $gov): Governor
     {
         $this->_em->persist($gov);

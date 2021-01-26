@@ -5,49 +5,11 @@
     {% if gov.alliance %}
         <h2>{{ gov.alliance }}</h2>
     {% endif %}
-    <div class="gov-stats clearfix">
-        <div class="search-pill pill-border mb-3">
-            <span class="pill-label">Power</span> {{ gov.power|number_format }}
-        </div>
-        <div class="search-pill pill-border  mb-3">
-            <span class="pill-label">Highest Power</span> {{ gov.highestPower|number_format }}
-        </div>
-        <div class="search-pill pill-border mb-3">
-            <span class="pill-label">Kills</span> {{ gov.kills|number_format }}
-        </div>
-        <div class="search-pill pill-border mb-3">
-            <span class="pill-label">T4 Kills</span> {{ gov.t4kills|number_format }}
-        </div>
-        <div class="search-pill pill-border mb-3">
-            <span class="pill-label">T5 Kills</span> {{ gov.t5kills|number_format }}
-        </div>
-        <div class="search-pill pill-border mb-3">
-            <span class="pill-label">Deads</span> {{ gov.deads|number_format }}
-        </div>
-        <div class="search-pill pill-border mb-3">
-            <span class="pill-label">Helps</span> {{ gov.helps|number_format }}
-        </div>
-        <div class="search-pill pill-border mb-3">
-            <span class="pill-label">RSS Assistance</span> {{ gov.rssAssistance|number_format }}
-        </div>
-    </div>
-    <div class="gov-rankings">
-        {% include 'governor/kvk_rankings.html.twig' with {gov: gov} only %}
-    </div>
-    {% if is_granted('ROLE_OFFICER') and gov.officerNotes %}
-    <div class="officer-notes">
-        {% for officerNote in gov.officerNotes %}
-            <div class="card">
-                <div class="card-header">
-                    <h5>
-                        {{ officerNote.tldr }}
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <p>{{ officerNote.note }}</p>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+    {% include 'governor/stats.html.twig' with {gov: gov} only %}
+    {% include 'governor/kvk_rankings.html.twig' with {gov: gov} only %}
+
+    {% if is_granted('ROLE_OFFICER') %}
+        {% include 'governor/officer_actions.html.twig' with {gov: gov} only %}
+        {% include 'governor/officer_notes.html.twig' with {gov: gov} only %}
     {% endif %}
 {% endblock %}

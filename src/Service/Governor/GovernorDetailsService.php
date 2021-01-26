@@ -77,7 +77,7 @@ class GovernorDetailsService
 
         if ($this->authChecker->isGranted(Role::ROLE_OFFICER, $user)) {
             $details->setOfficerNotes(
-                $this->officerNoteRepo->findBy(['governor' => $governor])
+                $this->officerNoteRepo->findBy(['governor' => $governor], ['created' => 'DESC'])
             );
         }
 

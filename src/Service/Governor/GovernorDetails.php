@@ -33,6 +33,8 @@ class GovernorDetails
     public $kvk4Contribution;
     public $kvk5Ranking;
     public $kvk5Contribution;
+    public $kvk6Ranking;
+    public $kvk6Contribution;
 
     public $officerNotes;
 
@@ -74,6 +76,12 @@ class GovernorDetails
     {
         $this->kvk5Ranking = $ranking;
         $this->kvk5Contribution = $contribution;
+    }
+
+    public function setKvk6Data(int $ranking, int $contribution)
+    {
+        $this->kvk6Ranking = $ranking;
+        $this->kvk6Contribution = $contribution;
     }
 
     private function sumKills(GovernorSnapshot $snapshot): int

@@ -19,32 +19,11 @@ class OfficerNoteRepository extends ServiceEntityRepository
         parent::__construct($registry, OfficerNote::class);
     }
 
-    // /**
-    //  * @return OfficerNote[] Returns an array of OfficerNote objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function save(OfficerNote $officerNote): OfficerNote
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $this->_em->persist($officerNote);
+        $this->_em->flush();
 
-    /*
-    public function findOneBySomeField($value): ?OfficerNote
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $officerNote;
     }
-    */
 }

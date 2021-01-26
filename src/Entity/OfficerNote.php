@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OfficerNoteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OfficerNoteRepository::class)
@@ -31,6 +32,7 @@ class OfficerNote
     private $governor;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $tldr;
