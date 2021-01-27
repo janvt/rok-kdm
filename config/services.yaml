@@ -6,8 +6,8 @@ services:
         autowire: true
         autoconfigure: true
         bind:
-            $uploadsDir: '%kernel.project_dir%/public/images/uploads/'
-            $uploadsPublicDir: 'images/uploads/'
+            $uploadsDir: '%kernel.project_dir%/public/uploads/'
+            $uploadsPublicDir: 'uploads/'
 
     App\:
         resource: '../src/'

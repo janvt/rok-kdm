@@ -4,9 +4,10 @@ services:
   app:
     image: janvt/lugal:app
     env_file:
-      - .env.local
+      - .env.prod
     volumes:
       - phpsocket:/var/run/php
+      - ./var/uploads:/var/www/public/uploads
     links:
       - db
 
@@ -16,6 +17,7 @@ services:
       - 80:80
     volumes:
       - phpsocket:/var/run/php
+      - ./var/uploads:/var/www/public/uploads
     depends_on:
       - app
     links:
@@ -24,11 +26,10 @@ services:
   db:
     image: postgres:13.1-alpine
     restart: always
-    environment:
-      POSTGRES_PASSWORD: woof
-      POSTGRES_DB: lugal
+    env_file:
+      - .env.db.prod
     volumes:
-      - ./var/lugal/db:/var/lib/postgresql/data
+      - ./var/db:/var/lib/postgresql/data
 
   adminer:
     image: adminer
