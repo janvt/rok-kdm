@@ -11,9 +11,6 @@
                 <span class="pill-label">{{ gov.alliance }}</span>
             </div>
         {% endif %}
-        <div class="search-pill pill-border">
-            <span class="pill-label">Power</span> {{ gov.power|number_format }}
-        </div>
         {% if actions|default %}
         <div class="float-right">
             {{ actions|raw }}
@@ -21,6 +18,9 @@
         {% endif %}
     </div>
     <div class="card-body">
+        <div class="search-pill pill-border">
+            <span class="pill-label">Power</span> {{ gov.power|number_format }}
+        </div>
         <div class="search-pill pill-border">
             <span class="pill-label">Kills</span> {{ gov.kills|number_format }}
         </div>
