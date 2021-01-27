@@ -5,6 +5,9 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            $uploadsDir: '%kernel.project_dir%/public/images/uploads/'
+            $uploadsPublicDir: 'images/uploads/'
 
     App\:
         resource: '../src/'

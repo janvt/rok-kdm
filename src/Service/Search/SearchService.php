@@ -31,9 +31,7 @@ class SearchService
      */
     public function search(string $searchTerm, User $user): SearchResult
     {
-        if (\mb_strlen($searchTerm) < self::MINIMUM_SEARCH_TERM_LENGTH) {
-            throw new SearchException();
-        }
+        $this->validateSearchTerm($searchTerm);
 
         $searchResult = new SearchResult();
 
@@ -43,5 +41,16 @@ class SearchService
         }
 
         return $searchResult;
+    }
+
+    /**
+     * @param string $searchTerm
+     * @throws SearchException
+     */
+    private function validateSearchTerm(string $searchTerm)
+    {
+        if (\mb_strlen($searchTerm) < self::MINIMUM_SEARCH_TERM_LENGTH) {
+            throw new SearchException();
+        }
     }
 }

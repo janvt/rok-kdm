@@ -10,6 +10,8 @@ use App\Entity\GovernorStatus;
 
 class GovernorDetails
 {
+    public $user;
+
     public $id;
     public $name;
     public $alliance;
@@ -40,6 +42,8 @@ class GovernorDetails
 
     public function __construct(Governor $gov, GovernorSnapshot $mergedSnapshot)
     {
+        $this->user = $gov->getUser();
+
         $this->id = $gov->getGovernorId();
         $this->name = $gov->getName();
         $this->alliance = $gov->getAlliance();

@@ -3,5 +3,17 @@
 {% block body %}
     <h1>Thanks for your interest!</h1>
     <p>This site is currently only for K75 Lugal members.</p>
-    <p>If you are a member, ping your officers to get the correct rights.</p>
+
+    {% if profileClaim %}
+        <p>You have submitted your profile claim, please wait for an officer to verify you.</p>
+        <img class="img-fluid" src="{{ asset(profileClaimImage) }}" alt="governor profile claim" />
+    {% else %}
+        <p>If you are a member, upload a screenshot of your profile and notify your officer to verify you.</p>
+        {% if imageUploadError %}
+            <p class="text-danger">{{ imageUploadError }}</p>
+        {% endif %}
+        <div>
+            {{ form(imageUploadForm) }}
+        </div>
+    {% endif %}
 {% endblock %}

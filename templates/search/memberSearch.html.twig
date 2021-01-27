@@ -1,0 +1,14 @@
+{% include 'search/searchForm.html.twig' %}
+
+{% if searchResult is not empty %}
+    {% for gov in searchResult.governors %}
+        {% if is_granted(constant('App\\Entity\\Role::ROLE_OFFICER')) and gov.user %}
+            {% set actions %}
+                <div class="search-pill pill-border">
+                    <span class="pill-label">User</span> {{ gov.user.discordDisplayName }}
+                </div>
+            {% endset %}
+        {% endif %}
+        {% include 'search/searchResultGov.html.twig' %}
+    {% endfor %}
+{% endif %}

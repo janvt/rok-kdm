@@ -1,0 +1,14 @@
+<form>
+    <div class="input-group mb-3">
+        <input
+                type="text"
+                name="search"
+                value="{{ searchTerm|default }}"
+                class="form-control-lg"
+                placeholder="Player name"
+                aria-label="Player name"
+                aria-describedby="button-search"
+        />
+        <button class="btn btn-outline-secondary" type="submit" id="button-search">Search</button>
+    </div>
+</form>

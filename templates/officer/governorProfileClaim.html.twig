@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Profile Claim for Discord User {{ claim.user.discordUsername }}</h1>
+
+    {% if claim.user.isLugalMember %}
+        <button class="btn btn-success disabled">Lugal member access granted</button>
+    {% else %}
+        <a class="btn btn-warning" href="{{ path('make_lugal_member', {id: claim.user.id, redirect_to_claim: claim.id}) }}">
+            Grant Lugal Member Access
+        </a>
+    {% endif %}
+
+    <img class="img-fluid" src="{{ asset(profileClaimImage) }}" alt="governor profile claim" />
+
+    {{ include('search/searchForm.html.twig') }}
+
+    {% if searchResult is not empty %}
+        {% for gov in searchResult.governors %}
+            {% set actions %}
+                {% if gov.user %}
+                    <button class="btn btn-success disabled">Linked to {{ gov.user.discordDisplayName }}</button>
+                {% else %}
+                    <a class="btn btn-warning" href="{{ path('link_gov_to_user', {id: claim.id, govId: gov.id}) }}">
+                        Link {{ claim.user.discordDisplayName }}
+                    </a>
+                {% endif %}
+            {% endset %}
+            {% include 'search/searchResultGov.html.twig' with {actions: actions} %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

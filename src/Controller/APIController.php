@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\API;
+namespace App\Controller;
 
 use App\Exception\APIException;
 use App\Service\Governor\GovernorImportService;

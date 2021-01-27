@@ -57,9 +57,20 @@ class User implements UserInterface, EquatableInterface
      */
     private $discordAvatarHash;
 
+    /**
+     * @ORM\OneToMany(targetEntity=GovernorProfileClaim::class, mappedBy="user")
+     */
+    private $governorProfileClaims;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="user")
+     */
+    private $images;
+
     public function __construct()
     {
         $this->governors = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -160,6 +171,21 @@ class User implements UserInterface, EquatableInterface
         return $this;
     }
 
+    public function addRole(string $role): User
+    {
+        return $this->setRoles(array_unique(array_merge($this->getRoles(), [$role])));
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->getRoles());
+    }
+
+    public function isLugalMember(): bool
+    {
+        return $this->hasRole(Role::ROLE_LUGAL_MEMBER);
+    }
+
     public function getSalt()
     {
         return 'horse';
@@ -218,6 +244,36 @@ class User implements UserInterface, EquatableInterface
     public function setDiscordAvatarHash(?string $discordAvatarHash): self
     {
         $this->discordAvatarHash = $discordAvatarHash;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getUserId() === $this) {
+                $image->setUserId(null);
+            }
+        }
 
         return $this;
     }

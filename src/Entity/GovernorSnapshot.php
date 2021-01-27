@@ -382,7 +382,7 @@ class GovernorSnapshot
 
     public function getContribution(): ?int
     {
-        return $this->contribution;
+        return $this->contribution ?: 0;
     }
 
     public function setContribution(?int $contribution): self

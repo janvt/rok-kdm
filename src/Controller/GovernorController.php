@@ -3,12 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\OfficerNote;
-use App\Entity\Role;
 use App\Exception\NotFoundException;
 use App\Form\OfficerNote\AddOfficerNoteType;
-use App\Repository\GovernorRepository;
 use App\Service\Governor\GovernorDetailsService;
 use App\Service\Governor\GovernorManagementService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,14 +50,13 @@ class GovernorController extends AbstractController
 
     /**
      * @Route("/{id}/note", name="governor_add_note", methods={"GET", "POST"})
+     * @IsGranted("ROLE_OFFICER")
      * @param string $id
      * @param Request $request
      * @return Response
      */
     public function note(string $id, Request $request): Response
     {
-        $this->denyAccessUnlessGranted(Role::ROLE_OFFICER);
-
         try {
             $gov = $this->govManagementService->findGov($id);
         } catch (NotFoundException $e) {
