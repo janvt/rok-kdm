@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Scribe Corner</h1>
+<div class="card">
+    <div class="card-header">
+        <h2>Snapshot: {{ snapshotInfo.name }}</h2>
+    </div>
+    <div class="card-body">
+        <h3>Incomplete</h3>
+        {% for snapshot in incompleteSnapshots %}
+            <p>
+                {{ snapshot.governor.name }}
+                <a href="#" class="btn btn-primary">Complete</a>
+            </p>
+        {% endfor %}
+        <h3>Missing</h3>
+        {% for governor in missingGovs %}
+            <p>
+                {{ governor.name }}
+                <a href="#" class="btn btn-primary">Create</a>
+            </p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

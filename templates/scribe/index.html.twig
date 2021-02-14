@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Scribe Corner</h1>
+{% for snapshotInfo in snapshots %}
+    {% if snapshotInfo|default %}
+        <div class="card mb-3">
+            <div class="card-header">
+                <h2>{{ snapshotInfo.name }}</h2>
+            </div>
+            <div class="card-body">
+                {% if snapshotInfo.completed %}
+                    Completed: {{ snapshotInfo.completed|date }}. Total: {{ snapshotInfo.total }}
+                {% else %}
+                    <p>{{ snapshotInfo.numCompleted }} of {{ snapshotInfo.total }} complete.</p>
+                    <a href="{{ path('scribe_snapshot_detail', {snapshotUid: snapshotInfo.uid}) }}" class="btn btn-primary">View Incomplete</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
+{% endblock %}

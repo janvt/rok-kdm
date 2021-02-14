@@ -1,23 +1,24 @@
 {% if gov.officerNotes %}
 <div class="card">
-<div class="card-header">
-    <h4>Officer Notes</h4>
-</div>
-<div class="card-body">
-    <div class="officer-notes">
-        {% for officerNote in gov.officerNotes %}
-            <div class="card mb-3">
-                <div class="card-header">
-                    <h5>{{ officerNote.tldr }}</h5>
-                    <span>
-                        {{ officerNote.created|date }}
-                    </span>
+    <div class="card-header">
+        <h4>Officer Notes</h4>
+    </div>
+    <div class="card-body">
+        <div class="officer-notes">
+            {% for officerNote in gov.officerNotes %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>{{ officerNote.tldr }}</h5>
+                        <span>
+                            {{ officerNote.created|date }}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ officerNote.note }}</p>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p>{{ officerNote.note }}</p>
-                </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endif %}

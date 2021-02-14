@@ -133,6 +133,16 @@ class GovernorSnapshot
      */
     private $contribution;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $completed;
+
     public static function fromGov(Governor $governor, \DateTime $created): GovernorSnapshot
     {
         $snapshot = new self();
@@ -388,6 +398,30 @@ class GovernorSnapshot
     public function setContribution(?int $contribution): self
     {
         $this->contribution = $contribution;
+
+        return $this;
+    }
+
+    public function getUpdated(): ?\DateTimeInterface
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated(?\DateTimeInterface $updated): self
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    public function getCompleted(): ?\DateTimeInterface
+    {
+        return $this->completed;
+    }
+
+    public function setCompleted(?\DateTimeInterface $completed): self
+    {
+        $this->completed = $completed;
 
         return $this;
     }

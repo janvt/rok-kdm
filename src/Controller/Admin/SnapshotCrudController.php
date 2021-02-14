@@ -29,6 +29,7 @@ class SnapshotCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $governorSnapshots = AssociationField::new('governorSnapshots');
+        $governors = AssociationField::new('governors');
         $uid = TextField::new('uid');
         $name = TextField::new('name');
         $created = DateTimeField::new('created');
@@ -39,15 +40,21 @@ class SnapshotCrudController extends AbstractCrudController
             yield $uid;
             yield $created;
             yield $governorSnapshots;
+            yield $governors;
             yield $completed;
         }
 
+        yield $name;
+
         if ($this->isGranted(Role::ROLE_SUPERADMIN)) {
             yield $uid;
-            yield $completed;
         }
-        yield $name;
-        yield $governorSnapshots;
+
+        if ($this->isGranted(Role::ROLE_SCRIBE_ADMIN)) {
+            yield $completed;
+            yield $governorSnapshots;
+            yield $governors;
+        }
     }
 
     public function createEntity(string $entityFqcn)

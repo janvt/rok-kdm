@@ -15,7 +15,7 @@
             {% block user_login %}
                 <div class="user-login">
                 {% if app.user %}
-                    <a href="{{ path('app_logout') }}">logout</a>
+                    {% include 'links.html.twig' with {} only %}
                 {% else %}
                     <a href="{{ path('connect_discord_start') }}">login with Discord</a>
                 {% endif %}

@@ -50,9 +50,15 @@ class Snapshot
      */
     private $completed;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SnapshotToGovernor::class, mappedBy="snapshot", orphanRemoval=true)
+     */
+    private $governors;
+
     public function __construct()
     {
         $this->governorSnapshots = new ArrayCollection();
+        $this->governors = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -139,6 +145,36 @@ class Snapshot
     public function setCompleted(?\DateTimeInterface $completed): self
     {
         $this->completed = $completed;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SnapshotToGovernor[]
+     */
+    public function getGovernors(): Collection
+    {
+        return $this->governors;
+    }
+
+    public function addGovernor(SnapshotToGovernor $governor): self
+    {
+        if (!$this->governors->contains($governor)) {
+            $this->governors[] = $governor;
+            $governor->setSnapshot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGovernor(SnapshotToGovernor $governor): self
+    {
+        if ($this->governors->removeElement($governor)) {
+            // set the owning side to null (unless already changed)
+            if ($governor->getSnapshot() === $this) {
+                $governor->setSnapshot(null);
+            }
+        }
 
         return $this;
     }

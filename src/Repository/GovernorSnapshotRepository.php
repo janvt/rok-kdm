@@ -40,4 +40,16 @@ class GovernorSnapshotRepository extends ServiceEntityRepository
 
         return $snapshot;
     }
+
+    public function getIncompleteForSnapshot(Snapshot $snapshot)
+    {
+        $query = $this->createQueryBuilder('gs')
+            ->select()
+            ->where('gs.snapshot = :snapshot')
+            ->andWhere('gs.completed IS NULL')
+            ->setParameter('snapshot', $snapshot)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }
