@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Edit Governor Snapshot</h1>
+    <div class="card">
+        <div class="card-header">
+            <h2>
+                {{ govSnapshot.governor.name }}
+                {% if govSnapshot.snapshot %}
+                    <span class="pill-border">{{ govSnapshot.snapshot.name }}</span>
+                {% endif %}
+            </h2>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="text-danger">
+                    {{ form_errors(form) }}
+                </div>
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.power} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.highestPower} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.kills} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.t1Kills} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.t2Kills} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.t3Kills} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.t4Kills} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.t5Kills} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.deads} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.rssGathered} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.rssAssistance} only %}
+                {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.helps} only %}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
