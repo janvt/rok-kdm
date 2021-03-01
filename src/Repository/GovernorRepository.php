@@ -27,7 +27,7 @@ class GovernorRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('g')
             ->select()
-            ->join('g.alliance', 'a')
+            ->leftJoin('g.alliance', 'a')
             ->where('g.name LIKE :searchTerm')
             ->orWhere('a.tag LIKE :searchTerm')
             ->orWhere('a.name LIKE :searchTerm')
