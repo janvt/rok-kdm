@@ -9,7 +9,7 @@
     {% include 'governor/stats.html.twig' with {gov: gov} only %}
     {% include 'governor/kvk_rankings.html.twig' with {gov: gov} only %}
 
-    {% if is_granted('ROLE_OFFICER') %}
+    {% if is_granted(constant('App\\Entity\\Role::ROLE_OFFICER')) %}
         {% include 'governor/officer_actions.html.twig' with {gov: gov} only %}
         {% include 'governor/officer_notes.html.twig' with {gov: gov} only %}
     {% endif %}

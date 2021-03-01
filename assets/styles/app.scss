@@ -20,3 +20,7 @@ body {
 @import "pages/welcome";
 @import "pages/search";
 @import "pages/gov";
+
+.card-header a, .card-header a:hover, .card-header a:focus, .card-header a:active, .card-header a:visited {
+    text-decoration: none;
+}

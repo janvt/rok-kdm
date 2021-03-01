@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Alliance;
 use App\Entity\Governor;
+use App\Entity\Snapshot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -43,5 +45,19 @@ class GovernorRepository extends ServiceEntityRepository
         $this->_em->flush();
 
         return $gov;
+    }
+
+    /**
+     * @return Governor[]
+     */
+    public function getGovernorsFromMainAlliances(): array
+    {
+        return $this->createQueryBuilder('g')
+            ->select()
+            ->join('g.alliance', 'a')
+            ->where('a.type = :type')
+            ->setParameter('type', Alliance::TYPE_MAIN)
+            ->getQuery()
+            ->getResult();
     }
 }

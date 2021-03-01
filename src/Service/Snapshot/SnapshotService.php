@@ -7,7 +7,9 @@ namespace App\Service\Snapshot;
 use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
 use App\Entity\Snapshot;
+use App\Entity\SnapshotToGovernor;
 use App\Exception\NotFoundException;
+use App\Exception\SnapshotDataException;
 use App\Repository\GovernorRepository;
 use App\Repository\GovernorSnapshotRepository;
 use App\Repository\SnapshotRepository;
@@ -34,21 +36,6 @@ class SnapshotService
     }
 
     /**
-     * @return SnapshotInfo[]
-     */
-    public function getSnapshotsInfo(): array
-    {
-        $snapshots = $this->snapshotRepo->findBy([], ['created' => 'DESC'], 10);
-        $snapshotInfos = [];
-
-        foreach ($snapshots as $snapshot) {
-            $snapshotInfos[] = $this->createSnapshotInfo($snapshot);
-        }
-
-        return $snapshotInfos;
-    }
-
-    /**
      * @param string $snapshotUid
      * @return Snapshot
      * @throws NotFoundException
@@ -64,33 +51,48 @@ class SnapshotService
         return $snapshot;
     }
 
-    public function createSnapshotInfo(Snapshot $snapshot): SnapshotInfo
+    /**
+     * @return SnapshotInfo[]
+     */
+    public function getSnapshotsInfo(): array
     {
-        $snapshotInfo = new SnapshotInfo($snapshot);
+        $snapshots = $this->snapshotRepo->findBy([], ['created' => 'DESC'], 10);
+        $snapshotInfos = [];
 
-        $total = count($this->snapshotToGovRepo->findBy(['snapshot' => $snapshot]));
-        $snapshotInfo->setTotal($total);
-        $snapshotInfo->setNumCompleted($total - count($this->getIncompleteGovSnapshots($snapshot)));
+        foreach ($snapshots as $snapshot) {
+            $snapshotInfos[] = $this->createSnapshotInfo($snapshot);
+        }
 
-        return $snapshotInfo;
+        return $snapshotInfos;
     }
 
-    /**
-     * @param Snapshot $snapshot
-     * @return GovernorSnapshot[]
-     */
-    public function getCompleteGovSnapshots(Snapshot $snapshot): array
+    public function createSnapshotInfo(Snapshot $snapshot, int $allianceFilter = null): SnapshotInfo
     {
-        return $this->govSnapshotRepo->getCompleteGovSnapshots($snapshot);
+        return new SnapshotInfo(
+            $snapshot,
+            $this->snapshotToGovRepo->findBy(['snapshot' => $snapshot]),
+            $this->govSnapshotRepo->findBy(['snapshot' => $snapshot]),
+            $this->getMissingGovs($snapshot),
+            $allianceFilter
+        );
     }
 
-    /**
-     * @param Snapshot $snapshot
-     * @return GovernorSnapshot[]
-     */
-    public function getIncompleteGovSnapshots(Snapshot $snapshot): array
+    public function populateSnapshot(Snapshot $snapshot)
     {
-        return $this->govSnapshotRepo->getIncompleteForSnapshot($snapshot);
+        $govs = $this->govRepo->getGovernorsFromMainAlliances();
+
+        foreach ($govs as $gov) {
+            if ($this->snapshotToGovRepo->findOneBy(['governor' => $gov, 'snapshot' => $snapshot])) {
+                continue;
+            }
+
+            $snapshotToGov = new SnapshotToGovernor();
+            $snapshotToGov->setGovernor($gov);
+            $snapshotToGov->setSnapshot($snapshot);
+            $snapshotToGov->setCreated(new \DateTime);
+
+            $this->snapshotToGovRepo->save($snapshotToGov);
+        }
     }
 
     /**
@@ -157,5 +159,20 @@ class SnapshotService
     public function updateGovSnapshot(GovernorSnapshot $govSnapshot): GovernorSnapshot
     {
         return $this->govSnapshotRepo->save($govSnapshot);
+    }
+
+    /**
+     * @param Snapshot $snapshot
+     * @return Snapshot
+     * @throws NotFoundException
+     * @throws SnapshotDataException
+     */
+    public function createSnapshot(Snapshot $snapshot): Snapshot
+    {
+        if ($this->snapshotRepo->findOneBy(['uid' => $snapshot->getUid()])) {
+            throw new SnapshotDataException('Uid already exists!');
+        }
+
+        return $this->snapshotRepo->save($snapshot);
     }
 }

@@ -5,19 +5,37 @@
 {% block body %}
 {% for snapshotInfo in snapshots %}
     {% if snapshotInfo|default %}
-        <div class="card mb-3">
+        <div class="card mb-3 shadow-sm">
             <div class="card-header">
-                <h3>{{ snapshotInfo.name }}</h3>
+                <h3>
+                    <a href="{{ path('scribe_snapshot_detail', {snapshotUid: snapshotInfo.uid}) }}">
+                        {{ snapshotInfo.name }}
+                    </a>
+                </h3>
             </div>
-            <div class="card-body">
+            <div class="card-body mb-0">
                 {% if snapshotInfo.completed %}
-                    Completed: {{ snapshotInfo.completed|date }}. Total: {{ snapshotInfo.total }}
+                    <p class="mb-0">Completed: {{ snapshotInfo.completed|date }}. Total: {{ snapshotInfo.total }}</p>
                 {% else %}
-                    <p>{{ snapshotInfo.numCompleted }} of {{ snapshotInfo.total }} complete.</p>
-                    <a href="{{ path('scribe_snapshot_detail', {snapshotUid: snapshotInfo.uid}) }}" class="btn btn-primary">View Incomplete</a>
+                    <p class="mb-0">
+                        Total: {{ snapshotInfo.total }}
+                        Completed: {{ snapshotInfo.numCompleted }}
+                        Incomplete: {{ snapshotInfo.numIncomplete }}
+                        Missing: {{ snapshotInfo.numMissing }}
+                    </p>
                 {% endif %}
             </div>
         </div>
     {% endif %}
 {% endfor %}
+{% if is_granted(constant('App\\Entity\\Role::ROLE_SCRIBE_ADMIN')) %}
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header">
+            <h3>Admin Actions</h3>
+        </div>
+        <div class="card-body mb-0">
+            <a href="{{ path('scribe_snapshot_create') }}" class="btn btn-warning">Create Snapshot</a>
+        </div>
+    </div>
+{% endif %}
 {% endblock %}

@@ -18,4 +18,12 @@ class SnapshotRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Snapshot::class);
     }
+
+    public function save(Snapshot $snapshot): Snapshot
+    {
+        $this->_em->persist($snapshot);
+        $this->_em->flush();
+
+        return $snapshot;
+    }
 }

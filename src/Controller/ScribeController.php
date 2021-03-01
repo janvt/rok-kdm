@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Snapshot;
 use App\Exception\NotFoundException;
+use App\Exception\SnapshotDataException;
+use App\Form\Scribe\CreateSnapshotType;
 use App\Form\Scribe\EditGovernorSnapshotType;
 use App\Service\Snapshot\SnapshotService;
 use App\Util\NotFoundResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,27 +42,67 @@ class ScribeController extends AbstractController
     }
 
     /**
+     * @Route("/snapshot/create", methods={"GET", "POST"}, name="scribe_snapshot_create")
+     * @param Request $request
+     * @return Response
+     * @IsGranted("ROLE_SCRIBE_ADMIN")
+     */
+    public function scribeSnapshotCreate(Request $request): Response
+    {
+        $snapshot = new Snapshot();
+        $snapshot->setCreated(new \DateTime);
+        $form = $this->createForm(CreateSnapshotType::class, $snapshot);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->snapshotService->createSnapshot($snapshot);
+
+                return $this->redirectToRoute('scribe_snapshot_detail', ['snapshotUid' => $snapshot->getUid()]);
+            } catch(SnapshotDataException $e) {
+                $form->addError(new FormError($e->getMessage()));
+            }
+        }
+
+        return $this->render('scribe/create_snapshot.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/snapshot/{snapshotUid}/populate", methods={"GET"}, name="scribe_snapshot_populate")
+     * @param string $snapshotUid
+     * @return Response
+     * @IsGranted("ROLE_SCRIBE_ADMIN")
+     */
+    public function scribeSnapshotPopulate(string $snapshotUid): Response
+    {
+        try {
+            $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
+            $this->snapshotService->populateSnapshot($snapshot);
+        } catch (NotFoundException $e) {
+            return new NotFoundResponse($e);
+        }
+
+        return $this->redirectToRoute('scribe_snapshot_detail', ['snapshotUid' => $snapshot->getUid()]);
+    }
+
+    /**
      * @Route("/snapshot/{snapshotUid}", methods={"GET"}, name="scribe_snapshot_detail")
      * @param string $snapshotUid
      * @return Response
      */
-    public function scribeSnapshotDetail(string $snapshotUid): Response
+    public function scribeSnapshotDetail(string $snapshotUid, Request $request): Response
     {
         try {
             $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
-            $snapshotInfo = $this->snapshotService->createSnapshotInfo($snapshot);
-            $completeSnapshots = $this->snapshotService->getCompleteGovSnapshots($snapshot);
-            $incompleteSnapshots = $this->snapshotService->getIncompleteGovSnapshots($snapshot);
-            $missingGovs = $this->snapshotService->getMissingGovs($snapshot);
+            $snapshotInfo = $this->snapshotService->createSnapshotInfo($snapshot, $request->get('alliance'));
         } catch (NotFoundException $e) {
             return new NotFoundResponse($e);
         }
 
         return $this->render('scribe/detail.html.twig', [
             'snapshotInfo' => $snapshotInfo,
-            'completeSnapshots' => $completeSnapshots,
-            'incompleteSnapshots' => $incompleteSnapshots,
-            'missingGovs' => $missingGovs,
         ]);
     }
 
@@ -80,7 +124,25 @@ class ScribeController extends AbstractController
         $form = $this->createForm(EditGovernorSnapshotType::class, $govSnapshot);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $markComplete = $form->get('saveAndMarkCompleted')->isClicked();
+            $saveAndReturn = $form->get('saveAndReturn')->isClicked();
+
+            if ($markComplete) {
+                $govSnapshot->setCompleted(new \DateTime);
+            }
+
             $this->snapshotService->updateGovSnapshot($govSnapshot);
+
+            if ($markComplete || $saveAndReturn) {
+                if ($request->get('snapshot')) {
+                    return $this->redirectToRoute(
+                        'scribe_snapshot_detail',
+                        ['snapshotUid' => $request->get('snapshot')]
+                    );
+                }
+
+                return $this->redirectToRoute('scribe_index');
+            }
         }
 
         return $this->render('scribe/edit_gov_snapshot.html.twig', [

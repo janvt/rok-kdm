@@ -1,10 +1,10 @@
-{% if is_granted('ROLE_OFFICER') %}
+{% if is_granted(constant('App\\Entity\\Role::ROLE_OFFICER')) %}
     <a href="{{ path('officer_index') }}">Officers</a> |
 {% endif %}
-{% if is_granted('ROLE_SCRIBE') %}
+{% if is_granted(constant('App\\Entity\\Role::ROLE_SCRIBE')) %}
     <a href="{{ path('scribe_index') }}">Scribes</a> |
 {% endif %}
-{% if is_granted('ROLE_ADMIN') %}
+{% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}
     <a href="{{ path('app_admin_dashboard_index') }}">Admin</a> |
 {% endif %}
 <a href="{{ path('app_logout') }}">Logout</a>

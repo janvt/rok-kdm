@@ -25,7 +25,9 @@ class EditGovernorSnapshotType extends AbstractType
             ->add('rssGathered')
             ->add('rssAssistance')
             ->add('helps')
-            ->add('submit', SubmitType::class)
+            ->add('save', SubmitType::class)
+            ->add('saveAndReturn', SubmitType::class)
+            ->add('saveAndMarkCompleted', SubmitType::class)
         ;
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
 use App\Entity\Snapshot;
 use App\Entity\SnapshotToGovernor;
@@ -21,6 +20,14 @@ class SnapshotToGovernorRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SnapshotToGovernor::class);
+    }
+
+    public function save(SnapshotToGovernor $snapshotToGov): SnapshotToGovernor
+    {
+        $this->_em->persist($snapshotToGov);
+        $this->_em->flush();
+
+        return $snapshotToGov;
     }
 
     /**

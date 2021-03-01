@@ -29,6 +29,12 @@
                 {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.rssGathered} only %}
                 {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.rssAssistance} only %}
                 {% include 'scribe/edit_gov_snapshot_field_int.html.twig' with {field: form.helps} only %}
+
+                <div class="form-group">
+                    {{ form_widget(form.save) }}
+                    {{ form_widget(form.saveAndReturn, {'attr': {'class': 'btn btn-primary ml-2'}}) }}
+                    {{ form_widget(form.saveAndMarkCompleted, {'attr': {'class': 'btn btn-primary ml-2'}}) }}
+                </div>
             {{ form_end(form) }}
         </div>
     </div>
