@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Alliance;
 use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
 use App\Entity\OfficerNote;
@@ -45,6 +46,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToCrud('User', 'fas fa-folder-open', User::class);
         yield MenuItem::linkToCrud('Governor', 'fas fa-folder-open', Governor::class);
+        yield MenuItem::linkToCrud('Alliance', 'fas fa-folder-open', Alliance::class);
         yield MenuItem::linkToCrud('Notes', 'fas fa-folder-open', OfficerNote::class);
 
         if ($this->isGranted(Role::ROLE_SCRIBE_ADMIN)) {

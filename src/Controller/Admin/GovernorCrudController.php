@@ -47,9 +47,9 @@ class GovernorCrudController extends AbstractCrudController
         $status = ChoiceField::new('status')
             ->setChoices($statusChoices)
             ->allowMultipleChoices(false);
-        $alliance = TextField::new('alliance');
         $user = AssociationField::new('user');
         $snapshots = AssociationField::new('snapshots');
+        $alliance = AssociationField::new('alliance');
 
         if (Crud::PAGE_INDEX === $pageName) {
             return [$governorId, $name, $status, $alliance, $user];

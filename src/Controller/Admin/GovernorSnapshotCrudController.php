@@ -24,7 +24,14 @@ class GovernorSnapshotCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Governor Snapshot')
             ->setEntityLabelInPlural('Governor Snapshots')
-            ->setSearchFields(['governor.name', 'snapshot.name', 'snapshot.uid', 'alliance', 'kingdom'])
+            ->setSearchFields([
+                'governor.name',
+                'snapshot.name',
+                'snapshot.uid',
+                'alliance.tag',
+                'alliance.name',
+                'kingdom'
+            ])
             ->setEntityPermission(Role::ROLE_SCRIBE);
     }
 

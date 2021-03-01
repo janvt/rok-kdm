@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block page_title %}{{ gov.name }}{% endblock %}
+
 {% block body %}
-    <h1>{{ gov.name }}</h1>
     {% if gov.alliance %}
-        <h2>{{ gov.alliance }}</h2>
+        <h3>{{ gov.alliance.displayName }}</h3>
     {% endif %}
     {% include 'governor/stats.html.twig' with {gov: gov} only %}
     {% include 'governor/kvk_rankings.html.twig' with {gov: gov} only %}

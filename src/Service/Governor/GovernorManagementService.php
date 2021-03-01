@@ -57,6 +57,15 @@ class GovernorManagementService
         return $govs[0];
     }
 
+    /**
+     * @param Governor $gov
+     * @return Governor
+     */
+    public function save(Governor $gov): Governor
+    {
+        return $this->govRepo->save($gov);
+    }
+
     public function addOfficerNote(Governor $gov, OfficerNote $note, User $user): OfficerNote
     {
         $note->setUser($user);

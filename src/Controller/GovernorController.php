@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\OfficerNote;
 use App\Exception\NotFoundException;
+use App\Form\Governor\SetAllianceType;
 use App\Form\OfficerNote\AddOfficerNoteType;
 use App\Service\Governor\GovernorDetailsService;
 use App\Service\Governor\GovernorManagementService;
@@ -72,6 +73,35 @@ class GovernorController extends AbstractController
         }
 
         return $this->render('governor/add_note.html.twig' , [
+            'form' => $form->createView(),
+            'gov' => $this->detailsService->createGovernorDetails($gov, $this->getUser()),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/alliance", name="governor_set_alliance", methods={"GET", "POST"})
+     * @IsGranted("ROLE_OFFICER")
+     * @param string $id
+     * @param Request $request
+     * @return Response
+     */
+    public function setAlliance(string $id, Request $request): Response
+    {
+        try {
+            $gov = $this->govManagementService->findGov($id);
+        } catch (NotFoundException $e) {
+            return new Response('Not found.', Response::HTTP_NOT_FOUND);
+        }
+
+        $form = $this->createForm(SetAllianceType::class, $gov);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->govManagementService->save($gov);
+
+            return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);
+        }
+
+        return $this->render('governor/edit_alliance.html.twig' , [
             'form' => $form->createView(),
             'gov' => $this->detailsService->createGovernorDetails($gov, $this->getUser()),
         ]);

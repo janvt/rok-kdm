@@ -53,19 +53,20 @@ class Governor
     private $status;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $alliance;
-
-    /**
      * @ORM\OneToMany(targetEntity=OfficerNote::class, mappedBy="governor", orphanRemoval=true)
      */
     private $officerNotes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Alliance::class)
+     */
+    private $alliance;
 
     public function __construct()
     {
         $this->snapshots = new ArrayCollection();
         $this->officerNotes = new ArrayCollection();
+        $this->alliance = new ArrayCollection();
     }
 
     /**
@@ -153,18 +154,6 @@ class Governor
         return $this;
     }
 
-    public function getAlliance(): ?string
-    {
-        return $this->alliance;
-    }
-
-    public function setAlliance(?string $alliance): self
-    {
-        $this->alliance = $alliance;
-
-        return $this;
-    }
-
     /**
      * @return Collection|OfficerNote[]
      */
@@ -191,6 +180,18 @@ class Governor
                 $officerNote->setGovernor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAlliance(): ?Alliance
+    {
+        return $this->alliance;
+    }
+
+    public function setAlliance(?Alliance $alliance): self
+    {
+        $this->alliance = $alliance;
 
         return $this;
     }

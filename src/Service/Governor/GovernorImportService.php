@@ -49,7 +49,6 @@ class GovernorImportService
 
             $gov = Governor::createFromId($govId, $status);
             $gov->setName($this->getField($data, 'name'));
-            $gov->setAlliance($this->getField($data, 'alliance'));
         } catch (GovDataException $e) {
             throw new APIException($e->getMessage());
         }
