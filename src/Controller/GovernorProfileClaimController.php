@@ -53,15 +53,15 @@ class GovernorProfileClaimController extends AbstractController
     }
 
     /**
-     * @Route("/make_lugal_member/{id}", name="make_lugal_member")
+     * @Route("/make_kingdom_member/{id}", name="make_kingdom_member")
      * @IsGranted("ROLE_OFFICER")
      * @param $id
      * @return Response
      */
-    public function makeLugalMember($id, Request $request)
+    public function makeKingdomMember($id, Request $request)
     {
         try {
-            $this->userService->makeLugalMember($id);
+            $this->userService->makeKingdomMember($id);
         } catch (NotFoundException $e) {
             return new NotFoundResponse($e);
         }

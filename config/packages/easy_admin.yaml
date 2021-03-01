@@ -1,5 +1,0 @@
-easy_admin:
-    site_name: Lugal Admin
-    entities:
-        - App\Entity\User
-        - App\Entity\Governor

@@ -3,11 +3,11 @@
 {% block body %}
     <h1>Profile Claim for Discord User {{ claim.user.discordUsername }}</h1>
 
-    {% if claim.user.isLugalMember %}
-        <button class="btn btn-success disabled">Lugal member access granted</button>
+    {% if claim.user.isKingdomMember %}
+        <button class="btn btn-success disabled">Kingdom access granted</button>
     {% else %}
-        <a class="btn btn-warning" href="{{ path('make_lugal_member', {id: claim.user.id, redirect_to_claim: claim.id}) }}">
-            Grant Lugal Member Access
+        <a class="btn btn-warning" href="{{ path('make_kingdom_member', {id: claim.user.id, redirect_to_claim: claim.id}) }}">
+            Grant Kingdom Access
         </a>
     {% endif %}
 

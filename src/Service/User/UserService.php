@@ -38,10 +38,10 @@ class UserService
      * @return User
      * @throws NotFoundException
      */
-    public function makeLugalMember($id): User
+    public function makeKingdomMember($id): User
     {
         return $this->userRepo->save(
-            $this->findUser($id)->addRole(Role::ROLE_LUGAL_MEMBER)
+            $this->findUser($id)->addRole(Role::ROLE_KINGDOM_MEMBER)
         );
     }
 }

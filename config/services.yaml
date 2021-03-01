@@ -1,4 +1,5 @@
 parameters:
+    site_title: '%env(SITE_TITLE)%'
     api_token: '%env(API_TOKEN)%'
 
 services:

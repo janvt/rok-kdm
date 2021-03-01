@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{% block title %}Lugal - K75{% endblock %}</title>
+        <title>{% block title %}{{ site_title }}{% endblock %}</title>
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -12,16 +12,19 @@
     </head>
     <body>
         <div class="wrapper container">
-            {% block user_login %}
-                <div class="user-login">
-                {% if app.user %}
-                    {% include 'links.html.twig' with {} only %}
-                {% else %}
-                    <a href="{{ path('connect_discord_start') }}">login with Discord</a>
-                {% endif %}
-                </div>
-            {% endblock %}
+            <div class="hero">
+                {% block hero %}{% endblock %}
 
+                {% block user_login %}
+                    <div class="user-login">
+                    {% if app.user %}
+                        {% include 'links.html.twig' with {} only %}
+                    {% else %}
+                        <a href="{{ path('connect_discord_start') }}">login with Discord</a>
+                    {% endif %}
+                    </div>
+                {% endblock %}
+            </div>
             {% block body %}{% endblock %}
         </div>
 

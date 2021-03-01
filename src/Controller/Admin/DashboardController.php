@@ -32,7 +32,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Lugal Admin');
+            ->setTitle($this->getParameter('site_title') . ' Admin');
     }
 
     public function configureCrud(): Crud

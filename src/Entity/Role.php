@@ -7,7 +7,7 @@ namespace App\Entity;
 class Role
 {
     const ROLE_USER = 'ROLE_USER';
-    const ROLE_LUGAL_MEMBER = 'ROLE_LUGAL_MEMBER';
+    const ROLE_KINGDOM_MEMBER = 'ROLE_KINGDOM_MEMBER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
 

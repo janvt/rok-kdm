@@ -181,9 +181,9 @@ class User implements UserInterface, EquatableInterface
         return in_array($role, $this->getRoles());
     }
 
-    public function isLugalMember(): bool
+    public function isKingdomMember(): bool
     {
-        return $this->hasRole(Role::ROLE_LUGAL_MEMBER);
+        return $this->hasRole(Role::ROLE_KINGDOM_MEMBER);
     }
 
     public function getSalt()

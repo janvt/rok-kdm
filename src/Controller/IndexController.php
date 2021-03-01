@@ -45,8 +45,8 @@ class IndexController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        if ($this->isGranted(Role::ROLE_LUGAL_MEMBER)) {
-            return $this->indexLugalMember($request);
+        if ($this->isGranted(Role::ROLE_KINGDOM_MEMBER)) {
+            return $this->indexKingdomMember($request);
         }
 
         if ($this->isGranted(Role::ROLE_USER)) {
@@ -56,9 +56,9 @@ class IndexController extends AbstractController
         return $this->render('index.html.twig');
     }
 
-    public function indexLugalMember(Request $request): Response
+    public function indexKingdomMember(Request $request): Response
     {
-        $this->denyAccessUnlessGranted(Role::ROLE_LUGAL_MEMBER);
+        $this->denyAccessUnlessGranted(Role::ROLE_KINGDOM_MEMBER);
 
         $searchResult = null;
         $searchTerm = $request->get('search');
@@ -70,7 +70,7 @@ class IndexController extends AbstractController
             }
         }
 
-        return $this->render('indexLugalMember.html.twig', [
+        return $this->render('indexKingdomMember.html.twig', [
             'searchTerm' => $searchTerm,
             'searchResult' => $searchResult
         ]);
