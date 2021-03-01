@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block page_title %}Officer Corner{% endblock %}
+
 {% block body %}
-<h2>Officer Corner</h2>
+    <a class="btn btn-primary" href="{{ path('governor_claims') }}">View Governor Claims</a>
 {% endblock %}

@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Profile Claim for Discord User {{ claim.user.discordUsername }}</h1>
+{% block page_title %}Profile Claim for Discord User {{ claim.user.discordUsername }}{% endblock %}
 
+{% block body %}
     {% if claim.user.isKingdomMember %}
-        <button class="btn btn-success disabled">Kingdom access granted</button>
+        <button class="btn btn-success disabled">Kingdom Access Granted</button>
     {% else %}
         <a class="btn btn-warning" href="{{ path('make_kingdom_member', {id: claim.user.id, redirect_to_claim: claim.id}) }}">
             Grant Kingdom Access

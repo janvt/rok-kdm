@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Open Profile Claims</h1>
+{% block page_title %}Open Profile Claims{% endblock %}
 
+{% block body %}
     {% for claim in claims %}
         <a href="{{ path('governor_claim', {id: claim.id}) }}">{{ claim.user.discordUsername }} at {{ claim.created|date }}</a>
     {% endfor %}

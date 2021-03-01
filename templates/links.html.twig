@@ -1,8 +1,8 @@
 {% if is_granted('ROLE_OFFICER') %}
-    <a href="{{ path('officer_index') }}">Officer Corner</a> |
+    <a href="{{ path('officer_index') }}">Officers</a> |
 {% endif %}
 {% if is_granted('ROLE_SCRIBE') %}
-    <a href="{{ path('scribe_index') }}">Scribe Corner</a> |
+    <a href="{{ path('scribe_index') }}">Scribes</a> |
 {% endif %}
 {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('app_admin_dashboard_index') }}">Admin</a> |

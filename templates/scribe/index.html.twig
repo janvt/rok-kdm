@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block page_title %}Scribe Corner{% endblock %}
+
 {% block body %}
-<h1>Scribe Corner</h1>
 {% for snapshotInfo in snapshots %}
     {% if snapshotInfo|default %}
         <div class="card mb-3">
             <div class="card-header">
-                <h2>{{ snapshotInfo.name }}</h2>
+                <h3>{{ snapshotInfo.name }}</h3>
             </div>
             <div class="card-body">
                 {% if snapshotInfo.completed %}

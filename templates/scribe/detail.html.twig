@@ -1,14 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{% block page_title %}Scribe Corner{% endblock %}
+
 {% block body %}
-<h1>Scribe Corner</h1>
 <div class="card">
     <div class="card-header">
-        <h2>Snapshot: {{ snapshotInfo.name }}</h2>
+        <h3>Snapshot: {{ snapshotInfo.name }}</h3>
     </div>
     <div class="card-body d-flex flex-row">
         <div class="p-2 pl-5">
-            <h3>Incomplete</h3>
+            <h4>Incomplete</h4>
             {% for govSnapshot in incompleteSnapshots %}
                 <p>
                     {{ govSnapshot.governor.name }}
@@ -17,7 +18,7 @@
             {% endfor %}
         </div>
         <div class="p-2 pl-5">
-            <h3>Missing</h3>
+            <h4>Missing</h4>
             {% for governor in missingGovs %}
                 <p>
                     {{ governor.name }}

@@ -1,15 +1,16 @@
 {% extends 'base.html.twig' %}
 
+{% block page_title %}Edit Governor Snapshot{% endblock %}
+
 {% block body %}
-    <h1>Edit Governor Snapshot</h1>
     <div class="card">
         <div class="card-header">
-            <h2>
+            <h3>
                 {{ govSnapshot.governor.name }}
                 {% if govSnapshot.snapshot %}
                     <span class="pill-border">{{ govSnapshot.snapshot.name }}</span>
                 {% endif %}
-            </h2>
+            </h3>
         </div>
         <div class="card-body">
             {{ form_start(form) }}
