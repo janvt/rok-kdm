@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   app:
-    image: janvt/lugal:app
+    image: janvt/roks:app
     env_file:
       - .env.prod
     volumes:
@@ -12,7 +12,7 @@ services:
       - db
 
   web:
-    image: janvt/lugal:web
+    image: janvt/roks:web
     ports:
       - 80:80
     volumes:

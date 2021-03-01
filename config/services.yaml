@@ -1,5 +1,6 @@
 parameters:
     site_title: '%env(SITE_TITLE)%'
+    env(SITE_TITLE): Kingdom X
     api_token: '%env(API_TOKEN)%'
 
 services:
