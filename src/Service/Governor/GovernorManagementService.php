@@ -157,4 +157,12 @@ class GovernorManagementService
 
         return $gov;
     }
+
+    /**
+     * @return OfficerNote[]
+     */
+    public function getLatestOfficerNotes(): array
+    {
+        return $this->noteRepo->findBy([], ['created' => 'DESC'], 10);
+    }
 }

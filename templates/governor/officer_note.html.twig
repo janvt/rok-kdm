@@ -1,0 +1,17 @@
+<div class="card mb-3">
+    <div class="card-header">
+        {% if gov|default %}
+            <h4><a href="{{ path('governor', {'id': gov.governorId}) }}">{{ gov.name }}</a></h4>
+        {% endif %}
+        <h5>{{ officerNote.tldr }}</h5>
+        <span>
+            {{ officerNote.created|date }}
+            {% if officerNote.createdByOfficer %}
+                by {{ officerNote.createdByOfficer }}
+            {% endif %}
+        </span>
+    </div>
+    <div class="card-body">
+        <p>{{ officerNote.note }}</p>
+    </div>
+</div>

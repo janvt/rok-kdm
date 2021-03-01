@@ -3,5 +3,23 @@
 {% block page_title %}Officer Corner{% endblock %}
 
 {% block body %}
-    <a class="btn btn-primary" href="{{ path('governor_claims') }}">View Governor Claims</a>
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header">
+            <h3>Admin Actions</h3>
+        </div>
+        <div class="card-body mb-0">
+            <a class="btn btn-primary" href="{{ path('governor_claims') }}">View Governor Claims</a>
+        </div>
+    </div>
+
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header">
+            <h3>Latest Officer Notes</h3>
+        </div>
+        <div class="card-body mb-0">
+            {% for officerNote in latestOfficerNotes %}
+                {% include 'governor/officer_note.html.twig' with { officerNote: officerNote, gov: officerNote.governor } only %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

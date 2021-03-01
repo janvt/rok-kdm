@@ -93,7 +93,7 @@ class ScribeController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_SCRIBE_ADMIN")
      */
-    public function scribeSnapshotMarkComplated(string $snapshotUid): Response
+    public function scribeSnapshotMarkCompleted(string $snapshotUid): Response
     {
         try {
             $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);

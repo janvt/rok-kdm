@@ -66,7 +66,6 @@ class Governor
     {
         $this->snapshots = new ArrayCollection();
         $this->officerNotes = new ArrayCollection();
-        $this->alliance = new ArrayCollection();
     }
 
     /**

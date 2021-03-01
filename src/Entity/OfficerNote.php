@@ -19,7 +19,7 @@ class OfficerNote
     private $id;
 
     /**
-     * @ORM\Column(name="user_id")
+     * @var User
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
@@ -110,5 +110,15 @@ class OfficerNote
         $this->created = $created;
 
         return $this;
+    }
+
+    public function createdByOfficer(): ?string
+    {
+        $userGovernors = $this->user->getGovernors()->toArray();
+        if ($userGovernors) {
+            return $userGovernors[0]->getName();
+        }
+
+        return null;
     }
 }

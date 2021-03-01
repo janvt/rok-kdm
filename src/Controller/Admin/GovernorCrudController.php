@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Alliance;
 use App\Entity\Governor;
 use App\Entity\GovernorStatus;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -24,7 +25,16 @@ class GovernorCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Governor')
             ->setEntityLabelInPlural('Governor')
-            ->setSearchFields(['id', 'governor_id', 'name', 'status', 'alliance', 'user.email', 'user.discordUsername']);
+            ->setSearchFields([
+                'id',
+                'governor_id',
+                'name',
+                'status',
+                'alliance.name',
+                'alliance.tag',
+                'user.email',
+                'user.discordUsername'
+            ]);
     }
 
     public function configureFilters(Filters $filters): Filters
@@ -49,7 +59,8 @@ class GovernorCrudController extends AbstractCrudController
             ->allowMultipleChoices(false);
         $user = AssociationField::new('user');
         $snapshots = AssociationField::new('snapshots');
-        $alliance = AssociationField::new('alliance');
+        $alliance = AssociationField::new('alliance')
+            ->setFieldFqcn(Alliance::class);
 
         if (Crud::PAGE_INDEX === $pageName) {
             return [$governorId, $name, $status, $alliance, $user];

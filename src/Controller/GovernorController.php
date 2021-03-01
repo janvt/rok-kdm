@@ -67,7 +67,8 @@ class GovernorController extends AbstractController
         $form = $this->createForm(AddOfficerNoteType::class, new OfficerNote());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->govManagementService->addOfficerNote($gov, $form->getData(), $this->getUser());
+            $user = $this->getUser();
+            $this->govManagementService->addOfficerNote($gov, $form->getData(), $user);
 
             return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);
         }
