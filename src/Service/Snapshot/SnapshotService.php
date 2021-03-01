@@ -79,6 +79,15 @@ class SnapshotService
      * @param Snapshot $snapshot
      * @return GovernorSnapshot[]
      */
+    public function getCompleteGovSnapshots(Snapshot $snapshot): array
+    {
+        return $this->govSnapshotRepo->getCompleteGovSnapshots($snapshot);
+    }
+
+    /**
+     * @param Snapshot $snapshot
+     * @return GovernorSnapshot[]
+     */
     public function getIncompleteGovSnapshots(Snapshot $snapshot): array
     {
         return $this->govSnapshotRepo->getIncompleteForSnapshot($snapshot);

@@ -47,6 +47,7 @@ class ScribeController extends AbstractController
         try {
             $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
             $snapshotInfo = $this->snapshotService->createSnapshotInfo($snapshot);
+            $completeSnapshots = $this->snapshotService->getCompleteGovSnapshots($snapshot);
             $incompleteSnapshots = $this->snapshotService->getIncompleteGovSnapshots($snapshot);
             $missingGovs = $this->snapshotService->getMissingGovs($snapshot);
         } catch (NotFoundException $e) {
@@ -55,6 +56,7 @@ class ScribeController extends AbstractController
 
         return $this->render('scribe/detail.html.twig', [
             'snapshotInfo' => $snapshotInfo,
+            'completeSnapshots' => $completeSnapshots,
             'incompleteSnapshots' => $incompleteSnapshots,
             'missingGovs' => $missingGovs,
         ]);

@@ -31,7 +31,8 @@ class AllianceCrudController extends AbstractCrudController
             ->setChoices([
                 'Main Alliance' => Alliance::TYPE_MAIN,
                 'Farm Alliance' => Alliance::TYPE_FARM,
-                'shell' => Alliance::TYPE_SHELL
+                'Shell Alliance' => Alliance::TYPE_SHELL,
+                'Unsanctioned Alliance' => Alliance::TYPE_UNSANCTIONED,
             ])
             ->allowMultipleChoices(false);
 
