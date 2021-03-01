@@ -6,6 +6,7 @@ use App\Entity\Image;
 use App\Entity\Role;
 use App\Exception\ImageUploadException;
 use App\Exception\SearchException;
+use App\Service\Governor\GovernorDetailsService;
 use App\Service\Governor\GovernorManagementService;
 use App\Service\Image\ImageService;
 use App\Service\Search\SearchService;
@@ -26,16 +27,19 @@ class IndexController extends AbstractController
     private $searchService;
     private $imageService;
     private $govManagementService;
+    private $govDetailsService;
 
     public function __construct(
         SearchService $searchService,
         ImageService $imageService,
-        GovernorManagementService $govManagementService
+        GovernorManagementService $govManagementService,
+        GovernorDetailsService $govDetailsService
     )
     {
         $this->searchService = $searchService;
         $this->imageService = $imageService;
         $this->govManagementService = $govManagementService;
+        $this->govDetailsService = $govDetailsService;
     }
 
     /**
@@ -61,6 +65,8 @@ class IndexController extends AbstractController
         $this->denyAccessUnlessGranted(Role::ROLE_KINGDOM_MEMBER);
 
         $searchResult = null;
+        $featuredGovs = null;
+
         $searchTerm = $request->get('search');
         if ($searchTerm) {
             try {
@@ -68,11 +74,14 @@ class IndexController extends AbstractController
             } catch (SearchException $e) {
                 return new Response(null, Response::HTTP_BAD_REQUEST);
             }
+        } else {
+            $featuredGovs = $this->govDetailsService->getFeaturedGovs();
         }
 
         return $this->render('indexKingdomMember.html.twig', [
             'searchTerm' => $searchTerm,
-            'searchResult' => $searchResult
+            'searchResult' => $searchResult,
+            'featuredGovs' => $featuredGovs
         ]);
     }
 

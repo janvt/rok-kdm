@@ -55,11 +55,25 @@ class GovernorDetailsService
     }
 
     /**
+     * @return GovernorDetails[]
+     */
+    public function getFeaturedGovs(): array
+    {
+        $featuredGovs = [];
+        $govs = $this->govRepo->getFeatured();
+        foreach ($govs as $gov) {
+            $featuredGovs[] = $this->createGovernorDetails($gov);
+        }
+
+        return $featuredGovs;
+    }
+
+    /**
      * @param Governor $governor
-     * @param User|UserInterface $user
+     * @param User|UserInterface|null $user
      * @return GovernorDetails
      */
-    public function createGovernorDetails(Governor $governor, User $user): GovernorDetails
+    public function createGovernorDetails(Governor $governor, ?User $user = null): GovernorDetails
     {
         $snapshots = $this->govSnapshotRepo->findBy(['governor' => $governor], ['created' => 'DESC']);
         $mergedSnapshot = new GovernorSnapshot();
@@ -75,7 +89,7 @@ class GovernorDetailsService
         $this->setKvk4Ranking($governor, $details);
         $this->setKvk5Ranking($governor, $details);
 
-        if ($this->authChecker->isGranted(Role::ROLE_OFFICER, $user)) {
+        if ($user && $this->authChecker->isGranted(Role::ROLE_OFFICER, $user)) {
             $details->setOfficerNotes(
                 $this->officerNoteRepo->findBy(['governor' => $governor], ['created' => 'DESC'])
             );
