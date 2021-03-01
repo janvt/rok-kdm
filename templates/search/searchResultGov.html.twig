@@ -1,11 +1,9 @@
 <div class="search-gov card status-{{ gov.displayStatus }} mb-3">
     <div class="card-header">
-        <h5 class="search-pill">
-            <a href="{{ path('governor', {id: gov.id}) }}">
-                {{ gov.name }}
-                <span class="gov-id pill-border">{{ gov.id }}</span>
-            </a>
-        </h5>
+        <h3 class="search-header float-left">
+            <a href="{{ path('governor', {id: gov.id}) }}">{{ gov.name }}</a>
+        </h3>
+        <span class="gov-id search-pill pill-border ml-3">{{ gov.id }}</span>
         {% if gov.alliance %}
             <div class="search-pill pill-border">
                 <span class="pill-label">{{ gov.alliance }}</span>
@@ -17,7 +15,8 @@
         </div>
         {% endif %}
     </div>
-    <div class="card-body">
+    <div class="status-bar" title="{{ gov.displayStatus }}"></div>
+    <div class="card-body pb-1">
         <div class="search-pill pill-border">
             <span class="pill-label">Power</span> {{ gov.power|number_format }}
         </div>

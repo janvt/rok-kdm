@@ -1,0 +1,27 @@
+.hero {
+  height: 120px;
+  text-align: left;
+  background-color: $hero-background;
+  position:relative;
+}
+
+.hero.large {
+  height: 400px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: Garamond;
+  color: $hero-text;
+  font-size: 120px;
+  position:absolute;
+  bottom:-42px;
+  left:0;
+}
+
+.hero.large h1 {
+  font-size: 200px;
+  position:absolute;
+  bottom:-70px;
+  left:0;
+}

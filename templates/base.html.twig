@@ -11,20 +11,22 @@
         {% endblock %}
     </head>
     <body>
-        <div class="wrapper container">
-            <div class="hero">
-                {% block hero %}{% endblock %}
+        <div class="hero {% block hero_class %}{% endblock %}">
+            <h1 class="welcome-title">
+                <a href="/">{{ site_title }}</a>
+            </h1>
 
-                {% block user_login %}
-                    <div class="user-login">
-                    {% if app.user %}
-                        {% include 'links.html.twig' with {} only %}
-                    {% else %}
-                        <a href="{{ path('connect_discord_start') }}">login with Discord</a>
-                    {% endif %}
-                    </div>
-                {% endblock %}
-            </div>
+            {% block user_login %}
+                <div class="menu">
+                {% if app.user %}
+                    {% include 'links.html.twig' with {} only %}
+                {% endif %}
+                </div>
+            {% endblock %}
+        </div>
+
+        <div class="wrapper container">
+            <h2 class="page-title mb-5">{% block page_title %}{% endblock %}</h2>
             {% block body %}{% endblock %}
         </div>
 

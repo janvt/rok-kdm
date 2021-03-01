@@ -1,14 +1,16 @@
 <form>
-    <div class="input-group mb-3">
+    <div class="member-search input-group mb-3">
         <input
                 type="text"
                 name="search"
                 value="{{ searchTerm|default }}"
-                class="form-control-lg"
-                placeholder="Player name"
+                class="form-control form-control-lg w-75"
+                placeholder="Search by player name or alliance"
                 aria-label="Player name"
                 aria-describedby="button-search"
         />
-        <button class="btn btn-outline-secondary" type="submit" id="button-search">Search</button>
+        <div class="input-group-append">
+            <button class="input-group-text" type="submit" id="button-search">Search</button>
+        </div>
     </div>
 </form>

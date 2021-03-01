@@ -1,0 +1,13 @@
+.menu {
+  float: right;
+  margin: 20px;
+  color: $hero-text;
+  font-weight: bold;
+}
+
+.menu a, .menu a:hover, .menu a:focus, .menu a:active, .menu a:visited {
+  color: $hero-text;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+}

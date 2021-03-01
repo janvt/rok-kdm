@@ -1,6 +1,16 @@
+.search-header a, .search-header a:hover, .search-header a:focus, .search-header a:active, .search-header a:visited {
+  color: $hero-background;
+  text-decoration: none;
+}
+
 .search-pill {
   float:left;
   margin: -2px 20px 12px 0;
+}
+
+.card-header .search-pill {
+  margin-top: 4px;
+  margin-bottom: 0;
 }
 
 .pill-label {
@@ -13,14 +23,15 @@
   padding: 1px 14px;
 }
 
-.status-active {
-  border-color: $status-active;
+.status-bar {
+  border: 5px solid $status-active;
+  border-width: 0 1px 2px 1px;
 }
 
-.status-inactive {
+.status-inactive .status-bar {
   border-color: $status-inactive;
 }
 
-.status-blacklisted {
+.status-blacklisted .status-bar {
   border-color: $status-blacklisted;
 }

@@ -1,3 +1,7 @@
+$theme-colors: (
+    "primary": #002B8F,
+);
+
 @import "~bootstrap/scss/bootstrap";
 @import "_variables";
 
@@ -6,15 +10,13 @@ body {
 }
 
 .wrapper {
-    margin: 80px auto;
+    margin: 40px auto;
     max-width: 1000px;
     text-align: left;
 }
 
-.user-login {
-    float: right;
-}
-
+@import "pages/hero";
+@import "pages/menu";
 @import "pages/welcome";
 @import "pages/search";
 @import "pages/gov";

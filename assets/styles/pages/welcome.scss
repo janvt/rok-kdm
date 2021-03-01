@@ -6,6 +6,11 @@
   font-size: 4em;
 }
 
+.welcome-title a, .welcome-title a:hover, .welcome-title a:focus, .welcome-title a:active, .welcome-title a:visited {
+  color: $hero-text;
+  text-decoration: none;
+}
+
 a.login-with-discord, a:active.login-with-discord, a:hover.login-with-discord,  a:visited.login-with-discord {
   display: block;
   width: 490px;
