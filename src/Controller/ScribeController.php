@@ -88,6 +88,24 @@ class ScribeController extends AbstractController
     }
 
     /**
+     * @Route("/snapshot/{snapshotUid}/mark_completed", methods={"GET"}, name="scribe_snapshot_mark_completed")
+     * @param string $snapshotUid
+     * @return Response
+     * @IsGranted("ROLE_SCRIBE_ADMIN")
+     */
+    public function scribeSnapshotMarkComplated(string $snapshotUid): Response
+    {
+        try {
+            $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
+            $this->snapshotService->markCompleted($snapshot);
+        } catch (NotFoundException $e) {
+            return new NotFoundResponse($e);
+        }
+
+        return $this->redirectToRoute('scribe_snapshot_detail', ['snapshotUid' => $snapshot->getUid()]);
+    }
+
+    /**
      * @Route("/snapshot/{snapshotUid}", methods={"GET"}, name="scribe_snapshot_detail")
      * @param string $snapshotUid
      * @return Response

@@ -16,14 +16,13 @@
             <div class="card-body mb-0">
                 {% if snapshotInfo.completed %}
                     <p class="mb-0">Completed: {{ snapshotInfo.completed|date }}. Total: {{ snapshotInfo.total }}</p>
-                {% else %}
-                    <p class="mb-0">
-                        Total: {{ snapshotInfo.total }}
-                        Completed: {{ snapshotInfo.numCompleted }}
-                        Incomplete: {{ snapshotInfo.numIncomplete }}
-                        Missing: {{ snapshotInfo.numMissing }}
-                    </p>
                 {% endif %}
+                <p class="mb-0">
+                    Total: {{ snapshotInfo.total }}
+                    Completed: {{ snapshotInfo.numCompleted }}
+                    Incomplete: {{ snapshotInfo.numIncomplete }}
+                    Missing: {{ snapshotInfo.numMissing }}
+                </p>
             </div>
         </div>
     {% endif %}

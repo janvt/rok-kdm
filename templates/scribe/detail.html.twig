@@ -7,6 +7,9 @@
             Snapshot: {{ snapshotInfo.name }}
         </h3>
 
+        {% if snapshotInfo.dateCompleted %}
+            Completed: {{ snapshotInfo.dateCompleted|date }}
+        {% endif %}
         Total: {{ snapshotInfo.total }}
         Completed: {{ snapshotInfo.numCompleted }}
         Incomplete: {{ snapshotInfo.numIncomplete }}
@@ -106,6 +109,13 @@
                 class="btn btn-warning"
                 title="WARNING! Will add all governors from main alliances!"
             >Populate from Main Alliances</a>
+            {% if not snapshotInfo.dateCompleted %}
+                <a
+                    href="{{ path('scribe_snapshot_mark_completed', {snapshotUid: snapshotInfo.uid}) }}"
+                    class="btn btn-warning ml-3"
+                    title="Marks snapshot as completed!"
+                >Mark as completed</a>
+            {% endif %}
         </div>
     </div>
 {% endif %}

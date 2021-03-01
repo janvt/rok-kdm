@@ -175,4 +175,10 @@ class SnapshotService
 
         return $this->snapshotRepo->save($snapshot);
     }
+
+    public function markCompleted(Snapshot $snapshot): Snapshot
+    {
+        $snapshot->setCompleted(new \DateTime);
+        return $this->snapshotRepo->save($snapshot);
+    }
 }

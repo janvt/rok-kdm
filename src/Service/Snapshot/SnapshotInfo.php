@@ -109,6 +109,11 @@ class SnapshotInfo
         return $this->snapshot->getUid();
     }
 
+    public function getDateCompleted(): ?\DateTimeInterface
+    {
+        return $this->snapshot->getCompleted();
+    }
+
     /**
      * @return Alliance[]
      */
