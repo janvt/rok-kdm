@@ -23,7 +23,7 @@ class User implements UserInterface, EquatableInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $email;
 
@@ -75,12 +75,12 @@ class User implements UserInterface, EquatableInterface
 
     public function __toString(): string
     {
-        return $this->getEmail();
+        return $this->discordDisplayName();
     }
 
     public function isEqualTo(UserInterface $user)
     {
-        if (!($this->email === $user->getUsername() && $this->getSalt() === $user->getSalt())) {
+        if (!($this->discordId === $user->getUsername() && $this->getSalt() === $user->getSalt())) {
             return false;
         }
 
@@ -114,7 +114,7 @@ class User implements UserInterface, EquatableInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
@@ -123,7 +123,7 @@ class User implements UserInterface, EquatableInterface
 
     public function getUsername(): ?string
     {
-        return $this->email;
+        return $this->discordId;
     }
 
     /**
