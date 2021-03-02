@@ -44,15 +44,21 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('User', 'fas fa-folder-open', User::class);
-        yield MenuItem::linkToCrud('Governor', 'fas fa-folder-open', Governor::class);
-        yield MenuItem::linkToCrud('Alliance', 'fas fa-folder-open', Alliance::class);
+        yield MenuItem::linkToUrl('Main Site', 'fa fa-home', '/');
+
+        yield MenuItem::section('Users');
+        yield MenuItem::linkToCrud('Users', 'fas fa-folder-open', User::class);
+        yield MenuItem::linkToCrud('Governors', 'fas fa-folder-open', Governor::class);
+        yield MenuItem::linkToCrud('Alliances', 'fas fa-folder-open', Alliance::class);
+
+        yield MenuItem::section('Officer Admin');
         yield MenuItem::linkToCrud('Notes', 'fas fa-folder-open', OfficerNote::class);
 
         if ($this->isGranted(Role::ROLE_SCRIBE_ADMIN)) {
+            yield MenuItem::section('Scribe Admin');
             yield MenuItem::linkToCrud('Snapshots', 'fas fa-folder-open', Snapshot::class);
             yield MenuItem::linkToCrud('Gov Snapshots', 'fas fa-folder-open', GovernorSnapshot::class);
-            yield MenuItem::linkToCrud('Snapshot 2 Gov', 'fas fa-folder-open', SnapshotToGovernor::class);
+            yield MenuItem::linkToCrud('Snapshot Mappings', 'fas fa-folder-open', SnapshotToGovernor::class);
         }
     }
 }

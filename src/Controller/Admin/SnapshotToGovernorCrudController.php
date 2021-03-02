@@ -22,8 +22,8 @@ class SnapshotToGovernorCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Snapshot to Governor')
-            ->setEntityLabelInPlural('Governors')
+            ->setEntityLabelInSingular('Snapshot Mapping')
+            ->setEntityLabelInPlural('Snapshot Mappings')
             ->setSearchFields(['governor.name', 'snapshot.name', 'snapshot.uid'])
             ->setEntityPermission(Role::ROLE_SCRIBE_ADMIN);
     }
