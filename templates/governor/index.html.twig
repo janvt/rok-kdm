@@ -1,12 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title %}{{ gov.name }}{% endblock %}
+{% block page_title %}{% endblock %}
 
 {% block body %}
-    {% if gov.alliance %}
-        <h3>{{ gov.alliance.displayName }}</h3>
-    {% endif %}
-    {% include 'governor/stats.html.twig' with {gov: gov} only %}
+    {% include 'search/search_result_gov.html.twig' %}
+
     {% include 'governor/kvk_rankings.html.twig' with {gov: gov} only %}
 
     {% if is_granted(constant('App\\Entity\\Role::ROLE_OFFICER')) %}
