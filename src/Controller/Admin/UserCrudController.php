@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -28,12 +29,17 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+
+
         $hasRoleAdmin = $this->isGranted(Role::ROLE_ADMIN);
 
         $id = IntegerField::new('id');
         $email = TextField::new('email');
         $discordDisplayName = TextField::new('discordDisplayName', 'Discord');
-        $roles = ArrayField::new('roles')->setPermission(Role::ROLE_EDIT_ROLES);
+        $roles = ChoiceField::new('roles')
+            ->setChoices($this->getRoleChoices())
+            ->allowMultipleChoices()
+            ->setPermission(Role::ROLE_EDIT_ROLES);
         $governors = AssociationField::new('governors');
 
         if (Crud::PAGE_INDEX === $pageName) {
@@ -53,5 +59,14 @@ class UserCrudController extends AbstractCrudController
         if ($this->isGranted(Role::ROLE_EDIT_ROLES)) {
             yield $roles;
         }
+    }
+
+    private function getRoleChoices(): array {
+        $roleChoices = [];
+        foreach (Role::ALL as $role) {
+            $roleChoices[$role] = $role;
+        }
+
+        return $roleChoices;
     }
 }
