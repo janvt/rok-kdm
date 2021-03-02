@@ -14,8 +14,6 @@ use Symfony\Component\Serializer\Annotation\Ignore;
  */
 class Governor
 {
-    const STATUS_ACTIVE = 'active';
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

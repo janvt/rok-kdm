@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Alliance;
 use App\Entity\Governor;
+use App\Entity\GovernorStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -66,6 +67,6 @@ class GovernorRepository extends ServiceEntityRepository
      */
     public function getFeatured($limit = 3): array
     {
-        return $this->findBy(['status' => Governor::STATUS_ACTIVE], [], $limit);
+        return $this->findBy(['status' => GovernorStatus::STATUS_ACTIVE], [], $limit);
     }
 }

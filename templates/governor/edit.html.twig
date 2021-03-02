@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Set Alliance for {{ gov.name }}{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            {{ form_label(form.status, null, {'label_attr': {'class': 'input-group-text'}}) }}
+        </div>
+        {{ form_widget(form.status) }}
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            {{ form_label(form.alliance, null, {'label_attr': {'class': 'input-group-text'}}) }}
+        </div>
+        {{ form_widget(form.alliance) }}
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
