@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Exception\APIException;
-use App\Service\Governor\GovernorImportService;
+use App\Exception\GovDataException;
+use App\Service\Import\ImportService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,12 +21,12 @@ class APIController extends AbstractController
     /**
      * @Route("/governor", methods={"POST"}, name="create_or_update_governor")
      * @param Request $request
-     * @param GovernorImportService $governorService
+     * @param ImportService $governorService
      * @return Response
      */
     public function governorCreateAction(
         Request $request,
-        GovernorImportService $governorService
+        ImportService $governorService
     ): Response
     {
         if (!$this->validateHeaderToken($request)) {
@@ -35,7 +36,7 @@ class APIController extends AbstractController
         try {
             $govData = \json_decode($request->getContent());
             $gov = $governorService->createOrUpdateGovernor($govData);
-        } catch (APIException $exception) {
+        } catch (GovDataException $exception) {
             return new Response($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
@@ -45,12 +46,12 @@ class APIController extends AbstractController
     /**
      * @Route("/governor/snapshot", methods={"POST"}, name="create_governor_snapshot")
      * @param Request $request
-     * @param GovernorImportService $governorService
+     * @param ImportService $governorService
      * @return Response
      */
     public function governorAddSnapshotAction(
         Request $request,
-        GovernorImportService $governorService
+        ImportService $governorService
     ): Response
     {
         if (!$this->validateHeaderToken($request)) {
@@ -60,7 +61,7 @@ class APIController extends AbstractController
         try {
             $snapshotData = \json_decode($request->getContent());
             $gov = $governorService->addSnapshot($snapshotData);
-        } catch (APIException $exception) {
+        } catch (GovDataException $exception) {
             return new Response($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 

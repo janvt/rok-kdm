@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}{% endblock %}
+
+{% block body %}
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header">
+            <h3>Configure Import</h3>
+        </div>
+        <div class="card-body container mb-0">
+            {{ form_start(form) }}
+            <div class="row mb-3">
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.idMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.nameMapping} only %}
+            </div>
+            <div class="row mb-3">
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.powerMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.highest_powerMapping} only %}
+            </div>
+            <div class="row mb-3">
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.killsMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.deadsMapping} only %}
+            </div>
+            <div class="row mb-3">
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.t1killsMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.t2killsMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.t3killsMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.t4killsMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.t5killsMapping} only %}
+            </div>
+            <div class="row mb-3">
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.rss_gatheredMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.rss_assistanceMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.helpsMapping} only %}
+            </div>
+            <div class="row mb-3">
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.rankMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.contributionMapping} only %}
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm">
+                    {{ form_widget(form.addNewGovernors) }}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm">
+                    <div class="input-group mb-3 float-left">
+                        <div class="input-group-prepend">
+                            {{ form_label(form.snapshot, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                        </div>
+                        {{ form_widget(form.snapshot) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-0">
+                {{ form_widget(form.update, {'attr': {'class': 'btn btn-primary'}}) }}
+                {{ form_widget(form.complete, {'attr': {'class': 'btn btn-primary ml-2'}}) }}
+                {{ form_widget(form.cancel, {'attr': {'class': 'btn btn-danger float-right'}}) }}
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    {% if preview.issues %}
+        <div class="card mb-3 shadow-sm">
+            <div class="card-header">
+                <h3>Issues</h3>
+            </div>
+            <div class="card-body mb-0">
+                {% for issue in preview.issues %}
+                    <p class="text-danger">{{ issue }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block wide_body %}
+    <div class="card mb-3 shadow-sm mx-5">
+        <div class="card-header">
+            <h3>Preview</h3>
+        </div>
+        <div class="card-body mb-0">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Power</th>
+                    <th scope="col">Highest</th>
+                    <th scope="col">Kills</th>
+                    <th scope="col">T1</th>
+                    <th scope="col">T2</th>
+                    <th scope="col">T3</th>
+                    <th scope="col">T4</th>
+                    <th scope="col">T5</th>
+                    <th scope="col">Deads</th>
+                    <th scope="col">RSS Gathered</th>
+                    <th scope="col">RSS Assistance</th>
+                    <th scope="col">Helps</th>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Contribution</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in preview.rows %}
+                    <tr>
+                        <td>{{ row.id }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.power }}</td>
+                        <td>{{ row.highest_power }}</td>
+                        <td>{{ row.kills }}</td>
+                        <td>{{ row.t1kills }}</td>
+                        <td>{{ row.t2kills }}</td>
+                        <td>{{ row.t3kills }}</td>
+                        <td>{{ row.t4kills }}</td>
+                        <td>{{ row.t5kills }}</td>
+                        <td>{{ row.deads }}</td>
+                        <td>{{ row.rss_gathered }}</td>
+                        <td>{{ row.rss_assistance }}</td>
+                        <td>{{ row.helps }}</td>
+                        <td>{{ row.rank }}</td>
+                        <td>{{ row.contribution }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

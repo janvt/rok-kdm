@@ -30,6 +30,10 @@
             {% block body %}{% endblock %}
         </div>
 
+        <div class="wide">
+            {% block wide_body %}{% endblock %}
+        </div>
+
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}

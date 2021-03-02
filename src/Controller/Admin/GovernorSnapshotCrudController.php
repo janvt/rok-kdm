@@ -32,7 +32,9 @@ class GovernorSnapshotCrudController extends AbstractCrudController
                 'alliance.name',
                 'kingdom'
             ])
-            ->setEntityPermission(Role::ROLE_SCRIBE);
+            ->setEntityPermission(Role::ROLE_SCRIBE)
+            ->setDefaultSort(['created' => 'DESC'])
+            ;
     }
 
     public function configureFields(string $pageName): iterable

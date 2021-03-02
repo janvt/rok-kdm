@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title %}Import Governor Snapshots{% endblock %}
+{% block page_title %}Create Import{% endblock %}
 
 {% block body %}
     <div class="card mb-3 shadow-sm">
         <div class="card-header">
-            <h3>Import Actions</h3>
+            <h3>Input CSV</h3>
         </div>
         <div class="card-body mb-0">
+            {{ form(form) }}
         </div>
     </div>
 {% endblock %}
