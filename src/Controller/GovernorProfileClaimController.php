@@ -48,7 +48,8 @@ class GovernorProfileClaimController extends AbstractController
     public function index(): Response
     {
         return $this->render('officer/governor_profile_claims.html.twig', [
-            'claims' => $this->govManagementService->getOpenProfileClaims()
+            'openClaims' => $this->govManagementService->getOpenProfileClaims(),
+            'recentClaims' => $this->govManagementService->getRecentProfileClaims()
         ]);
     }
 

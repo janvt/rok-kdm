@@ -107,6 +107,23 @@ class GovernorManagementService
     }
 
     /**
+     * @param int $limit
+     * @return GovernorProfileClaim[]
+     */
+    public function getRecentProfileClaims(int $limit = 20): array
+    {
+        return $this->govProfileClaimRepo->findBy(
+            [
+                'status' => GovernorProfileClaim::STATUS_VERIFIED,
+            ],
+            [
+                'created' => 'DESC'
+            ],
+            $limit
+        );
+    }
+
+    /**
      * @param Image $image
      * @param User|UserInterface $user
      * @return GovernorProfileClaim

@@ -29,8 +29,6 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-
-
         $hasRoleAdmin = $this->isGranted(Role::ROLE_ADMIN);
 
         $id = IntegerField::new('id');

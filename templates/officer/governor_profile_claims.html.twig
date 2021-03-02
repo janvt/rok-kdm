@@ -1,9 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title %}Open Profile Claims{% endblock %}
+{% block page_title %}Profile Claims{% endblock %}
 
 {% block body %}
-    {% for claim in claims %}
-        <a href="{{ path('governor_claim', {id: claim.id}) }}">{{ claim.user.discordUsername }} at {{ claim.created|date }}</a>
-    {% endfor %}
+    <div class="row">
+        <div class="col-sm">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Open</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for claim in openClaims %}
+                    <tr>
+                        <td>
+                            {{ claim.user.discordUsername }} at {{ claim.created|date }}
+                            <a
+                                href="{{ path('governor_claim', {id: claim.id}) }}"
+                                class="btn btn-outline-secondary btn-sm px-1 py-0"
+                            >View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Recent</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for claim in recentClaims %}
+                    <tr>
+                        <td>
+                            {{ claim.user.discordUsername }} at {{ claim.created|date }}
+                            <a
+                                    href="{{ path('governor_claim', {id: claim.id}) }}"
+                                    class="btn btn-outline-secondary btn-sm px-1 py-0"
+                            >Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
