@@ -8,21 +8,13 @@
         </tr>
         </thead>
         <tbody>
+        {% for kvkRanking in gov.kvkRankings %}
         <tr>
-            <th scope="row">4</th>
-            <td>{{ gov.kvk4Ranking|default('-') }}</td>
-            <td>{% if gov.kvk4Contribution > 0 %}{{ gov.kvk4Contribution|number_format }}{% else %}-{% endif %}</td>
+            <th scope="row">{{ kvkRanking.kvkNumber }}</th>
+            <td>{{ kvkRanking.ranking|default('-') }}</td>
+            <td>{% if kvkRanking.contribution > 0 %}{{ kvkRanking.contribution|number_format }}{% else %}-{% endif %}</td>
         </tr>
-        <tr>
-            <th scope="row">5</th>
-            <td>{{ gov.kvk5Ranking|default('-') }}</td>
-            <td>{% if gov.kvk5Contribution > 0 %}{{ gov.kvk5Contribution|number_format }}{% else %}-{% endif %}</td>
-        </tr>
-        <tr>
-            <th scope="row">6</th>
-            <td>{{ gov.kvk6Ranking|default('-') }}</td>
-            <td>{% if gov.kvk6Contribution > 0 %}{{ gov.kvk6Contribution|number_format }}{% else %}-{% endif %}</td>
-        </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>

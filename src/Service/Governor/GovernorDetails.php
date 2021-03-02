@@ -31,12 +31,7 @@ class GovernorDetails
     public $status;
     public $displayStatus;
 
-    public $kvk4Ranking;
-    public $kvk4Contribution;
-    public $kvk5Ranking;
-    public $kvk5Contribution;
-    public $kvk6Ranking;
-    public $kvk6Contribution;
+    public $kvkRankings = [];
 
     public $officerNotes;
 
@@ -70,10 +65,13 @@ class GovernorDetails
         $this->officerNotes = $notes;
     }
 
-    public function setKvk4Data(int $ranking, int $contribution)
+    public function setKvkRankingData(int $kvkNumber, int $ranking, int $contribution)
     {
-        $this->kvk4Ranking = $ranking;
-        $this->kvk4Contribution = $contribution;
+        $this->kvkRankings[$kvkNumber] = [
+            'kvkNumber' => $kvkNumber,
+            'ranking' => $ranking,
+            'contribution' => $contribution,
+        ];
     }
 
     public function setKvk5Data(int $ranking, int $contribution)
