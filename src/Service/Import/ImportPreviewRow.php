@@ -10,6 +10,8 @@ class ImportPreviewRow
 {
     public $id;
     public $name;
+    public $status;
+    public $alliance;
     public $power;
     public $highest_power;
     public $kills;
@@ -24,8 +26,6 @@ class ImportPreviewRow
     public $helps;
     public $rank;
     public $contribution;
-
-    public $alliance;
 
     /**
      * ImportPreviewRow constructor.

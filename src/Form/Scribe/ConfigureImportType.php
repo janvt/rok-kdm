@@ -19,6 +19,8 @@ class ConfigureImportType extends AbstractType
         $builder
             ->add('idMapping', TextType::class, ['label' => 'id', 'required' => true])
             ->add('nameMapping', TextType::class, ['label' => 'name', 'required' => false])
+            ->add('statusMapping', TextType::class, ['label' => 'status', 'required' => false])
+            ->add('allianceMapping', TextType::class, ['label' => 'alliance', 'required' => false])
             ->add('powerMapping', TextType::class, ['label' => 'power', 'required' => false])
             ->add('highest_powerMapping', TextType::class, ['label' => 'highest', 'required' => false])
             ->add('killsMapping', TextType::class, ['label' => 'kills', 'required' => false])

@@ -13,6 +13,9 @@ class ImportPreview
 
     public $idMapping;
     public $nameMapping;
+    public $allianceMapping;
+    public $statusMapping;
+
     public $powerMapping;
     public $highest_powerMapping;
     public $killsMapping;

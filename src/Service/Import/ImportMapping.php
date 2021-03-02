@@ -12,6 +12,8 @@ class ImportMapping
     const FIELDS = [
         self::FIELD_ID,
         'name',
+        'status',
+        'alliance',
         'power',
         'highest_power',
         'deads',

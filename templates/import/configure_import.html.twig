@@ -9,26 +9,26 @@
         </div>
         <div class="card-body container mb-0">
             {{ form_start(form) }}
-            <div class="row mb-3">
+            <div class="row mb-0">
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.idMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.nameMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.statusMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.allianceMapping} only %}
             </div>
-            <div class="row mb-3">
+            <div class="row mb-0">
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.powerMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.highest_powerMapping} only %}
-            </div>
-            <div class="row mb-3">
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.killsMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.deadsMapping} only %}
             </div>
-            <div class="row mb-3">
+            <div class="row mb-0">
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.t1killsMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.t2killsMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.t3killsMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.t4killsMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.t5killsMapping} only %}
             </div>
-            <div class="row mb-3">
+            <div class="row mb-0">
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.rss_gatheredMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.rss_assistanceMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.helpsMapping} only %}
@@ -90,6 +90,8 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Alliance</th>
                     <th scope="col">Power</th>
                     <th scope="col">Highest</th>
                     <th scope="col">Kills</th>
@@ -111,6 +113,8 @@
                     <tr>
                         <td>{{ row.id }}</td>
                         <td>{{ row.name }}</td>
+                        <td>{{ row.status }}</td>
+                        <td>{{ row.alliance }}</td>
                         <td>{{ row.power }}</td>
                         <td>{{ row.highest_power }}</td>
                         <td>{{ row.kills }}</td>
