@@ -1,4 +1,4 @@
-{% include 'search/searchForm.html.twig' %}
+{% include 'search/search_form.html.twig' %}
 
 {% if searchResult is not empty %}
     {% for gov in searchResult.governors %}
@@ -9,11 +9,11 @@
                 </div>
             {% endset %}
         {% endif %}
-        {% include 'search/searchResultGov.html.twig' %}
+        {% include 'search/search_result_gov.html.twig' %}
     {% endfor %}
 {% elseif featuredGovs|default %}
     <h2 class="m-3 mt-5">Featured Governors</h2>
     {% for gov in featuredGovs %}
-        {% include 'search/searchResultGov.html.twig' %}
+        {% include 'search/search_result_gov.html.twig' %}
     {% endfor %}
 {% endif %}

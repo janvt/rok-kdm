@@ -13,7 +13,7 @@
 
     <img class="img-fluid" src="{{ asset(profileClaimImage) }}" alt="governor profile claim" />
 
-    {{ include('search/searchForm.html.twig') }}
+    {{ include('search/search_form.html.twig') }}
 
     {% if searchResult is not empty %}
         {% for gov in searchResult.governors %}
@@ -26,7 +26,7 @@
                     </a>
                 {% endif %}
             {% endset %}
-            {% include 'search/searchResultGov.html.twig' with {actions: actions} %}
+            {% include 'search/search_result_gov.html.twig' with {actions: actions} %}
         {% endfor %}
     {% endif %}
 {% endblock %}

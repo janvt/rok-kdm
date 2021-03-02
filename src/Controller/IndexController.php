@@ -78,7 +78,7 @@ class IndexController extends AbstractController
             $featuredGovs = $this->govDetailsService->getFeaturedGovs();
         }
 
-        return $this->render('indexKingdomMember.html.twig', [
+        return $this->render('index_member.html.twig', [
             'searchTerm' => $searchTerm,
             'searchResult' => $searchResult,
             'featuredGovs' => $featuredGovs
@@ -135,7 +135,7 @@ class IndexController extends AbstractController
             $profileClaimImage = $this->govManagementService->resolveProof($profileClaim);
         }
 
-        return $this->render('indexAnonymous.html.twig', [
+        return $this->render('index_anon.html.twig', [
             'imageUploadForm' => $imageUploadForm ? $imageUploadForm->createView() : null,
             'imageUploadError' => $imageUploadError,
             'profileClaim' => $profileClaim,
