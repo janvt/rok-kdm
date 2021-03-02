@@ -35,6 +35,9 @@ class EditGovernorType extends AbstractType
                 [
                     'class' => Alliance::class,
                     'placeholder' => 'None',
+                    'choice_label' => function (?Alliance $alliance) {
+                        return $alliance ? $alliance->getDisplayName() : '';
+                    },
                     'required' => false
                 ]
             )
