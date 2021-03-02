@@ -28,6 +28,7 @@ class GovernorDetailsService
     const FIELDS = [
         'Power',
         'HighestPower',
+        'Kills',
         'T1Kills',
         'T2Kills',
         'T3Kills',

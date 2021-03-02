@@ -52,7 +52,7 @@ class GovernorDetails
         $this->helps = $mergedSnapshot->getHelps();
         $this->rssAssistance = $mergedSnapshot->getRssAssistance();
 
-        $this->kills = $this->sumKills($mergedSnapshot);
+        $this->kills = $mergedSnapshot->getKills();
         $this->t1kills = $mergedSnapshot->getT1Kills();
         $this->t2kills = $mergedSnapshot->getT2Kills();
         $this->t3kills = $mergedSnapshot->getT3Kills();
@@ -72,26 +72,5 @@ class GovernorDetails
             'ranking' => $ranking,
             'contribution' => $contribution,
         ];
-    }
-
-    public function setKvk5Data(int $ranking, int $contribution)
-    {
-        $this->kvk5Ranking = $ranking;
-        $this->kvk5Contribution = $contribution;
-    }
-
-    public function setKvk6Data(int $ranking, int $contribution)
-    {
-        $this->kvk6Ranking = $ranking;
-        $this->kvk6Contribution = $contribution;
-    }
-
-    private function sumKills(GovernorSnapshot $snapshot): int
-    {
-        return $snapshot->getT1Kills() +
-            $snapshot->getT2Kills() +
-            $snapshot->getT3Kills() +
-            $snapshot->getT4Kills() +
-            $snapshot->getT5Kills();
     }
 }

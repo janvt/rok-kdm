@@ -354,12 +354,12 @@ class GovernorSnapshot
         return $this;
     }
 
-    public function getKills(): ?string
+    public function getKills(): ?int
     {
         return $this->kills;
     }
 
-    public function setKills(?string $kills): self
+    public function setKills(?int $kills): self
     {
         $this->kills = $kills;
 
