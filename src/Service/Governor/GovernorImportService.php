@@ -9,6 +9,7 @@ use App\Entity\GovernorSnapshot;
 use App\Entity\GovernorStatus;
 use App\Exception\APIException;
 use App\Exception\GovDataException;
+use App\Exception\ImportException;
 use App\Repository\GovernorRepository;
 use App\Repository\GovernorSnapshotRepository;
 use App\Repository\SnapshotRepository;
@@ -28,6 +29,21 @@ class GovernorImportService
         $this->govRepo = $govRepo;
         $this->govSnapshotRepo = $govSnapshotRepo;
         $this->snapshotRepo = $snapshotRepo;
+    }
+
+    /**
+     * @param string $csvData
+     * @throws ImportException
+     */
+    public function processCSV(string $csvData)
+    {
+        try {
+            $csv = array_map('str_getcsv', explode("\n", $csvData));
+        } catch (\Exception $e) {
+            throw new ImportException('Could not parse CSV: ' . $e->getMessage());
+        }
+
+        dump($csv);
     }
 
     /**

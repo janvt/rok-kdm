@@ -33,7 +33,9 @@
             <h3>Admin Actions</h3>
         </div>
         <div class="card-body mb-0">
-            <a href="{{ path('scribe_snapshot_create') }}" class="btn btn-warning">Create Snapshot</a>
+            <a  class="btn btn-warning" href="{{ path('scribe_snapshot_create') }}">Create Snapshot</a>
+            <a class="btn btn-outline-primary ml-2" href="{{ path('import_governors') }}">Import Governors</a>
+            <a class="btn btn-outline-primary ml-2" href="{{ path('import_governor_snapshots') }}">Import Governor Snapshots</a>
         </div>
     </div>
 {% endif %}
