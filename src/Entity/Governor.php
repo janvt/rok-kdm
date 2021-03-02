@@ -44,6 +44,7 @@ class Governor
      *     orphanRemoval=true,
      *     fetch="LAZY"
      * )
+     * @Ignore()
      */
     private $snapshots;
 
@@ -54,6 +55,7 @@ class Governor
 
     /**
      * @ORM\OneToMany(targetEntity=OfficerNote::class, mappedBy="governor", orphanRemoval=true)
+     * @Ignore()
      */
     private $officerNotes;
 
@@ -70,15 +72,14 @@ class Governor
 
     /**
      * @param string $id
-     * @param string $status
      * @return Governor
      * @throws GovDataException
      */
-    public static function createFromId(string $id, string $status): Governor
+    public static function createFromId(string $id): Governor
     {
         $gov = new self();
         $gov->setGovernorId($id);
-        $gov->setStatus($status);
+        $gov->setStatus(GovernorStatus::STATUS_UNKNOWN);
 
         return $gov;
     }

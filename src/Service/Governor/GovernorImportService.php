@@ -10,6 +10,7 @@ use App\Entity\GovernorStatus;
 use App\Exception\APIException;
 use App\Exception\GovDataException;
 use App\Exception\ImportException;
+use App\Repository\AllianceRepository;
 use App\Repository\GovernorRepository;
 use App\Repository\GovernorSnapshotRepository;
 use App\Repository\SnapshotRepository;
@@ -17,16 +18,19 @@ use App\Repository\SnapshotRepository;
 class GovernorImportService
 {
     private $govRepo;
+    private $allianceRepo;
     private $govSnapshotRepo;
     private $snapshotRepo;
 
     public function __construct(
         GovernorRepository $govRepo,
+        AllianceRepository $allianceRepo,
         GovernorSnapshotRepository $govSnapshotRepo,
         SnapshotRepository $snapshotRepo
     )
     {
         $this->govRepo = $govRepo;
+        $this->allianceRepo = $allianceRepo;
         $this->govSnapshotRepo = $govSnapshotRepo;
         $this->snapshotRepo = $snapshotRepo;
     }
@@ -51,25 +55,29 @@ class GovernorImportService
      * @return Governor
      * @throws APIException
      */
-    public function createGovernor(object $data): Governor
+    public function createOrUpdateGovernor(object $data): Governor
     {
-        $govId = $this->checkGovId($data);
-
-        $existingGov = $this->govRepo->findBy(['governor_id' => $govId]);
-        if ($existingGov) {
-            throw new APIException('Gov id already exists: ' . $govId);
-        }
-
         try {
-            $status = $this->getField($data, 'status') ?: GovernorStatus::STATUS_UNKNOWN;
+            $govId = $this->checkGovId($data);
 
-            $gov = Governor::createFromId($govId, $status);
+            $gov = $this->govRepo->findOneBy(['governor_id' => $govId]);
+            if (!$gov) {
+                $gov = Governor::createFromId($govId);
+            }
+
+            $status = $this->getField($data, 'status') ?: GovernorStatus::STATUS_UNKNOWN;
+            $gov->setStatus($status);
             $gov->setName($this->getField($data, 'name'));
+
+            $alliance = $this->allianceRepo->findOneBy(['tag' => $data->alliance]);
+            if ($alliance) {
+                $gov->setAlliance($alliance);
+            }
+
+            return $this->govRepo->save($gov);
         } catch (GovDataException $e) {
             throw new APIException($e->getMessage());
         }
-
-        return $this->govRepo->save($gov);
     }
 
     /**

@@ -18,7 +18,7 @@ class APIController extends AbstractController
     const PARAM_TOKEN = 'api_token';
 
     /**
-     * @Route("/governor", methods={"POST"}, name="create_governor")
+     * @Route("/governor", methods={"POST"}, name="create_or_update_governor")
      * @param Request $request
      * @param GovernorImportService $governorService
      * @return Response
@@ -34,7 +34,7 @@ class APIController extends AbstractController
 
         try {
             $govData = \json_decode($request->getContent());
-            $gov = $governorService->createGovernor($govData);
+            $gov = $governorService->createOrUpdateGovernor($govData);
         } catch (APIException $exception) {
             return new Response($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
