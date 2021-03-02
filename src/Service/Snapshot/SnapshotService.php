@@ -22,6 +22,9 @@ class SnapshotService
     private $govSnapshotRepo;
     private $snapshotToGovRepo;
 
+    private $kvkSnapshots = null;
+    const KVK_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
     public function __construct(
         SnapshotRepository $snapshotRepo,
         GovernorRepository $govRepo,
@@ -180,5 +183,22 @@ class SnapshotService
     {
         $snapshot->setCompleted(new \DateTime);
         return $this->snapshotRepo->save($snapshot);
+    }
+
+    /**
+     * @return Snapshot[]
+     */
+    public function getKVKSnapshots(): array
+    {
+        if ($this->kvkSnapshots === null) {
+            $kvkUids = [];
+            foreach (self::KVK_NUMBERS as $kvkNumber) {
+                $kvkUids[] = 'kvk' . $kvkNumber;
+            }
+
+            $this->kvkSnapshots = $this->snapshotRepo->loadByUid($kvkUids);
+        }
+
+        return $this->kvkSnapshots;
     }
 }

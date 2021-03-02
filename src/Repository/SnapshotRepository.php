@@ -26,4 +26,13 @@ class SnapshotRepository extends ServiceEntityRepository
 
         return $snapshot;
     }
+
+    /**
+     * @param array $kvkUids
+     * @return Snapshot[]
+     */
+    public function loadByUid(array $kvkUids): array
+    {
+        return $this->findBy([ 'uid' => $kvkUids ]);
+    }
 }
