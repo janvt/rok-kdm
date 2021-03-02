@@ -8,6 +8,8 @@
                     <span class="pill-label">User</span> {{ gov.user.discordDisplayName }}
                 </div>
             {% endset %}
+        {% else %}
+            {% set actions = '' %}
         {% endif %}
         {% include 'search/search_result_gov.html.twig' %}
     {% endfor %}
