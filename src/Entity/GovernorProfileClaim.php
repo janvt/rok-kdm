@@ -32,7 +32,7 @@ class GovernorProfileClaim
     private $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="governors")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="governorProfileClaims")
      * @Ignore()
      */
     private $user;
