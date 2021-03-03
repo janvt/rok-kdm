@@ -5,8 +5,8 @@
         </h3>
         <span class="gov-id search-pill pill-border ml-3">{{ gov.id }}</span>
         {% if gov.alliance %}
-            <div class="search-pill pill-border">
-                <span class="pill-label">{{ gov.alliance }}</span>
+            <div class="search-pill pill-border" title="{{ gov.alliance.displayName }}">
+                <span class="pill-label">{{ gov.alliance.tag }}</span>
             </div>
         {% endif %}
         {% if actions|default %}
