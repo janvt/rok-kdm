@@ -167,7 +167,6 @@ class SnapshotService
     /**
      * @param Snapshot $snapshot
      * @return Snapshot
-     * @throws NotFoundException
      * @throws SnapshotDataException
      */
     public function createSnapshot(Snapshot $snapshot): Snapshot
