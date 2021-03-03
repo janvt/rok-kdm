@@ -3,6 +3,9 @@ framework:
     secret: '%env(APP_SECRET)%'
     csrf_protection: true
 
+    trusted_hosts:  ['^(.+\.)?roks\.gg', '^localhost$']
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+
     session:
         enabled: true
         handler_id: null
@@ -11,3 +14,4 @@ framework:
 
     php_errors:
         log: true
+
