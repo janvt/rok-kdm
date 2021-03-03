@@ -57,9 +57,19 @@
 
             <div class="form-group mb-0">
                 {{ form_widget(form.update, {'attr': {'class': 'btn btn-primary'}}) }}
-                {{ form_widget(form.complete, {'attr': {'class': 'btn btn-primary ml-2'}}) }}
+                {{ form_widget(form.complete, {'attr': {'class': 'btn btn-primary ml-2', 'onclick':'return confirmNoSnapshot();'}}) }}
                 {{ form_widget(form.cancel, {'attr': {'class': 'btn btn-danger float-right'}}) }}
             </div>
+
+            <script type="text/javascript">
+                function confirmNoSnapshot() {
+                    if (document.getElementById("configure_import_snapshot").value === "") {
+                        return confirm('Are you sure you want to import with no snapshot?');
+                    }
+
+                    return true;
+                }
+            </script>
 
             {{ form_end(form) }}
         </div>
