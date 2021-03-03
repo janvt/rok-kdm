@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Data Exports{% endblock %}
+
+{% block body %}
+    <div class="card mb-5 shadow-sm">
+        <div class="card-header pb-0">
+            <h3>Export Current Governor Data</h3>
+        </div>
+        <div class="card-body pb-0">
+            {{ form(formExportAll) }}
+        </div>
+    </div>
+
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header pb-0">
+            <h3>Export Governor Data from Snapshot</h3>
+        </div>
+        <div class="card-body pb-0">
+            {{ form(formExportSnapshot) }}
+        </div>
+    </div>
+{% endblock %}
