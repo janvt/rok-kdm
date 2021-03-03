@@ -60,13 +60,4 @@ class GovernorRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    /**
-     * @param int $limit
-     * @return Governor[]
-     */
-    public function getFeatured($limit = 3): array
-    {
-        return $this->findBy(['status' => GovernorStatus::STATUS_ACTIVE], [], $limit);
-    }
 }

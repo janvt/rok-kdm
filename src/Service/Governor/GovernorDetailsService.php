@@ -56,14 +56,20 @@ class GovernorDetailsService
     }
 
     /**
+     *
+     * @param User|UserInterface $user
      * @return GovernorDetails[]
      */
-    public function getFeaturedGovs(): array
+    public function getFeaturedGovs(User $user): array
     {
-        $featuredGovs = [];
-        $govs = $this->govRepo->getFeatured();
+        $featuredGovs = [
+            'title' => 'Your Governors',
+            'govs' => []
+        ];
+
+        $govs = $this->govRepo->findBy(['user' => $user]);
         foreach ($govs as $gov) {
-            $featuredGovs[] = $this->createGovernorDetails($gov);
+            $featuredGovs['govs'][] = $this->createGovernorDetails($gov);
         }
 
         return $featuredGovs;

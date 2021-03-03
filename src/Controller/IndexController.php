@@ -75,7 +75,7 @@ class IndexController extends AbstractController
                 return new Response(null, Response::HTTP_BAD_REQUEST);
             }
         } else {
-            $featuredGovs = $this->govDetailsService->getFeaturedGovs();
+            $featuredGovs = $this->govDetailsService->getFeaturedGovs($this->getUser());
         }
 
         return $this->render('index_member.html.twig', [

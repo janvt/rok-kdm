@@ -13,9 +13,9 @@
         {% endif %}
         {% include 'search/search_result_gov.html.twig' %}
     {% endfor %}
-{% elseif featuredGovs|default %}
-    <h2 class="m-3 mt-5">Featured Governors</h2>
-    {% for gov in featuredGovs %}
+{% elseif featuredGovs is defined and featuredGovs.govs|default %}
+    <h2 class="m-3 mt-5">{{ featuredGovs.title }}</h2>
+    {% for gov in featuredGovs.govs %}
         {% include 'search/search_result_gov.html.twig' %}
     {% endfor %}
 {% endif %}
