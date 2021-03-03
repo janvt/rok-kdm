@@ -3,7 +3,7 @@ framework:
     secret: '%env(APP_SECRET)%'
     csrf_protection: true
 
-    trusted_hosts:  ['^(.+\.)?roks\.gg', '^localhost$']
+    trusted_hosts: ['^(.+\.)?roks\.gg', '^localhost$']
     trusted_proxies: '127.0.0.1,REMOTE_ADDR'
     trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
 

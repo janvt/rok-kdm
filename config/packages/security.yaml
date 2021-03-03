@@ -27,7 +27,7 @@ security:
                 path: /
 
     access_control:
-         - { path: ^/admin, roles: ROLE_ADMIN, requires_channel: "%env(SECURE_SCHEME)%" }
+         - { path: ^/admin, roles: ROLE_ADMIN }
 
     role_hierarchy:
         ROLE_KINGDOM_MEMBER: [ROLE_USER]
