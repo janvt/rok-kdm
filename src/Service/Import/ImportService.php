@@ -347,7 +347,7 @@ class ImportService
     private function getAlternativesForField(string $field): array
     {
         if ($field === ImportMapping::FIELD_ID) {
-            return ['govid', 'rokid'];
+            return ['govid', 'rokid', 'playerid'];
         }
 
         return [];
