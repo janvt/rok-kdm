@@ -13,6 +13,7 @@ use App\Entity\Role;
 use App\Entity\Snapshot;
 use App\Entity\SnapshotToGovernor;
 use App\Entity\User;
+use App\Service\FeatureFlag\FeatureFlagService;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -23,6 +24,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
+    private $featureFlagService;
+
+    public function __construct(FeatureFlagService $featureFlagService)
+    {
+        $this->featureFlagService = $featureFlagService;
+    }
+
     /**
      * @Route("/admin")
      */
@@ -59,9 +67,18 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Governors', 'fas fa-folder-open', Governor::class);
         yield MenuItem::linkToCrud('Alliances', 'fas fa-folder-open', Alliance::class);
 
-        yield MenuItem::section('Toys');
-        yield MenuItem::linkToCrud('Commanders', 'fas fa-folder-open', Commander::class);
-        yield MenuItem::linkToCrud('Equipment', 'fas fa-folder-open', Equipment::class);
+        $ffCommanders = $this->featureFlagService->isActive(FeatureFlag::COMMANDERS);
+        $ffEquipment = $this->featureFlagService->isActive(FeatureFlag::EQUIPMENT);
+        if ($ffCommanders || $ffEquipment) {
+            yield MenuItem::section('Toys');
+            if ($ffCommanders) {
+                yield MenuItem::linkToCrud('Commanders', 'fas fa-folder-open', Commander::class);
+            }
+
+            if ($ffEquipment) {
+                yield MenuItem::linkToCrud('Equipment', 'fas fa-folder-open', Equipment::class);
+            }
+        }
 
         yield MenuItem::section('Officer Admin');
         yield MenuItem::linkToCrud('Notes', 'fas fa-folder-open', OfficerNote::class);
