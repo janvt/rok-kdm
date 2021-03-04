@@ -36,13 +36,16 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle($this->getParameter('site_title') . ' Admin');
+            ->setTitle($this->getParameter('site_title') . ' Admin')
+            ->disableUrlSignatures()
+        ;
     }
 
     public function configureCrud(): Crud
     {
         return Crud::new()
-            ->setPaginatorPageSize(100);
+            ->setPaginatorPageSize(100)
+        ;
     }
 
     public function configureMenuItems(): iterable
