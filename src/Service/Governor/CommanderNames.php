@@ -13,7 +13,6 @@ class CommanderNames
     const UID_CC = 'cc';
     const UID_CH = 'ch';
     const UID_CM = 'cm';
-    const UID_CLEO = 'cleo';
     const UID_CON = 'con';
     const UID_CY = 'cy';
     const UID_ED = 'ed';
@@ -31,6 +30,7 @@ class CommanderNames
     const UID_MULAN = 'mulan';
     const UID_RICH = 'rich';
     const UID_SAL = 'sal';
+    const UID_TAK = 'tak';
     const UID_TOMY = 'tomy';
     const UID_WIL = 'wil';
     const UID_WU = 'wu';
@@ -46,7 +46,6 @@ class CommanderNames
         self::UID_CC => 'CaoCao',
         self::UID_CH => 'Charlemagne',
         self::UID_CM => 'Charles Martel',
-        self::UID_CLEO => 'Cleopatra',
         self::UID_CON => 'Constantine',
         self::UID_CY => 'Cyrus the Great',
         self::UID_ED => 'Edward',
@@ -64,6 +63,7 @@ class CommanderNames
         self::UID_MULAN => 'Mulan',
         self::UID_RICH => 'Richard I',
         self::UID_SAL => 'Saladin',
+        self::UID_TAK => 'Takeda',
         self::UID_TOMY => 'Tomyris',
         self::UID_WIL => 'William I',
         self::UID_WU => 'Wu Zetian',
