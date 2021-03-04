@@ -69,11 +69,17 @@ class Governor
      */
     private $commanders;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="governor", orphanRemoval=true)
+     */
+    private $equipment;
+
     public function __construct()
     {
         $this->snapshots = new ArrayCollection();
         $this->officerNotes = new ArrayCollection();
         $this->commanders = new ArrayCollection();
+        $this->equipment = new ArrayCollection();
     }
 
     /**
@@ -226,6 +232,36 @@ class Governor
             // set the owning side to null (unless already changed)
             if ($commander->getGovernor() === $this) {
                 $commander->setGovernor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Equipment[]
+     */
+    public function getEquipment(): Collection
+    {
+        return $this->equipment;
+    }
+
+    public function addEquipment(Equipment $equipment): self
+    {
+        if (!$this->equipment->contains($equipment)) {
+            $this->equipment[] = $equipment;
+            $equipment->setGovernor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipment(Equipment $equipment): self
+    {
+        if ($this->equipment->removeElement($equipment)) {
+            // set the owning side to null (unless already changed)
+            if ($equipment->getGovernor() === $this) {
+                $equipment->setGovernor(null);
             }
         }
 

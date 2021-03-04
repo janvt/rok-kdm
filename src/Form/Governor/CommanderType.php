@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class EditCommanderType extends AbstractType
+class CommanderType extends AbstractType
 {
     const SKILL_ERROR = '4x [0-5]';
 

@@ -9,16 +9,16 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditCommandersType extends AbstractType
+class EditEquipmentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(
-                'commanders',
+                'equipment',
                 CollectionType::class,
                 [
-                    'entry_type' => CommanderType::class,
+                    'entry_type' => EquipmentType::class,
                     'entry_options' => ['label' => false],
                     'label' => false
                 ]

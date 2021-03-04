@@ -5,7 +5,7 @@
     <div class="card-body pb-1 gov-stats clearfix">
     {% for commander in commanders %}
         {% if commander.skills and commander.skills != '0000' %}
-        <div class="search-pill pill-border mb-3">
+        <div class="search-pill pill-border mb-3{% if commander.skills == '5555' %} border-specialized{% endif %}">
             <span
                     class="pill-label"
                     {% if commander.level %}title="Level {{ commander.level }}"{% endif %}
