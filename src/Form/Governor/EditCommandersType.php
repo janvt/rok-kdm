@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Form\Governor;
+
+use App\Entity\Governor;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class EditCommandersType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add(
+                'commanders',
+                CollectionType::class,
+                [
+                    'entry_type' => EditCommanderType::class,
+                    'entry_options' => ['label' => false],
+                    'label' => false
+                ]
+            )
+            ->add('save', SubmitType::class)
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Governor::class,
+        ]);
+    }
+}

@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-sm-2">
+        {{ constant('App\\Service\\Governor\\CommanderNames::ALL')[commander.vars.data.uid] }}
+    </div>
+
+    <div class="col-sm-2">
+        <div class="input-group input-group-sm mb-3 float-left">
+            <div class="input-group-prepend">
+                {{ form_label(commander.skills, null, {'label_attr': {'class': 'input-group-text'}}) }}
+            </div>
+            {{ form_widget(commander.skills) }}
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="input-group input-group-sm mb-3 float-left">
+            <div class="input-group-prepend">
+                {{ form_label(commander.level, null, {'label_attr': {'class': 'input-group-text'}}) }}
+            </div>
+            {{ form_widget(commander.level) }}
+        </div>
+    </div>
+</div>

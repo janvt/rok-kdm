@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Edit Commanders{% endblock %}
+
+{% block body %}
+    <div class="card officer-actions mb-3  shadow-sm">
+        <div class="card-header">
+            <h5>Commander Skills</h5>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+
+            {% for commander in form.commanders %}
+                {% include 'governor/edit_commander_field.html.twig' with {commander: commander} only %}
+            {% endfor %}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

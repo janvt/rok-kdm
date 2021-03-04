@@ -64,10 +64,16 @@ class Governor
      */
     private $alliance;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Commander::class, mappedBy="governor", orphanRemoval=true)
+     */
+    private $commanders;
+
     public function __construct()
     {
         $this->snapshots = new ArrayCollection();
         $this->officerNotes = new ArrayCollection();
+        $this->commanders = new ArrayCollection();
     }
 
     /**
@@ -192,6 +198,36 @@ class Governor
     public function setAlliance(?Alliance $alliance): self
     {
         $this->alliance = $alliance;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commander[]
+     */
+    public function getCommanders(): Collection
+    {
+        return $this->commanders;
+    }
+
+    public function addCommander(Commander $commander): self
+    {
+        if (!$this->commanders->contains($commander)) {
+            $this->commanders[] = $commander;
+            $commander->setGovernor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommander(Commander $commander): self
+    {
+        if ($this->commanders->removeElement($commander)) {
+            // set the owning side to null (unless already changed)
+            if ($commander->getGovernor() === $this) {
+                $commander->setGovernor(null);
+            }
+        }
 
         return $this;
     }
