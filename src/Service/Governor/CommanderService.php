@@ -36,6 +36,15 @@ class CommanderService
         }
     }
 
+    /**
+     * @param Governor $gov
+     * @return Commander[]
+     */
+    public function getAllForGov(Governor $gov): array
+    {
+        return $this->repo->loadAllForGov($gov);
+    }
+
     public function save(Commander $commander): Commander
     {
         return $this->repo->save($commander);

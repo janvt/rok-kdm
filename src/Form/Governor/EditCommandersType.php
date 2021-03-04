@@ -24,6 +24,13 @@ class EditCommandersType extends AbstractType
                 ]
             )
             ->add('save', SubmitType::class)
+            ->add(
+                'saveAndReturn',
+                SubmitType::class,
+                [
+                    'label' => 'Save and return to profile'
+                ]
+            )
         ;
     }
 

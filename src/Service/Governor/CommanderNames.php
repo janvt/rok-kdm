@@ -43,7 +43,7 @@ class CommanderNames
         self::UID_ARTY => 'Artemisia',
         self::UID_AETH => 'Æthelflaed',
         self::UID_ATT => 'Attila',
-        self::UID_CC => 'CaoCao',
+        self::UID_CC => 'Cao Cao',
         self::UID_CH => 'Charlemagne',
         self::UID_CM => 'Charles Martel',
         self::UID_CON => 'Constantine',

@@ -52,6 +52,7 @@ class GovernorController extends AbstractController
 
         return $this->render('governor/index.html.twig', [
             'gov' => $this->detailsService->createGovernorDetails($gov, $this->getUser()),
+            'commanders' => $this->commanderService->getAllForGov($gov),
         ]);
     }
 
@@ -81,6 +82,10 @@ class GovernorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($form->get('commanders')->getData() as $commander) {
                 $this->commanderService->save($commander);
+            }
+
+            if ($form->get('saveAndReturn')->isClicked()) {
+                return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);
             }
         }
 

@@ -14,6 +14,10 @@
                 {% include 'governor/edit_commander_field.html.twig' with {commander: commander} only %}
             {% endfor %}
 
+            <div class="form-group">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.saveAndReturn, {'attr': {'class': 'btn btn-primary ml-2'}}) }}
+            </div>
             {{ form_end(form) }}
         </div>
     </div>

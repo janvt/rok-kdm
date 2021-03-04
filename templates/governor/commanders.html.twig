@@ -1,0 +1,20 @@
+<div class="card shadow-sm mb-3">
+    <div class="card-header">
+        <h3>Commanders</h3>
+    </div>
+    <div class="card-body pb-1 gov-stats clearfix">
+    {% for commander in commanders %}
+        {% if commander.skills and commander.skills != '0000' %}
+        <div class="search-pill pill-border mb-3">
+            <span
+                    class="pill-label"
+                    {% if commander.level %}title="Level {{ commander.level }}"{% endif %}
+            >
+                {{ constant('App\\Service\\Governor\\CommanderNames::ALL')[commander.uid] }}
+            </span>
+            {{ commander.skills }}
+        </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+</div>

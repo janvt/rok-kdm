@@ -9,6 +9,10 @@
         {% include 'governor/kvk_rankings.html.twig' with {gov: gov} only %}
     {% endif %}
 
+    {% if commanders|default %}
+        {% include 'governor/commanders.html.twig' with {commanders: commanders} only %}
+    {% endif %}
+
     <div class="card officer-actions mb-3  shadow-sm">
         <div class="card-header">
             <h3>Profile Actions</h3>
