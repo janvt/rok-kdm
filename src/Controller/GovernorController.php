@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\FeatureFlag;
 use App\Entity\OfficerNote;
 use App\Exception\NotFoundException;
 use App\Form\Governor\EditCommandersType;
 use App\Form\Governor\EditEquipmentType;
 use App\Form\Governor\EditGovernorType;
 use App\Form\OfficerNote\AddOfficerNoteType;
+use App\Service\FeatureFlag\FeatureFlagService;
 use App\Service\Governor\CommanderService;
 use App\Service\Governor\EquipmentService;
 use App\Service\Governor\GovernorDetailsService;
@@ -28,18 +30,21 @@ class GovernorController extends AbstractController
     private $detailsService;
     private $commanderService;
     private $equipmentService;
+    private $featureFlagService;
 
     public function __construct(
         GovernorManagementService $governorManagementService,
         GovernorDetailsService $detailsService,
         CommanderService $commanderService,
-        EquipmentService $equipmentService
+        EquipmentService $equipmentService,
+        FeatureFlagService $featureFlagService
     )
     {
         $this->govManagementService = $governorManagementService;
         $this->detailsService = $detailsService;
         $this->commanderService = $commanderService;
         $this->equipmentService = $equipmentService;
+        $this->featureFlagService = $featureFlagService;
     }
 
     /**
@@ -55,11 +60,23 @@ class GovernorController extends AbstractController
             return new Response('Not found.', Response::HTTP_NOT_FOUND);
         }
 
+        $commanders = null;
+        if ($this->featureFlagService->isActive(FeatureFlag::COMMANDERS)) {
+            $commanders = $this->commanderService->getAllForGov($gov);
+        }
+
+        $equipment = null;
+        if ($this->featureFlagService->isActive(FeatureFlag::EQUIPMENT)) {
+            $equipment = $this->equipmentService->getAllForGov($gov);
+        }
+
         return $this->render('governor/index.html.twig', [
             'gov' => $this->detailsService->createGovernorDetails($gov, $this->getUser()),
-            'commanders' => $this->commanderService->getAllForGov($gov),
-            'equipment' => $this->equipmentService->getAllForGov($gov),
-            'userOwnsGov' => $gov->getUser() && $gov->getUser()->getId() === $this->getUser()->getId()
+            'commanders' => $commanders,
+            'equipment' => $equipment,
+            'userOwnsGov' => $gov->getUser() && $gov->getUser()->getId() === $this->getUser()->getId(),
+            'ffCommanders' => $this->featureFlagService->isActive(FeatureFlag::COMMANDERS),
+            'ffEquipment' => $this->featureFlagService->isActive(FeatureFlag::EQUIPMENT)
         ]);
     }
 
@@ -71,6 +88,10 @@ class GovernorController extends AbstractController
      */
     public function editCommanders(string $id, Request $request): Response
     {
+        if (!$this->featureFlagService->isActive(FeatureFlag::COMMANDERS)) {
+            return new Response('Forbidden!', Response::HTTP_FORBIDDEN);
+        }
+
         try {
             $gov = $this->govManagementService->findGov($id);
         } catch (NotFoundException $e) {
@@ -110,6 +131,10 @@ class GovernorController extends AbstractController
      */
     public function editEquipment(string $id, Request $request): Response
     {
+        if (!$this->featureFlagService->isActive(FeatureFlag::EQUIPMENT)) {
+            return new Response('Forbidden!', Response::HTTP_FORBIDDEN);
+        }
+
         try {
             $gov = $this->govManagementService->findGov($id);
         } catch (NotFoundException $e) {

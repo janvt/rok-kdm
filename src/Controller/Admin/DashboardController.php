@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Alliance;
 use App\Entity\Commander;
+use App\Entity\FeatureFlag;
 use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
 use App\Entity\OfficerNote;
@@ -66,6 +67,11 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('Snapshots', 'fas fa-folder-open', Snapshot::class);
             yield MenuItem::linkToCrud('Gov Snapshots', 'fas fa-folder-open', GovernorSnapshot::class);
             yield MenuItem::linkToCrud('Snapshot Mappings', 'fas fa-folder-open', SnapshotToGovernor::class);
+        }
+
+        if ($this->isGranted(Role::ROLE_SUPERADMIN)) {
+            yield MenuItem::section('Site Admin');
+            yield MenuItem::linkToCrud('Feature Flags', 'fas fa-folder-open', FeatureFlag::class);
         }
     }
 }
