@@ -23,7 +23,7 @@ class CommanderCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Commander')
             ->setEntityLabelInPlural('Commanders')
-            ->setSearchFields(['uid', 'level', 'skills']);
+            ->setSearchFields(['uid', 'level', 'skills', 'governor.governor_id', 'governor.name']);
     }
 
     public function configureFields(string $pageName): iterable
