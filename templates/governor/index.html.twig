@@ -13,6 +13,7 @@
         {% include 'governor/commanders.html.twig' with {commanders: commanders} only %}
     {% endif %}
 
+    {% if userOwnsGov %}
     <div class="card officer-actions mb-3  shadow-sm">
         <div class="card-header">
             <h3>Profile Actions</h3>
@@ -21,6 +22,7 @@
             <a class="btn btn-primary" href="{{ path('governor_edit_commanders', {'id': gov.id}) }}">Edit Commanders</a>
         </div>
     </div>
+    {% endif %}
 
     {% if is_granted(constant('App\\Entity\\Role::ROLE_OFFICER')) %}
         {% include 'governor/officer_actions.html.twig' with {gov: gov} only %}

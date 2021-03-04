@@ -53,6 +53,7 @@ class GovernorController extends AbstractController
         return $this->render('governor/index.html.twig', [
             'gov' => $this->detailsService->createGovernorDetails($gov, $this->getUser()),
             'commanders' => $this->commanderService->getAllForGov($gov),
+            'userOwnsGov' => $gov->getUser() && $gov->getUser()->getId() === $this->getUser()->getId()
         ]);
     }
 
