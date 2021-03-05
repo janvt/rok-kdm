@@ -8,6 +8,9 @@
             <h3>Admin Actions</h3>
         </div>
         <div class="card-body mb-0">
+            {% if ffCommanders %}
+            <a class="btn btn-primary mr-2" href="{{ path('commander_search') }}">Commander Search</a>
+            {% endif %}
             <a class="btn btn-primary" href="{{ path('governor_claims') }}">View Governor Claims</a>
         </div>
     </div>

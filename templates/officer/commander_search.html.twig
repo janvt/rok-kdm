@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Commander Search{% endblock %}
+
+{% block body %}
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header">
+            <h3>Commanders</h3>
+        </div>
+        <div class="card-body mb-0">
+            {{ form_start(form) }}
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                {{ form_label(form.commander1, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                            </div>
+                            {{ form_widget(form.commander1) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                {{ form_label(form.commander2, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                            </div>
+                            {{ form_widget(form.commander2) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="m-4">Players</h3>
+    {% if searchResult %}
+        {% for result in searchResult %}
+            {% include 'search/search_result_gov.html.twig' with {gov: result.gov} only %}
+        {% endfor %}
+    {% else %}
+        <p>No players found</p>
+    {% endif %}
+{% endblock %}

@@ -60,4 +60,33 @@ class GovernorRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param string $commander1
+     * @param string|null $commander2
+     * @return Governor[]
+     */
+    public function searchCommanders(string $commander1, ?string $commander2): array
+    {
+        $queryBuilder = $this->createQueryBuilder('g')
+            ->join('g.commanders', 'c')
+            ->where('c.uid = :commander1')
+            ->andWhere('c.skills = :skills')
+            ->andWhere('g.status = :status')
+            ->setParameter('commander1', $commander1)
+            ->setParameter('skills', '5555')
+            ->setParameter('status', GovernorStatus::STATUS_ACTIVE)
+        ;
+
+        if ($commander2) {
+            $queryBuilder
+                ->join('g.commanders', 'c2')
+                ->andWhere('c2.uid = :commander2')
+                ->andWhere('c2.skills = :skills')
+                ->setParameter('commander2', $commander2)
+            ;
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }
