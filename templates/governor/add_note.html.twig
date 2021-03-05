@@ -8,7 +8,20 @@
         <h4>Add Officer Note for {{ gov.name }}</h4>
     </div>
     <div class="card-body">
-        {{ form(form) }}
+        {{ form_start(form) }}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                {{ form_label(form.tldr, null, {'label_attr': {'class': 'input-group-text'}}) }}
+            </div>
+            {{ form_widget(form.tldr) }}
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                {{ form_label(form.note, null, {'label_attr': {'class': 'input-group-text'}}) }}
+            </div>
+            {{ form_widget(form.note) }}
+        </div>
+        {{ form_end(form) }}
     </div>
 </div>
 {% endblock %}
