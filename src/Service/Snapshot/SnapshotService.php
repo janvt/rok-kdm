@@ -65,7 +65,7 @@ class SnapshotService
             $criteria['status'] = Snapshot::STATUS_ACTIVE;
         }
 
-        $snapshots = $this->snapshotRepo->findBy($criteria, ['created' => 'DESC'], 10);
+        $snapshots = $this->snapshotRepo->findBy($criteria, ['status' => 'ASC', 'created' => 'DESC'], 10);
         $snapshotInfos = [];
 
         foreach ($snapshots as $snapshot) {
