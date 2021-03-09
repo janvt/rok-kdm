@@ -17,8 +17,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: build & push
-        run: |
-          docker build -t janvt/roks:app -f Dockerfile.prod .
-          docker push janvt/roks:app
-          docker build -t janvt/roks:web --build-arg ASSET_IMAGE=janvt/roks:app -f Dockerfile.prod.nginx .
-          docker push janvt/roks:web
+        run: docker build -t janvt/roks:app -f Dockerfile.prod . && docker push janvt/roks:app && docker build -t janvt/roks:web --build-arg ASSET_IMAGE=janvt/roks:app -f Dockerfile.prod.nginx . && docker push janvt/roks:web
