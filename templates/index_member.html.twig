@@ -4,4 +4,13 @@
 
 {% block body %}
     {{ include('search/member_search.html.twig') }}
+
+    <div class="card mt-5 mb-3 shadow-sm">
+        <div class="card-header">
+            <h3>User Actions</h3>
+        </div>
+        <div class="card-body">
+            <a class="btn btn-primary" href="{{ path('governor_claim_create') }}">Upload Profile Claim</a>
+        </div>
+    </div>
 {% endblock %}

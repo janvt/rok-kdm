@@ -4,15 +4,20 @@
 namespace App\Controller;
 
 
+use App\Entity\Image;
+use App\Exception\ImageUploadException;
 use App\Exception\NotFoundException;
 use App\Exception\SearchException;
+use App\Form\Governor\GovernorClaimType;
 use App\Service\Governor\GovernorDetailsService;
 use App\Service\Governor\GovernorManagementService;
+use App\Service\Image\ImageService;
 use App\Service\Search\SearchService;
 use App\Service\User\UserService;
 use App\Util\NotFoundResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,18 +31,61 @@ class GovernorProfileClaimController extends AbstractController
     private $detailsService;
     private $searchService;
     private $userService;
+    private $imageService;
 
     public function __construct(
         GovernorManagementService $governorManagementService,
         GovernorDetailsService $detailsService,
         SearchService $searchService,
-        UserService $userService
+        UserService $userService,
+        ImageService $imageService
     )
     {
         $this->govManagementService = $governorManagementService;
         $this->detailsService = $detailsService;
         $this->searchService = $searchService;
         $this->userService = $userService;
+        $this->imageService = $imageService;
+    }
+
+    /**
+     * @Route("/create", name="governor_claim_create")
+     * @param Request $request
+     * @return Response
+     */
+    public function createClaim(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $imageUploadError = null;
+        $imageUploadForm = $this->createForm(GovernorClaimType::class);
+        $imageUploadForm->handleRequest($request);
+        $profileClaim = $this->govManagementService->getOpenProfileClaim($this->getUser());
+
+        if (!$profileClaim) {
+            if ($imageUploadForm->isSubmitted() && $imageUploadForm->isValid()) {
+                /** @var File $uploadedImage */
+                if ($uploadedImage = $imageUploadForm['image']->getData()) {
+                    try {
+                        $image = $this->imageService->handleImageUpload(
+                            $uploadedImage,
+                            $user,
+                            Image::TYPE_PROFILE_CLAIM_PROOF
+                        );
+
+                        $profileClaim = $this->govManagementService->addProfileClaim($image, $user);
+                    } catch (ImageUploadException $e) {
+                        $imageUploadError = 'Could not upload image!';
+                    }
+                }
+            }
+        }
+
+        return $this->render('governor/create_profile_claim.html.twig', [
+            'imageUploadForm' => $imageUploadForm->createView(),
+            'imageUploadError' => $imageUploadError,
+            'profileClaim' => $profileClaim
+        ]);
     }
 
     /**
@@ -119,6 +167,23 @@ class GovernorProfileClaimController extends AbstractController
     {
         try {
             $this->govManagementService->linkToUser($id, $govId);
+        } catch (NotFoundException $e) {
+            return new NotFoundResponse($e);
+        }
+
+        return $this->redirectToRoute('governor_claims');
+    }
+
+    /**
+     * @Route("{id}/close", name="close_claim")
+     * @IsGranted("ROLE_OFFICER")
+     * @param $id
+     * @return Response
+     */
+    public function closeClaim($id): Response
+    {
+        try {
+            $this->govManagementService->closeClaim($id);
         } catch (NotFoundException $e) {
             return new NotFoundResponse($e);
         }

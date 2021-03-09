@@ -188,4 +188,21 @@ class GovernorManagementService
     {
         return $this->noteRepo->findBy([], ['created' => 'DESC'], 10);
     }
+
+    /**
+     * @param $claimId
+     * @return GovernorProfileClaim
+     * @throws NotFoundException
+     */
+    public function closeClaim($claimId): GovernorProfileClaim
+    {
+        $claim = $this->govProfileClaimRepo->find($claimId);
+        if (!$claim) {
+            throw new NotFoundException('claim', $claimId);
+        }
+
+        $claim->setStatus(GovernorProfileClaim::STATUS_CLOSED);
+
+        return $this->govProfileClaimRepo->save($claim);
+    }
 }

@@ -16,6 +16,7 @@ class GovernorProfileClaim
 
     const STATUS_OPEN = 'open';
     const STATUS_VERIFIED = 'verified';
+    const STATUS_CLOSED = 'closed';
 
     /**
      * @ORM\Id

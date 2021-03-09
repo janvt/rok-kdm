@@ -11,13 +11,16 @@
             <img class="img-fluid shadow mb-4" src="{{ asset(profileClaimImage) }}" alt="governor profile claim" />
 
             <div class="mt-3">
-            {% if claim.user.isKingdomMember %}
-                <button class="btn btn-success disabled float-right">Kingdom Access Granted</button>
+            {% if claim.user.isKingdomMember or is_granted(constant('App\\Entity\\Role::ROLE_KINGDOM_MEMBER')) %}
+                <button class="btn btn-success disabled float-left">Kingdom Access Granted</button>
             {% else %}
-                <a class="btn btn-warning float-right" href="{{ path('make_kingdom_member', {id: claim.user.id, redirect_to_claim: claim.id}) }}">
+                <a class="btn btn-outline-warning float-left" href="{{ path('make_kingdom_member', {id: claim.user.id, redirect_to_claim: claim.id}) }}">
                     Grant Kingdom Access
                 </a>
             {% endif %}
+            <a class="btn btn-outline-danger float-right" href="{{ path('close_claim', {id: claim.id}) }}">
+                Close Claim
+            </a>
             </div>
         </div>
     </div>
@@ -35,7 +38,7 @@
                         {% if gov.user %}
                             <button class="btn btn-success disabled">Linked to {{ gov.user.discordDisplayName }}</button>
                         {% else %}
-                            <a class="btn btn-warning" href="{{ path('link_gov_to_user', {id: claim.id, govId: gov.id}) }}">
+                            <a class="btn btn-outline-info" href="{{ path('link_gov_to_user', {id: claim.id, govId: gov.id}) }}">
                                 Link {{ claim.user.discordDisplayName }}
                             </a>
                         {% endif %}

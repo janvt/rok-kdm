@@ -94,43 +94,6 @@ class IndexController extends AbstractController
 
         $profileClaim = $this->govManagementService->getOpenProfileClaim($user);
 
-        if (!$profileClaim) {
-            $imageUploadForm = $this->createFormBuilder()
-                ->add(
-                    'image',
-                    FileType::class,
-                    [
-                        'required' => false,
-                        'label' => 'Governor Profile Screenshot',
-                        'mapped' => false,
-                        'constraints' => [
-                            new ImageConstraint(['maxSize' => '10M'])
-                        ],
-                    ]
-                )
-                ->add('submit', SubmitType::class)
-                ->getForm();
-
-            $imageUploadForm->handleRequest($request);
-            if ($imageUploadForm->isSubmitted() && $imageUploadForm->isValid()) {
-                /** @var File $uploadedImage */
-                if ($uploadedImage = $imageUploadForm['image']->getData()) {
-                    try {
-                        $image = $this->imageService->handleImageUpload(
-                            $uploadedImage,
-                            $user,
-                            Image::TYPE_PROFILE_CLAIM_PROOF
-                        );
-
-                        $profileClaim = $this->govManagementService->addProfileClaim($image, $user);
-
-                    } catch (ImageUploadException $e) {
-                        $imageUploadError = 'Could not upload image!';
-                    }
-                }
-            }
-        }
-
         if ($profileClaim) {
             $profileClaimImage = $this->govManagementService->resolveProof($profileClaim);
         }

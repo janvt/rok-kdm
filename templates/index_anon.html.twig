@@ -3,18 +3,18 @@
 {% block page_title %}Thanks for your interest!{% endblock %}
 
 {% block body %}
-    <p>This site is only for kingdom members.</p>
-
-    {% if profileClaim %}
-        <p>You have submitted your profile claim, please wait for an officer to verify you.</p>
-        <img class="img-fluid" src="{{ asset(profileClaimImage) }}" alt="governor profile claim" />
-    {% else %}
-        <p>If you are a member, upload a screenshot of your profile and notify your officer to verify you.</p>
-        {% if imageUploadError %}
-            <p class="text-danger">{{ imageUploadError }}</p>
-        {% endif %}
-        <div>
-            {{ form(imageUploadForm) }}
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header">
+            <h3>This site is only for kingdom members.</h3>
         </div>
-    {% endif %}
+        <div class="card-body">
+            {% if profileClaim %}
+                <p>You have submitted your profile claim, please wait for an officer to verify you.</p>
+                <img class="img-fluid" src="{{ asset(profileClaimImage) }}" alt="governor profile claim" />
+            {% else %}
+                <p class="mb-3">If you are a member of {{ site_title }}, upload a screenshot of your profile and notify an officer to verify you.</p>
+                <p><a href="{{ path('governor_claim_create') }}" class="btn btn-primary">Upload Profile Claim</a></p>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
