@@ -25,3 +25,12 @@ jobs:
           push: true
           tags: janvt/roks:app
           file: Dockerfile.prod
+      - name: build web
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: janvt/roks:web
+          file: Dockerfile.prod.nginx
+          build_args: |
+            ASSET_IMAGE=janvt/roks:app
