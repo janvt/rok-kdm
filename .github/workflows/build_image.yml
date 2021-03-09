@@ -1,0 +1,28 @@
+name: Build Server Image
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build_server:
+    name: Build Server Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'checkout'
+        uses: actions/checkout@v1
+        with:
+          repository: janvt/rok-kdm
+          token: ${{ github.token }}
+      - name: login
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: build & push
+        run:
+          docker build -t janvt/roks:app -f Dockerfile.prod .
+          docker push janvt/roks:app
+          docker build -t janvt/roks:web --build-arg ASSET_IMAGE=janvt/roks:app -f Dockerfile.prod.nginx .
+          docker push janvt/roks:web
