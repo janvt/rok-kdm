@@ -13,6 +13,9 @@ use Symfony\Component\Serializer\Annotation\Ignore;
  */
 class Snapshot
 {
+    const STATUS_ACTIVE = 'active';
+    const STATUS_COMPLETED = 'completed';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -50,6 +53,11 @@ class Snapshot
      * @ORM\OneToMany(targetEntity=SnapshotToGovernor::class, mappedBy="snapshot", orphanRemoval=true)
      */
     private $governors;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $status;
 
     public function __construct()
     {
@@ -141,6 +149,7 @@ class Snapshot
     public function setCompleted(?\DateTimeInterface $completed): self
     {
         $this->completed = $completed;
+        $this->status = self::STATUS_COMPLETED;
 
         return $this;
     }
@@ -171,6 +180,23 @@ class Snapshot
                 $governor->setSnapshot(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

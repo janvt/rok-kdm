@@ -32,6 +32,10 @@
   border-color: $status-inactive;
 }
 
+.status-completed .status-bar {
+  border-color: $status-inactive;
+}
+
 .status-blacklisted .status-bar {
   border-color: $status-blacklisted;
 }

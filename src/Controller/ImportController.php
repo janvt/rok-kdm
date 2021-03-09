@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/import")
- * @IsGranted("ROLE_SCRIBE_ADMIN")
+ * @IsGranted("ROLE_SCRIBE")
  */
 class ImportController extends AbstractController
 {

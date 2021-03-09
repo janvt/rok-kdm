@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Role;
 use App\Entity\Snapshot;
 use App\Exception\NotFoundException;
 use App\Exception\SnapshotDataException;
@@ -31,13 +32,14 @@ class ScribeController extends AbstractController
 
     /**
      * @Route("/", methods={"GET"}, name="scribe_index")
-     * @param SnapshotService $snapshotService
      * @return Response
      */
     public function scribeIndex(): Response
     {
         return $this->render('scribe/index.html.twig', [
-            'snapshots' => $this->snapshotService->getSnapshotsInfo()
+            'snapshots' => $this->snapshotService->getSnapshotsInfo(
+                $this->isGranted(Role::ROLE_SCRIBE_ADMIN)
+            )
         ]);
     }
 
@@ -106,6 +108,24 @@ class ScribeController extends AbstractController
     }
 
     /**
+     * @Route("/snapshot/{snapshotUid}/mark_active", methods={"GET"}, name="scribe_snapshot_mark_active")
+     * @param string $snapshotUid
+     * @return Response
+     * @IsGranted("ROLE_SCRIBE_ADMIN")
+     */
+    public function scribeSnapshotMarkActive(string $snapshotUid): Response
+    {
+        try {
+            $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
+            $this->snapshotService->markActive($snapshot);
+        } catch (NotFoundException $e) {
+            return new NotFoundResponse($e);
+        }
+
+        return $this->redirectToRoute('scribe_snapshot_detail', ['snapshotUid' => $snapshot->getUid()]);
+    }
+
+    /**
      * @Route("/snapshot/{snapshotUid}", methods={"GET"}, name="scribe_snapshot_detail")
      * @param string $snapshotUid
      * @return Response
@@ -114,6 +134,11 @@ class ScribeController extends AbstractController
     {
         try {
             $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
+
+            if (!$snapshot->isActive() && !$this->isGranted(Role::ROLE_SCRIBE_ADMIN)) {
+                return $this->redirectToRoute('scribe_index');
+            }
+
             $snapshotInfo = $this->snapshotService->createSnapshotInfo($snapshot, $request->get('alliance'));
         } catch (NotFoundException $e) {
             return new NotFoundResponse($e);
@@ -178,6 +203,11 @@ class ScribeController extends AbstractController
     public function createGovSnapshot(int $govId, string $snapshotUid) {
         try {
             $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
+
+            if (!$snapshot->isActive() && !$this->isGranted(Role::ROLE_SCRIBE_ADMIN)) {
+                return $this->redirectToRoute('scribe_index');
+            }
+
             $govSnapshot = $this->snapshotService->createGovSnapshot($snapshot->getId(), $govId);
         } catch (NotFoundException $e) {
             return new NotFoundResponse($e);

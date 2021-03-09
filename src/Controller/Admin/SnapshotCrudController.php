@@ -2,12 +2,12 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\OfficerNote;
 use App\Entity\Role;
 use App\Entity\Snapshot;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -32,12 +32,18 @@ class SnapshotCrudController extends AbstractCrudController
         $governors = AssociationField::new('governors');
         $uid = TextField::new('uid');
         $name = TextField::new('name');
+        $status = ChoiceField::new('status')
+            ->setChoices([
+                'Active' => Snapshot::STATUS_ACTIVE,
+                'Completed' => Snapshot::STATUS_COMPLETED
+            ]);
         $created = DateTimeField::new('created');
         $completed = DateTimeField::new('completed');
 
         if (Crud::PAGE_INDEX === $pageName) {
             yield $name;
             yield $uid;
+            yield $status;
             yield $created;
             yield $governorSnapshots;
             yield $governors;
@@ -46,11 +52,9 @@ class SnapshotCrudController extends AbstractCrudController
 
         yield $name;
 
-        if ($this->isGranted(Role::ROLE_SUPERADMIN)) {
-            yield $uid;
-        }
-
         if ($this->isGranted(Role::ROLE_SCRIBE_ADMIN)) {
+            yield $uid;
+            yield $status;
             yield $completed;
             yield $governorSnapshots;
             yield $governors;

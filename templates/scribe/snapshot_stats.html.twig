@@ -1,0 +1,21 @@
+<div class="search-pill pill-border">
+    <span class="pill-label">Status</span> {{ snapshotInfo.status }}
+</div>
+{% if snapshotInfo.completed %}
+    <div class="search-pill pill-border">
+        <span class="pill-label">Completed</span> {{ snapshotInfo.dateCompleted|date }}
+    </div>
+{% endif %}
+
+<div class="search-pill pill-border">
+    <span class="pill-label">Total</span> {{ snapshotInfo.total }}
+</div>
+<div class="search-pill pill-border">
+    <span class="pill-label">Completed</span> {{ snapshotInfo.numCompleted }}
+</div>
+<div class="search-pill pill-border">
+    <span class="pill-label">Incomplete</span> {{ snapshotInfo.numIncomplete }}
+</div>
+<div class="search-pill pill-border">
+    <span class="pill-label">Missing</span> {{ snapshotInfo.numMissing }}
+</div>

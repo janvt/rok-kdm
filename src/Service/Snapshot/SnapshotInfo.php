@@ -79,6 +79,11 @@ class SnapshotInfo
         return $this->snapshot->getName();
     }
 
+    public function getStatus(): string
+    {
+        return $this->snapshot->getStatus();
+    }
+
     public function getTotal(): int
     {
         return count($this->snapshotToGovs);
@@ -102,6 +107,11 @@ class SnapshotInfo
     public function getCompleted(): ?\DateTimeInterface
     {
         return $this->snapshot->getCompleted();
+    }
+
+    public function isActive(): bool
+    {
+        return $this->snapshot->isActive();
     }
 
     public function getUid(): string

@@ -55,11 +55,17 @@ class SnapshotService
     }
 
     /**
+     * @param bool $includeAll
      * @return SnapshotInfo[]
      */
-    public function getSnapshotsInfo(): array
+    public function getSnapshotsInfo(bool $includeAll = false): array
     {
-        $snapshots = $this->snapshotRepo->findBy([], ['created' => 'DESC'], 10);
+        $criteria = [];
+        if (!$includeAll) {
+            $criteria['status'] = Snapshot::STATUS_ACTIVE;
+        }
+
+        $snapshots = $this->snapshotRepo->findBy($criteria, ['created' => 'DESC'], 10);
         $snapshotInfos = [];
 
         foreach ($snapshots as $snapshot) {
@@ -175,6 +181,12 @@ class SnapshotService
             throw new SnapshotDataException('Uid already exists!');
         }
 
+        return $this->snapshotRepo->save($snapshot);
+    }
+
+    public function markActive(Snapshot $snapshot): Snapshot
+    {
+        $snapshot->setStatus(Snapshot::STATUS_ACTIVE);
         return $this->snapshotRepo->save($snapshot);
     }
 

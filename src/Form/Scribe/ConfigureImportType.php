@@ -2,8 +2,10 @@
 
 namespace App\Form\Scribe;
 
+use App\Entity\Role;
 use App\Entity\Snapshot;
 use App\Service\Import\ImportPreview;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -11,11 +13,26 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ConfigureImportType extends AbstractType
 {
+    private $authChecker;
+
+    public function __construct(AuthorizationCheckerInterface $authChecker)
+    {
+        $this->authChecker = $authChecker;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $isScribeAdmin = $this->authChecker->isGranted(Role::ROLE_SCRIBE_ADMIN);
+
+        $allowedStatus = [Snapshot::STATUS_ACTIVE];
+        if ($isScribeAdmin) {
+            $allowedStatus[] = Snapshot::STATUS_COMPLETED;
+        }
+
         $builder
             ->add('idMapping', TextType::class, ['label' => 'id', 'required' => true])
             ->add('nameMapping', TextType::class, ['label' => 'name', 'required' => false])
@@ -41,7 +58,12 @@ class ConfigureImportType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Snapshot::class,
-                    'placeholder' => 'DANGER: This import is not attached to any snapshot.',
+                    'query_builder' => function (EntityRepository $er) use ($allowedStatus) {
+                        return $er->createQueryBuilder('s')
+                            ->where('s.status IN(:status)')
+                            ->setParameter('status', $allowedStatus);
+                    },
+                    'placeholder' => $isScribeAdmin ? 'DANGER: This import is not attached to any snapshot.' : false,
                     'choice_label' => function (?Snapshot $snapshot) {
                         return $snapshot ? $snapshot->getName() . '(' . $snapshot->getUid() . ')' : '';
                     },

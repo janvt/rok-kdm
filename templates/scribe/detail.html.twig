@@ -7,13 +7,7 @@
             Snapshot: {{ snapshotInfo.name }}
         </h3>
 
-        {% if snapshotInfo.dateCompleted %}
-            Completed: {{ snapshotInfo.dateCompleted|date }}
-        {% endif %}
-        Total: {{ snapshotInfo.total }}
-        Completed: {{ snapshotInfo.numCompleted }}
-        Incomplete: {{ snapshotInfo.numIncomplete }}
-        Missing: {{ snapshotInfo.numMissing }}
+        {% include 'scribe/snapshot_stats.html.twig' with {snapshotInfo: snapshotInfo} only %}
     </div>
     <div class="card-body container">
         <div class="row p-2 mb-3">
@@ -109,12 +103,19 @@
                 class="btn btn-warning"
                 title="WARNING! Will add all governors from main alliances!"
             >Populate from Main Alliances</a>
-            {% if not snapshotInfo.dateCompleted %}
+            {% if snapshotInfo.active %}
                 <a
-                    href="{{ path('scribe_snapshot_mark_completed', {snapshotUid: snapshotInfo.uid}) }}"
-                    class="btn btn-warning ml-3"
-                    title="Marks snapshot as completed!"
+                        href="{{ path('scribe_snapshot_mark_completed', {snapshotUid: snapshotInfo.uid}) }}"
+                        class="btn btn-warning ml-3"
+                        title="Marks snapshot as completed!"
                 >Mark as completed</a>
+            {% else %}
+                <a
+                        href="{{ path('scribe_snapshot_mark_active', {snapshotUid: snapshotInfo.uid}) }}"
+                        class="btn btn-success ml-3"
+                        title="Marks snapshot as active! Allows data input."
+                >Set active</a>
+
             {% endif %}
         </div>
     </div>
