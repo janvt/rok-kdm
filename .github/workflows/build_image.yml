@@ -1,4 +1,4 @@
-name: Build Server Image
+name: build images
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - master
 
 jobs:
-  build_server:
-    name: Build Server Image
+  build_images:
+    name: build images
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
