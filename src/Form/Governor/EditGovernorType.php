@@ -16,17 +16,14 @@ class EditGovernorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $statusChoices = [];
-        foreach (GovernorStatus::GOV_STATUSES as $status) {
-            $statusChoices[$status] = $status;
-        }
+
 
         $builder
             ->add(
                 'status',
                 ChoiceType::class,
                 [
-                    'choices' => $statusChoices
+                    'choices' => GovernorStatus::getFormChoices()
                 ]
             )
             ->add(

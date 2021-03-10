@@ -78,6 +78,10 @@ class ExportService
             $parts[] = $filter->getSnapshot()->getUid();
         }
 
+        if ($filter->getGovStatus()) {
+            $parts[] = $filter->getGovStatus();
+        }
+
         $parts[] = date_format(new \DateTime, 'YmdHis');
 
         return implode('_', $parts);
@@ -86,18 +90,18 @@ class ExportService
     private function slugify($text): string
     {
         // replace non letter or digits by -
-        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+        $text = preg_replace('~[^\pL\d]+~u', '_', $text);
         // remove unwanted characters
         $text = preg_replace('~[^-\w]+~', '', $text);
         // trim
         $text = trim($text, '-');
         // remove duplicate -
-        $text = preg_replace('~-+~', '-', $text);
+        $text = preg_replace('~_+~', '_', $text);
         // lowercase
         $text = strtolower($text);
 
         if (empty($text)) {
-            return 'roksgg';
+            return 'roks_gg';
         }
 
         return $text;

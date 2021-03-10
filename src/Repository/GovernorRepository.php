@@ -105,8 +105,14 @@ class GovernorRepository extends ServiceEntityRepository
 
         if ($filter->getAlliance()) {
             $queryBuilder
-                ->where('g.alliance = :alliance')
+                ->andWhere('g.alliance = :alliance')
                 ->setParameter('alliance', $filter->getAlliance());
+        }
+
+        if ($filter->getGovStatus()) {
+            $queryBuilder
+                ->andWhere('g.status = :status')
+                ->setParameter('status', $filter->getGovStatus());
         }
 
         return $queryBuilder->getQuery()->iterate();

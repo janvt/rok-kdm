@@ -14,11 +14,14 @@ class ExportFilter
     private $alliance;
     /** @var Snapshot|null */
     private $snapshot;
+    /** @var string|null */
+    private $govStatus;
 
     public function __construct(FormInterface $form)
     {
         $this->alliance = $form->get('alliance')->getData();
         $this->snapshot = $form->get('snapshot')->getData();
+        $this->govStatus = $form->get('govStatus')->getData();
     }
 
     /**
@@ -35,5 +38,13 @@ class ExportFilter
     public function getSnapshot(): ?Snapshot
     {
         return $this->snapshot;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getGovStatus(): ?string
+    {
+        return $this->govStatus;
     }
 }

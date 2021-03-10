@@ -26,6 +26,12 @@
                 </div>
                 {{ form_widget(form.snapshot) }}
             </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    {{ form_label(form.govStatus, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                </div>
+                {{ form_widget(form.govStatus) }}
+            </div>
         </div>
     </div>
 

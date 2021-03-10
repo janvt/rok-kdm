@@ -38,6 +38,16 @@ class GovernorStatus {
 
         return self::DISPLAY_STATUS_INACTIVE;
     }
+
+    public static function getFormChoices(): array
+    {
+        $statusChoices = [];
+        foreach (self::GOV_STATUSES as $status) {
+            $statusChoices[$status] = $status;
+        }
+
+        return $statusChoices;
+    }
 }
 
 
