@@ -7,7 +7,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ExportSnapshotType extends ExportAllType
+class ExportSnapshotType extends ExportType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

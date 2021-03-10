@@ -19,6 +19,8 @@ class GovernorDetails
     public $highestPower;
     public $deads;
     public $helps;
+
+    public $rssGathered;
     public $rssAssistance;
 
     public $kills;
@@ -50,6 +52,7 @@ class GovernorDetails
         $this->highestPower = $mergedSnapshot->getHighestPower();
         $this->deads = $mergedSnapshot->getDeads();
         $this->helps = $mergedSnapshot->getHelps();
+        $this->rssGathered = $mergedSnapshot->getRssGathered();
         $this->rssAssistance = $mergedSnapshot->getRssAssistance();
 
         $this->kills = $mergedSnapshot->getKills();

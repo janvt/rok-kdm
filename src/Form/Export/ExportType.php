@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ExportAllType extends AbstractType
+class ExportType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -27,14 +27,31 @@ class ExportAllType extends AbstractType
                     'required' => false
                 ]
             )
-            ->add('export', SubmitType::class, ['label' => 'Export CSV'])
+            ->add(
+                'snapshot',
+                EntityType::class,
+                [
+                    'class' => Snapshot::class,
+                    'placeholder' => 'None',
+                    'choice_label' => function (?Snapshot $snapshot) {
+                        return $snapshot ? $snapshot->getName() . '(' . $snapshot->getUid() . ')' : '';
+                    },
+                    'required' => false
+                ]
+            )
+            ->add(
+                'export',
+                SubmitType::class,
+                [
+                    'label' => 'Download CSV'
+                ]
+            )
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Snapshot::class,
         ]);
     }
 }

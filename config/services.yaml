@@ -10,6 +10,7 @@ services:
         bind:
             $uploadsDir: '%kernel.project_dir%/public/uploads/'
             $uploadsPublicDir: 'uploads/'
+            $siteTitle: '%env(SITE_TITLE)%'
 
     App\:
         resource: '../src/'

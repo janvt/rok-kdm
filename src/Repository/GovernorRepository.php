@@ -5,7 +5,9 @@ namespace App\Repository;
 use App\Entity\Alliance;
 use App\Entity\Governor;
 use App\Entity\GovernorStatus;
+use App\Service\Export\ExportFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -88,5 +90,25 @@ class GovernorRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param ExportFilter $filter
+     * @return IterableResult
+     */
+    public function getGovIterator(ExportFilter $filter): IterableResult
+    {
+        $queryBuilder = $this->createQueryBuilder('g')
+            ->select()
+            ->leftJoin('g.alliance', 'a')
+            ->orderBy('g.name');
+
+        if ($filter->getAlliance()) {
+            $queryBuilder
+                ->where('g.alliance = :alliance')
+                ->setParameter('alliance', $filter->getAlliance());
+        }
+
+        return $queryBuilder->getQuery()->iterate();
     }
 }

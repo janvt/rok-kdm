@@ -7,6 +7,7 @@ namespace App\Service\Governor;
 use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
 use App\Entity\Role;
+use App\Entity\Snapshot;
 use App\Entity\User;
 use App\Repository\GovernorRepository;
 use App\Repository\GovernorSnapshotRepository;
@@ -77,12 +78,24 @@ class GovernorDetailsService
 
     /**
      * @param Governor $governor
+     * @param bool $computeKvkRankingData
      * @param User|UserInterface|null $user
+     * @param Snapshot|null $snapshot
      * @return GovernorDetails
      */
-    public function createGovernorDetails(Governor $governor, ?User $user = null): GovernorDetails
+    public function createGovernorDetails(
+        Governor $governor,
+        bool $computeKvkRankingData = true,
+        ?User $user = null,
+        ?Snapshot $snapshot = null
+    ): GovernorDetails
     {
-        $snapshots = $this->govSnapshotRepo->findBy(['governor' => $governor], ['created' => 'DESC']);
+        $snapshotCriteria = ['governor' => $governor];
+        if ($snapshot) {
+            $snapshotCriteria['snapshot'] = $snapshot;
+        }
+
+        $snapshots = $this->govSnapshotRepo->findBy($snapshotCriteria, ['created' => 'DESC']);
         $mergedSnapshot = new GovernorSnapshot();
         foreach (self::FIELDS as $field) {
             $latestValue = $this->searchFor($field, $snapshots);
@@ -93,8 +106,10 @@ class GovernorDetailsService
 
         $details = new GovernorDetails($governor, $mergedSnapshot);
 
-        foreach (SnapshotService::KVK_NUMBERS as $kvkNumber) {
-            $this->setKvkRanking($kvkNumber, $governor, $details);
+        if ($computeKvkRankingData) {
+            foreach (SnapshotService::KVK_NUMBERS as $kvkNumber) {
+                $this->setKvkRanking($kvkNumber, $governor, $details);
+            }
         }
 
         if ($user && $this->authChecker->isGranted(Role::ROLE_OFFICER, $user)) {

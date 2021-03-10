@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
-use App\Form\Export\ExportAllType;
+use App\Exception\ExportException;
+use App\Form\Export\ExportType;
 use App\Form\Export\ExportSnapshotType;
+use App\Service\Export\ExportFilter;
+use App\Service\Export\ExportService;
 use App\Service\Import\ImportService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -19,9 +23,9 @@ class ExportController extends AbstractController
 {
     private $exportService;
 
-    public function __construct(ImportService $governorImportService)
+    public function __construct(ExportService $exportService)
     {
-        $this->exportService = $governorImportService;
+        $this->exportService = $exportService;
     }
 
     /**
@@ -31,23 +35,47 @@ class ExportController extends AbstractController
      */
     public function exportIndex(Request $request): Response
     {
-        $formExportAll = $this->createForm(ExportAllType::class);
-        $formExportAll->handleRequest($request);
+        $exportError = null;
 
-        if ($formExportAll->isSubmitted() && $formExportAll->isValid()) {
+        $form = $this->createForm(ExportType::class);
+        $form->handleRequest($request);
 
-        }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $exportService = $this->exportService;
+            $filter = new ExportFilter($form);
 
-        $formExportSnapshot = $this->createForm(ExportSnapshotType::class);
-        $formExportSnapshot->handleRequest($request);
+            try {
+                $response = new StreamedResponse(function() use ($exportService, $filter) {
+                    $handle = fopen('php://output', 'w+');
+                    $header = false;
 
-        if ($formExportSnapshot->isSubmitted() && $formExportSnapshot->isValid()) {
+                    foreach ($exportService->streamFullExport($filter) as $row) {
+                        if (!$header) {
+                            fputcsv($handle, array_keys($row), ',');
+                            $header = true;
+                        }
 
+                        fputcsv($handle, $row, ',');
+                    }
+
+                    fclose($handle);
+                });
+
+                $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+                $response->headers->set(
+                    'Content-Disposition',
+                    'attachment; filename="' . $this->exportService->getFileName($filter) . '.csv"'
+                );
+
+                return $response;
+            } catch(ExportException $e) {
+                $exportError = $e->getMessage();
+            }
         }
 
         return $this->render('export/index.html.twig', [
-            'formExportAll' => $formExportAll->createView(),
-            'formExportSnapshot' => $formExportSnapshot->createView(),
+            'form' => $form->createView(),
+            'exportError' => $exportError
         ]);
     }
 }

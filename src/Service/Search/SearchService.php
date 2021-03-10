@@ -46,7 +46,7 @@ class SearchService
 
         $govs = $this->govRepo->search($searchTerm);
         foreach ($govs as $gov) {
-            $searchResult->governors[] = $this->detailsService->createGovernorDetails($gov, $user);
+            $searchResult->governors[] = $this->detailsService->createGovernorDetails($gov, true, $user);
         }
 
         return $searchResult;
@@ -81,7 +81,7 @@ class SearchService
         $searchResult = [];
         foreach ($govs as $gov) {
             $searchResult[] = [
-                'gov' => $this->detailsService->createGovernorDetails($gov)
+                'gov' => $this->detailsService->createGovernorDetails($gov, false)
             ];
         }
 

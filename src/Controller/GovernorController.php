@@ -71,7 +71,7 @@ class GovernorController extends AbstractController
         }
 
         return $this->render('governor/index.html.twig', [
-            'gov' => $this->detailsService->createGovernorDetails($gov, $this->getUser()),
+            'gov' => $this->detailsService->createGovernorDetails($gov, true, $this->getUser()),
             'commanders' => $commanders,
             'equipment' => $equipment,
             'userOwnsGov' => $gov->getUser() && $gov->getUser()->getId() === $this->getUser()->getId(),
@@ -118,7 +118,6 @@ class GovernorController extends AbstractController
         }
 
         return $this->render('governor/edit_commanders.html.twig', [
-            'gov' => $this->detailsService->createGovernorDetails($gov, $this->getUser()),
             'form' => $form->createView()
         ]);
     }
@@ -161,7 +160,6 @@ class GovernorController extends AbstractController
         }
 
         return $this->render('governor/edit_equipment.html.twig', [
-            'gov' => $this->detailsService->createGovernorDetails($gov, $this->getUser()),
             'form' => $form->createView()
         ]);
     }
@@ -192,7 +190,7 @@ class GovernorController extends AbstractController
 
         return $this->render('governor/add_note.html.twig' , [
             'form' => $form->createView(),
-            'gov' => $this->detailsService->createGovernorDetails($gov, $this->getUser()),
+            'gov' => $gov,
         ]);
     }
 
@@ -221,7 +219,7 @@ class GovernorController extends AbstractController
 
         return $this->render('governor/edit.html.twig' , [
             'form' => $form->createView(),
-            'gov' => $this->detailsService->createGovernorDetails($gov, $this->getUser()),
+            'gov' => $this->detailsService->createGovernorDetails($gov, true, $this->getUser()),
         ]);
     }
 }
