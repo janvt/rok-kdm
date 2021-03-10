@@ -9,14 +9,16 @@ use Symfony\Component\Form\FormInterface;
 class ImportMapping
 {
     const FIELD_ID = 'id';
+    const FIELD_NAME = 'name';
+    const FIELD_DEADS = 'deads';
     const FIELDS = [
         self::FIELD_ID,
-        'name',
+        self::FIELD_NAME,
         'status',
         'alliance',
         'power',
         'highest_power',
-        'deads',
+        self::FIELD_DEADS,
         'kills',
         't1kills',
         't2kills',

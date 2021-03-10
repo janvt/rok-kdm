@@ -246,20 +246,20 @@ class ImportService
         $govSnapshot = GovernorSnapshot::fromGov($gov, $created);
         $govSnapshot->setAlliance($this->getField($data, 'alliance'));
         $govSnapshot->setKingdom($this->getField($data, 'kingdom'));
-        $govSnapshot->setPower((int) $this->getField($data, 'power'));
-        $govSnapshot->setHighestPower((int) $this->getField($data, 'highest_power'));
-        $govSnapshot->setKills((int) $this->getField($data, 'kills'));
-        $govSnapshot->setT1Kills((int) $this->getField($data, 't1kills'));
-        $govSnapshot->setT2Kills((int) $this->getField($data, 't2kills'));
-        $govSnapshot->setT3Kills((int) $this->getField($data, 't3kills'));
-        $govSnapshot->setT4Kills((int) $this->getField($data, 't4kills'));
-        $govSnapshot->setT5Kills((int) $this->getField($data, 't5kills'));
-        $govSnapshot->setDeads((int) $this->getField($data, 'deads'));
-        $govSnapshot->setHelps((int) $this->getField($data, 'helps'));
-        $govSnapshot->setRssGathered((int) $this->getField($data, 'rss_gathered'));
-        $govSnapshot->setRssAssistance((int) $this->getField($data, 'rss_assistance'));
-        $govSnapshot->setRank((int) $this->getField($data, 'rank'));
-        $govSnapshot->setContribution((int) $this->getField($data, 'contribution'));
+        $govSnapshot->setPower($this->getFieldAsInt($data, 'power'));
+        $govSnapshot->setHighestPower($this->getFieldAsInt($data, 'highest_power'));
+        $govSnapshot->setKills($this->getFieldAsInt($data, 'kills'));
+        $govSnapshot->setT1Kills($this->getFieldAsInt($data, 't1kills'));
+        $govSnapshot->setT2Kills($this->getFieldAsInt($data, 't2kills'));
+        $govSnapshot->setT3Kills($this->getFieldAsInt($data, 't3kills'));
+        $govSnapshot->setT4Kills($this->getFieldAsInt($data, 't4kills'));
+        $govSnapshot->setT5Kills($this->getFieldAsInt($data, 't5kills'));
+        $govSnapshot->setDeads($this->getFieldAsInt($data, 'deads'));
+        $govSnapshot->setHelps($this->getFieldAsInt($data, 'helps'));
+        $govSnapshot->setRssGathered($this->getFieldAsInt($data, 'rss_gathered'));
+        $govSnapshot->setRssAssistance($this->getFieldAsInt($data, 'rss_assistance'));
+        $govSnapshot->setRank($this->getFieldAsInt($data, 'rank'));
+        $govSnapshot->setContribution($this->getFieldAsInt($data, 'contribution'));
 
         if ($snapshot){
             $govSnapshotForUid = $this->govSnapshotRepo->getGovSnapshotForSnapshot($gov, $snapshot);
@@ -291,6 +291,21 @@ class ImportService
     private function getField(object $data, string $fieldName, $defaultValue = null)
     {
         return isset($data->{$fieldName}) ? $data->{$fieldName} : $defaultValue;
+    }
+
+    private function getFieldAsInt(object $data, string $fieldName, $defaultValue = null)
+    {
+        return $this->sanitizeInt($this->getField($data, $fieldName, $defaultValue));
+    }
+
+    private function sanitizeInt($value): int
+    {
+        return (int) $this->sanitize($value);
+    }
+
+    private function sanitize($value)
+    {
+        return str_replace([',', '.'], '', $value);
     }
 
     private function guessMappings(string $input): string
@@ -347,7 +362,15 @@ class ImportService
     private function getAlternativesForField(string $field): array
     {
         if ($field === ImportMapping::FIELD_ID) {
-            return ['govid', 'rokid', 'playerid'];
+            return ['govid', 'governorid', 'rokid', 'playerid'];
+        }
+
+        if ($field === ImportMapping::FIELD_NAME) {
+            return ['govname', 'governorname', 'playername'];
+        }
+
+        if ($field === ImportMapping::FIELD_DEADS) {
+            return ['dead'];
         }
 
         return [];
