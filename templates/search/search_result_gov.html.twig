@@ -17,25 +17,10 @@
     </div>
     <div class="status-bar" title="{{ gov.displayStatus }}"></div>
     <div class="card-body pb-1">
-        <div class="search-pill pill-border">
-            <span class="pill-label">Power</span> {{ gov.power|number_format }}
-        </div>
-        <div class="search-pill pill-border">
-            <span class="pill-label">Kills</span> {{ gov.kills|number_format }}
-        </div>
-        <div class="search-pill pill-border">
-            <span class="pill-label">Deads</span> {{ gov.deads|number_format }}
-        </div>
-        <div class="search-pill pill-border">
-            <span class="pill-label">Helps</span> {{ gov.helps|number_format }}
-        </div>
-        <div class="search-pill pill-border">
-            <span class="pill-label">RSS Assistance</span> {{ gov.rssAssistance|number_format }}
-        </div>
-        {% for kvkRanking in gov.kvkRankings %}
-            <div class="search-pill pill-border">
-                <span class="pill-label">KVK {{ kvkRanking.kvkNumber }} Rank</span> {{ kvkRanking.ranking }}
-            </div>
-        {% endfor %}
+        {% if expanded|default(false) %}
+            {% include 'search/gov_pills_expanded.html.twig' with({gov: gov}) only %}
+        {% else %}
+            {% include 'search/gov_pills.html.twig' with({gov: gov}) only %}
+        {% endif %}
     </div>
 </div>

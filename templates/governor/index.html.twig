@@ -3,7 +3,7 @@
 {% block page_title %}{% endblock %}
 
 {% block body %}
-    {% include 'search/search_result_gov.html.twig' %}
+    {% include 'search/search_result_gov.html.twig' with({gov: gov, expanded: true}) %}
 
     {% if gov.kvkRankings %}
         {% include 'governor/kvk_rankings.html.twig' with {gov: gov} only %}
