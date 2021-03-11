@@ -14,9 +14,13 @@ class GovernorDetails
 
     public $id;
     public $name;
+    public $altNames;
+
     public $alliance;
+
     public $power;
     public $highestPower;
+
     public $deads;
     public $helps;
 
@@ -43,6 +47,7 @@ class GovernorDetails
 
         $this->id = $gov->getGovernorId();
         $this->name = $gov->getName();
+        $this->altNames = $gov->getAltNames();
         $this->alliance = $gov->getAlliance();
 
         $this->status = $gov->getStatus();

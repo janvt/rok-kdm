@@ -74,6 +74,11 @@ class Governor
      */
     private $equipment;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $altNames;
+
     public function __construct()
     {
         $this->snapshots = new ArrayCollection();
@@ -264,6 +269,18 @@ class Governor
                 $equipment->setGovernor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAltNames(): ?string
+    {
+        return $this->altNames;
+    }
+
+    public function setAltNames(?string $altNames): self
+    {
+        $this->altNames = $altNames;
 
         return $this;
     }

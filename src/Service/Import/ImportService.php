@@ -165,9 +165,10 @@ class ImportService
 
     /**
      * @param string $csvData
+     * @return array
      * @throws ImportException
      */
-    public function processCSV(string $csvData)
+    public function processCSV(string $csvData): array
     {
         try {
             return array_map('str_getcsv', explode("\n", $csvData));

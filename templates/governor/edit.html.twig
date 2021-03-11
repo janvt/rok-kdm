@@ -11,6 +11,21 @@
             {{ form_start(form) }}
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
+                    {{ form_label(form.name, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                </div>
+                {{ form_widget(form.name) }}
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    {{ form_label(form.altNames, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                </div>
+                {{ form_widget(form.altNames) }}
+            </div>
+            <small id="altNamesHelp" class="form-text text-muted ml-2 mb-3">
+                Previous names & easier search alternatives. Comma separated. Are not displayed.
+            </small>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
                     {{ form_label(form.status, null, {'label_attr': {'class': 'input-group-text'}}) }}
                 </div>
                 {{ form_widget(form.status) }}
