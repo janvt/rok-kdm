@@ -5,16 +5,29 @@
 {% block body %}
     <div class="card mb-3 shadow-sm">
         <div class="card-header">
-            <h3>Edit {{ gov.name }}</h3>
+            <h3>{% if gov %}Edit {{ gov.name }}{% else %}Add New Governor{% endif %}</h3>
         </div>
         <div class="card-body mb-0">
             {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            {% if form.children['governorId'] is defined %}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    {{ form_label(form.governorId, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                </div>
+                {{ form_widget(form.governorId) }}
+            </div>
+            {% endif %}
+
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     {{ form_label(form.name, null, {'label_attr': {'class': 'input-group-text'}}) }}
                 </div>
                 {{ form_widget(form.name) }}
             </div>
+
             <div class="input-group">
                 <div class="input-group-prepend">
                     {{ form_label(form.altNames, null, {'label_attr': {'class': 'input-group-text'}}) }}
@@ -24,18 +37,21 @@
             <small id="altNamesHelp" class="form-text text-muted ml-2 mb-3">
                 Previous names & easier search alternatives. Comma separated. Are not displayed.
             </small>
+
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     {{ form_label(form.status, null, {'label_attr': {'class': 'input-group-text'}}) }}
                 </div>
                 {{ form_widget(form.status) }}
             </div>
+
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     {{ form_label(form.alliance, null, {'label_attr': {'class': 'input-group-text'}}) }}
                 </div>
                 {{ form_widget(form.alliance) }}
             </div>
+
             {{ form_end(form) }}
         </div>
     </div>

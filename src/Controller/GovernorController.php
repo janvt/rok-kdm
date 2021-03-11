@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\FeatureFlag;
+use App\Entity\Governor;
 use App\Entity\OfficerNote;
 use App\Exception\NotFoundException;
+use App\Form\Governor\AddGovernorType;
 use App\Form\Governor\EditCommandersType;
 use App\Form\Governor\EditEquipmentType;
 use App\Form\Governor\EditGovernorType;
@@ -17,6 +19,7 @@ use App\Service\Governor\GovernorManagementService;
 use App\Util\NotFoundResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,7 +51,7 @@ class GovernorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="governor", methods={"GET"})
+     * @Route("/{id}", name="governor", methods={"GET"}, requirements={"id"="\d+"})
      * @param string $id
      * @return Response
      */
@@ -81,7 +84,7 @@ class GovernorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/commanders", name="governor_edit_commanders", methods={"GET", "POST"})
+     * @Route("/{id}/commanders", name="governor_edit_commanders", methods={"GET", "POST"}, requirements={"id"="\d+"})
      * @param string $id
      * @param Request $request
      * @return Response
@@ -123,7 +126,7 @@ class GovernorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/equipment", name="governor_edit_equipment", methods={"GET", "POST"})
+     * @Route("/{id}/equipment", name="governor_edit_equipment", methods={"GET", "POST"}, requirements={"id"="\d+"})
      * @param string $id
      * @param Request $request
      * @return Response
@@ -165,7 +168,7 @@ class GovernorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/note", name="governor_add_note", methods={"GET", "POST"})
+     * @Route("/{id}/note", name="governor_add_note", methods={"GET", "POST"}, requirements={"id"="\d+"})
      * @IsGranted("ROLE_OFFICER")
      * @param string $id
      * @param Request $request
@@ -195,7 +198,39 @@ class GovernorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="governor_edit", methods={"GET", "POST"})
+     * @Route("/add", name="governor_add", methods={"GET", "POST"})
+     * @IsGranted("ROLE_OFFICER")
+     * @param Request $request
+     * @return Response
+     */
+    public function add(Request $request): Response
+    {
+        $form = $this->createForm(AddGovernorType::class, new Governor());
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $gov = null;
+            try {
+                $gov = $this->govManagementService->findGov($form->get('governorId')->getData());
+            } catch (NotFoundException $e) {
+                // do nothing
+            }
+
+            if ($gov) {
+                $form->addError(new FormError('Governor with this id already exists!'));
+            } else {
+                $gov = $this->govManagementService->save($form->getData());
+                return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);
+            }
+        }
+
+        return $this->render('governor/edit.html.twig' , [
+            'form' => $form->createView(),
+            'gov' => null,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="governor_edit", methods={"GET", "POST"}, requirements={"id"="\d+"})
      * @IsGranted("ROLE_OFFICER")
      * @param string $id
      * @param Request $request
