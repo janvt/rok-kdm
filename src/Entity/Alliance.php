@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Alliance
 {
     const TYPE_MAIN = 'MAIN';
+    const TYPE_ACADEMY = 'ACADEMY';
     const TYPE_FARM = 'FARM';
     const TYPE_SHELL = 'SHELL';
     const TYPE_UNSANCTIONED = 'UNSANCTIONED';

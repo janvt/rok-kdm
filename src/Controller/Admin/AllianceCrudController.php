@@ -30,6 +30,7 @@ class AllianceCrudController extends AbstractCrudController
         $type = ChoiceField::new('type')
             ->setChoices([
                 'Main Alliance' => Alliance::TYPE_MAIN,
+                'Academy Alliance' => Alliance::TYPE_ACADEMY,
                 'Farm Alliance' => Alliance::TYPE_FARM,
                 'Shell Alliance' => Alliance::TYPE_SHELL,
                 'Unsanctioned Alliance' => Alliance::TYPE_UNSANCTIONED,
