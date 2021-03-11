@@ -374,6 +374,10 @@ class ImportService
             return ['dead'];
         }
 
+        if ($field === ImportMapping::FIELD_RSS_ASSISTANCE) {
+            return ['rssdonation', 'rssdonations'];
+        }
+
         return [];
     }
 }

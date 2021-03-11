@@ -11,6 +11,7 @@ class ImportMapping
     const FIELD_ID = 'id';
     const FIELD_NAME = 'name';
     const FIELD_DEADS = 'deads';
+    const FIELD_RSS_ASSISTANCE = 'rss_assistance';
     const FIELDS = [
         self::FIELD_ID,
         self::FIELD_NAME,
@@ -26,7 +27,7 @@ class ImportMapping
         't4kills',
         't5kills',
         'rss_gathered',
-        'rss_assistance',
+        self::FIELD_RSS_ASSISTANCE,
         'helps',
         'rank',
         'contribution',
