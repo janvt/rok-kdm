@@ -11,6 +11,7 @@ class ImportMapping
     const FIELD_ID = 'id';
     const FIELD_NAME = 'name';
     const FIELD_DEADS = 'deads';
+    const FIELD_KILLS = 'kills';
     const FIELD_RSS_ASSISTANCE = 'rss_assistance';
     const FIELDS = [
         self::FIELD_ID,
@@ -20,7 +21,7 @@ class ImportMapping
         'power',
         'highest_power',
         self::FIELD_DEADS,
-        'kills',
+        self::FIELD_KILLS,
         't1kills',
         't2kills',
         't3kills',

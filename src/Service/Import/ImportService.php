@@ -370,8 +370,12 @@ class ImportService
             return ['govname', 'governorname', 'playername'];
         }
 
+        if ($field === ImportMapping::FIELD_KILLS) {
+            return ['totalkills'];
+        }
+
         if ($field === ImportMapping::FIELD_DEADS) {
-            return ['dead'];
+            return ['dead', 'deaths'];
         }
 
         if ($field === ImportMapping::FIELD_RSS_ASSISTANCE) {
