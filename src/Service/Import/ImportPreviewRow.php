@@ -26,6 +26,7 @@ class ImportPreviewRow
     public $helps;
     public $rank;
     public $contribution;
+    public $snapshot;
 
     /**
      * ImportPreviewRow constructor.
