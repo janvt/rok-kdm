@@ -160,8 +160,14 @@ class Governor
         return $this->status;
     }
 
+    /**
+     * @param string $status
+     * @return $this
+     * @throws GovDataException
+     */
     public function setStatus(string $status): self
     {
+        $status = strtolower($status);
         if (!in_array($status, GovernorStatus::GOV_STATUSES)) {
             throw new GovDataException('Invalid governor status: ' . $status);
         }

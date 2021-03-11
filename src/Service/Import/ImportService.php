@@ -152,6 +152,7 @@ class ImportService
                 if ($import->getSnapshot()) {
                     $data->snapshot = $import->getSnapshot()->getUid();
                 }
+
                 $this->addSnapshot($data);
             } catch (ImportException|GovDataException $e) {
             }
