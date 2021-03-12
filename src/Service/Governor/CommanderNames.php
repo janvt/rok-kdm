@@ -11,6 +11,7 @@ class CommanderNames
     const UID_AETH = 'aeth';
     const UID_ATT = 'att';
     const UID_CC = 'cc';
+    const UID_CHAN = 'chan';
     const UID_CH = 'ch';
     const UID_CM = 'cm';
     const UID_CON = 'con';
@@ -28,11 +29,13 @@ class CommanderNames
     const UID_MINA = 'mina';
     const UID_MOC = 'moc';
     const UID_MULAN = 'mulan';
+    const UID_NEBU = 'nebu';
     const UID_RICH = 'rich';
     const UID_SAL = 'sal';
     const UID_TAK = 'tak';
     const UID_THEO = 'theo';
     const UID_TOMY = 'tomy';
+    const UID_TRA = 'tra';
     const UID_WIL = 'wil';
     const UID_WU = 'wu';
     const UID_YSG = 'ysg';
@@ -45,6 +48,7 @@ class CommanderNames
         self::UID_AETH => 'Æthelflaed',
         self::UID_ATT => 'Attila',
         self::UID_CC => 'Cao Cao',
+        self::UID_CHAN => 'Chandragupta',
         self::UID_CH => 'Charlemagne',
         self::UID_CM => 'Charles Martel',
         self::UID_CON => 'Constantine',
@@ -62,11 +66,13 @@ class CommanderNames
         self::UID_MINA => 'Minamoto',
         self::UID_MOC => 'Moctezuma I',
         self::UID_MULAN => 'Mulan',
+        self::UID_NEBU => 'Nebuchadnezzar II',
         self::UID_RICH => 'Richard I',
         self::UID_SAL => 'Saladin',
         self::UID_TAK => 'Takeda',
         self::UID_THEO => 'Theodora',
         self::UID_TOMY => 'Tomyris',
+        self::UID_TRA => 'Trajan',
         self::UID_WIL => 'William I',
         self::UID_WU => 'Wu Zetian',
         self::UID_YSG => 'Yi Seong-Gye',
