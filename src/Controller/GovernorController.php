@@ -111,9 +111,7 @@ class GovernorController extends AbstractController
         $form = $this->createForm(EditCommandersType::class, $gov);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($form->get('commanders')->getData() as $commander) {
-                $this->commanderService->save($commander);
-            }
+            $this->govManagementService->save($form->getData());
 
             if ($form->get('saveAndReturn')->isClicked()) {
                 return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);
@@ -153,9 +151,7 @@ class GovernorController extends AbstractController
         $form = $this->createForm(EditEquipmentType::class, $gov);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($form->get('equipment')->getData() as $equipment) {
-                $this->equipmentService->save($equipment);
-            }
+            $this->govManagementService->save($form->getData());
 
             if ($form->get('saveAndReturn')->isClicked()) {
                 return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);

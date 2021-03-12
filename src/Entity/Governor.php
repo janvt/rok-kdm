@@ -7,6 +7,7 @@ use App\Repository\GovernorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
@@ -65,12 +66,23 @@ class Governor
     private $alliance;
 
     /**
-     * @ORM\OneToMany(targetEntity=Commander::class, mappedBy="governor", orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity=Commander::class,
+     *     mappedBy="governor",
+     *     orphanRemoval=true,
+     *     cascade={"persist"}
+     * )
+     * @OrderBy({"uid": "ASC"})
      */
     private $commanders;
 
     /**
-     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="governor", orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity=Equipment::class,
+     *     mappedBy="governor",
+     *     orphanRemoval=true,
+     *     cascade={"persist"}
+     * )
      */
     private $equipment;
 

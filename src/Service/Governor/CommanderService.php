@@ -7,20 +7,26 @@ namespace App\Service\Governor;
 use App\Entity\Commander;
 use App\Entity\Governor;
 use App\Repository\CommanderRepository;
+use App\Repository\GovernorRepository;
 
 class CommanderService
 {
     private $repo;
+    private $govRepo;
 
-    public function __construct(CommanderRepository $commanderRepo)
+    public function __construct(
+        CommanderRepository $commanderRepo,
+        GovernorRepository $govRepo
+    )
     {
         $this->repo = $commanderRepo;
+        $this->govRepo = $govRepo;
     }
 
     /**
      * @param Governor $gov
      */
-    public function ensureAllCommanders(Governor $gov)
+    public function ensureAllCommanders(Governor $gov): Governor
     {
         $all = $this->repo->loadAllForGov($gov);
         foreach(CommanderNames::ALL as $uid => $name) {
@@ -34,6 +40,8 @@ class CommanderService
 
             $this->repo->save($commander);
         }
+
+        return $this->govRepo->save($gov);
     }
 
     /**

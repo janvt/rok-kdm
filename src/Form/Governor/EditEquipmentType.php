@@ -20,7 +20,8 @@ class EditEquipmentType extends AbstractType
                 [
                     'entry_type' => EquipmentType::class,
                     'entry_options' => ['label' => false],
-                    'label' => false
+                    'label' => false,
+                    'by_reference' => false,
                 ]
             )
             ->add('save', SubmitType::class)

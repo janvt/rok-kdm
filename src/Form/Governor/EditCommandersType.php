@@ -3,6 +3,7 @@
 namespace App\Form\Governor;
 
 use App\Entity\Governor;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,7 +21,8 @@ class EditCommandersType extends AbstractType
                 [
                     'entry_type' => CommanderType::class,
                     'entry_options' => ['label' => false],
-                    'label' => false
+                    'label' => false,
+                    'by_reference' => false,
                 ]
             )
             ->add('save', SubmitType::class)
