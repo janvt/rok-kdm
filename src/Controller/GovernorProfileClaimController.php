@@ -163,7 +163,7 @@ class GovernorProfileClaimController extends AbstractController
     }
 
     /**
-     * @Route("{id}/link/{govId}", name="link_gov_to_user")
+     * @Route("/{id}/link/{govId}", name="link_gov_to_user")
      * @IsGranted("ROLE_OFFICER")
      * @param $id
      * @param $govId
@@ -172,7 +172,11 @@ class GovernorProfileClaimController extends AbstractController
     public function linkToUser($id, $govId): Response
     {
         try {
-            $this->govManagementService->linkToUser($id, $govId);
+            $claim = $this->govManagementService->findClaim($id);
+
+            $this->userService->makeKingdomMember($claim->getUser());
+
+            $this->govManagementService->linkToUser($claim, $govId);
         } catch (NotFoundException $e) {
             return new NotFoundResponse($e);
         }

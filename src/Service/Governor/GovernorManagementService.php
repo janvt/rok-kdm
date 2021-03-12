@@ -8,7 +8,6 @@ use App\Entity\Governor;
 use App\Entity\GovernorProfileClaim;
 use App\Entity\Image;
 use App\Entity\OfficerNote;
-use App\Entity\Role;
 use App\Entity\User;
 use App\Exception\GovDataException;
 use App\Exception\NotFoundException;
@@ -158,18 +157,13 @@ class GovernorManagementService
     }
 
     /**
-     * @param $claimId
+     * @param GovernorProfileClaim $claim
      * @param $govId
      * @return Governor
      * @throws NotFoundException
      */
-    public function linkToUser($claimId, $govId): Governor
+    public function linkToUser(GovernorProfileClaim $claim, $govId): Governor
     {
-        $claim = $this->govProfileClaimRepo->find($claimId);
-        if (!$claim) {
-            throw new NotFoundException('claim', $claimId);
-        }
-
         $gov = $this->findGov($govId);
         $gov->setUser($claim->getUser());
 
@@ -204,5 +198,20 @@ class GovernorManagementService
         $claim->setStatus(GovernorProfileClaim::STATUS_CLOSED);
 
         return $this->govProfileClaimRepo->save($claim);
+    }
+
+    /**
+     * @param int $claimId
+     * @return GovernorProfileClaim
+     * @throws NotFoundException
+     */
+    public function findClaim(int $claimId): GovernorProfileClaim
+    {
+        $claim = $this->govProfileClaimRepo->find($claimId);
+        if (!$claim) {
+            throw new NotFoundException('claim', $claimId);
+        }
+
+        return $claim;
     }
 }
