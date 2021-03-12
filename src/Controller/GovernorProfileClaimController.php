@@ -61,8 +61,11 @@ class GovernorProfileClaimController extends AbstractController
         $imageUploadForm = $this->createForm(GovernorClaimType::class);
         $imageUploadForm->handleRequest($request);
         $profileClaim = $this->govManagementService->getOpenProfileClaim($this->getUser());
+        $profileClaimImage = null;
 
-        if (!$profileClaim) {
+        if ($profileClaim) {
+            $profileClaimImage = $this->govManagementService->resolveProof($profileClaim);
+        } else {
             if ($imageUploadForm->isSubmitted() && $imageUploadForm->isValid()) {
                 /** @var File $uploadedImage */
                 if ($uploadedImage = $imageUploadForm['image']->getData()) {
@@ -84,7 +87,8 @@ class GovernorProfileClaimController extends AbstractController
         return $this->render('governor/create_profile_claim.html.twig', [
             'imageUploadForm' => $imageUploadForm->createView(),
             'imageUploadError' => $imageUploadError,
-            'profileClaim' => $profileClaim
+            'profileClaim' => $profileClaim,
+            'profileClaimImage' => $profileClaimImage,
         ]);
     }
 
