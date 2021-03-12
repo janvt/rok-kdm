@@ -15,6 +15,7 @@ class GovernorProfileClaim
     const PROOF_TYPE_IMAGE = 'image';
 
     const STATUS_OPEN = 'open';
+    const STATUS_MISSING_GOV = 'missing_gov';
     const STATUS_VERIFIED = 'verified';
     const STATUS_CLOSED = 'closed';
 

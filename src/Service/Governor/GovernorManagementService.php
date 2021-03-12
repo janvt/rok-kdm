@@ -102,24 +102,15 @@ class GovernorManagementService
     }
 
     /**
-     * @return GovernorProfileClaim[]
-     */
-    public function getOpenProfileClaims(): array
-    {
-        return $this->govProfileClaimRepo->findBy([
-            'status' => GovernorProfileClaim::STATUS_OPEN
-        ]);
-    }
-
-    /**
+     * @param string $status
      * @param int $limit
      * @return GovernorProfileClaim[]
      */
-    public function getRecentProfileClaims(int $limit = 20): array
+    public function findProfileClaimsByStatus(string $status, int $limit = 20): array
     {
         return $this->govProfileClaimRepo->findBy(
             [
-                'status' => GovernorProfileClaim::STATUS_VERIFIED,
+                'status' => $status,
             ],
             [
                 'created' => 'DESC'
@@ -184,20 +175,16 @@ class GovernorManagementService
     }
 
     /**
-     * @param $claimId
+     * @param int $claimId
+     * @param string $status
      * @return GovernorProfileClaim
      * @throws NotFoundException
      */
-    public function closeClaim($claimId): GovernorProfileClaim
+    public function setClaimStatus(int $claimId, string $status): GovernorProfileClaim
     {
-        $claim = $this->govProfileClaimRepo->find($claimId);
-        if (!$claim) {
-            throw new NotFoundException('claim', $claimId);
-        }
-
-        $claim->setStatus(GovernorProfileClaim::STATUS_CLOSED);
-
-        return $this->govProfileClaimRepo->save($claim);
+        return $this->govProfileClaimRepo->save(
+            $this->findClaim($claimId)->setStatus($status)
+        );
     }
 
     /**

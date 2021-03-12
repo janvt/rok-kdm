@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\GovernorProfileClaim;
 use App\Entity\Image;
 use App\Exception\ImageUploadException;
 use App\Exception\NotFoundException;
@@ -102,8 +103,15 @@ class GovernorProfileClaimController extends AbstractController
     public function index(): Response
     {
         return $this->render('officer/governor_profile_claims.html.twig', [
-            'openClaims' => $this->govManagementService->getOpenProfileClaims(),
-            'recentClaims' => $this->govManagementService->getRecentProfileClaims()
+            'openClaims' => $this->govManagementService->findProfileClaimsByStatus(
+                GovernorProfileClaim::STATUS_OPEN
+            ),
+            'missingGovClaims' => $this->govManagementService->findProfileClaimsByStatus(
+                GovernorProfileClaim::STATUS_MISSING_GOV
+            ),
+            'recentClaims' => $this->govManagementService->findProfileClaimsByStatus(
+                GovernorProfileClaim::STATUS_VERIFIED
+            )
         ]);
     }
 
@@ -185,7 +193,24 @@ class GovernorProfileClaimController extends AbstractController
     }
 
     /**
-     * @Route("{id}/close", name="close_claim")
+     * @Route("/{id}/mark_gov_missing", name="claim_mark_gov_missing")
+     * @IsGranted("ROLE_OFFICER")
+     * @param $id
+     * @return Response
+     */
+    public function markMissing($id): Response
+    {
+        try {
+            $this->govManagementService->setClaimStatus($id, GovernorProfileClaim::STATUS_MISSING_GOV);
+        } catch (NotFoundException $e) {
+            return new NotFoundResponse($e);
+        }
+
+        return $this->redirectToRoute('governor_claims');
+    }
+
+    /**
+     * @Route("/{id}/close", name="close_claim")
      * @IsGranted("ROLE_OFFICER")
      * @param $id
      * @return Response
@@ -193,7 +218,7 @@ class GovernorProfileClaimController extends AbstractController
     public function closeClaim($id): Response
     {
         try {
-            $this->govManagementService->closeClaim($id);
+            $this->govManagementService->setClaimStatus($id, GovernorProfileClaim::STATUS_CLOSED);
         } catch (NotFoundException $e) {
             return new NotFoundResponse($e);
         }

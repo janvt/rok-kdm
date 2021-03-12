@@ -4,49 +4,8 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-sm">
-            <table class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">Open</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for claim in openClaims %}
-                    <tr>
-                        <td>
-                            {{ claim.user.discordUsername }} at {{ claim.created|date }}
-                            <a
-                                href="{{ path('governor_claim', {id: claim.id}) }}"
-                                class="btn btn-outline-secondary btn-sm px-1 py-0"
-                            >View</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="col-sm">
-            <table class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">Recent</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for claim in recentClaims %}
-                    <tr>
-                        <td>
-                            {{ claim.user.discordUsername }} at {{ claim.created|date }}
-                            <a
-                                    href="{{ path('governor_claim', {id: claim.id}) }}"
-                                    class="btn btn-outline-secondary btn-sm px-1 py-0"
-                            >Edit</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        {% include 'officer/gov_profile_claims_col.html.twig' with({claims: openClaims, title: "Open"}) %}
+        {% include 'officer/gov_profile_claims_col.html.twig' with({claims: missingGovClaims, title: "Missing Governor"}) %}
+        {% include 'officer/gov_profile_claims_col.html.twig' with({claims: recentClaims, title: "Recent"}) %}
     </div>
 {% endblock %}
