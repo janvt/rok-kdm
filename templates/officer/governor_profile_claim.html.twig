@@ -5,32 +5,40 @@
 {% block body %}
     <div class="card mb-3 shadow-sm">
         <div class="card-header">
-            <h4>Profile Claim for Discord User {{ claim.user.discordUsername }}</h4>
+            <h4>Profile Claim for Discord User {{ claim.user.discordDisplayName }}</h4>
         </div>
         <div class="card-body">
             <img class="img-fluid shadow mb-4" src="{{ asset(profileClaimImage) }}" alt="governor profile claim" />
 
             <div class="mt-3">
-                {% if claim.user.isKingdomMember %}
-                    <button class="btn btn-success disabled float-left">Kingdom Access Granted</button>
-                {% else %}
-                    <a class="btn btn-outline-warning float-left" href="{{ path('make_kingdom_member', {id: claim.user.id, redirect_to_claim: claim.id}) }}">
-                        Grant Kingdom Access
-                    </a>
-                {% endif %}
-                <a class="btn btn-outline-danger float-right" href="{{ path('close_claim', {id: claim.id}) }}">
-                    Close Claim
-                </a>
-                <a class="btn btn-outline-warning float-right mr-3" href="{{ path('claim_mark_gov_missing', {id: claim.id}) }}">
-                    Governor Missing
-                </a>
+{#                {% if claim.user.isKingdomMember %}#}
+{#                    <button class="btn btn-success disabled float-left">Kingdom Access Granted</button>#}
+{#                {% else %}#}
+{#                    <a class="btn btn-outline-warning float-left" href="{{ path('make_kingdom_member', {id: claim.user.id, redirect_to_claim: claim.id}) }}">#}
+{#                        Grant Kingdom Access#}
+{#                    </a>#}
+{#                {% endif %}#}
             </div>
         </div>
     </div>
 
     <div class="card mb-3 shadow-sm">
         <div class="card-header">
-            <h4>Link Governor to {{ claim.user.discordUsername }}</h4>
+            <h4>Claim Actions</h4>
+        </div>
+        <div class="card-body">
+            <a class="btn btn-outline-warning mr-2" href="{{ path('claim_mark_gov_missing', {id: claim.id}) }}">
+                Governor Missing
+            </a>
+            <a class="btn btn-outline-danger" href="{{ path('close_claim', {id: claim.id}) }}">
+                Close Claim
+            </a>
+        </div>
+    </div>
+
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header">
+            <h4>Search Governor ID or Name to link to Discord user</h4>
         </div>
         <div class="card-body">
             {{ include('search/search_form.html.twig') }}
