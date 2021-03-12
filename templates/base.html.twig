@@ -10,7 +10,7 @@
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ENXMZVQSGK"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ site_analytics_id }}"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
