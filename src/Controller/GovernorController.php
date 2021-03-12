@@ -26,6 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/g")
+ * @IsGranted("ROLE_KINGDOM_MEMBER")
  */
 class GovernorController extends AbstractController
 {
