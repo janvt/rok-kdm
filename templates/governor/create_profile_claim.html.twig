@@ -9,11 +9,8 @@
         </div>
         <div class="card-body">
             {% if profileClaim %}
-                <p>Your profile claim has been created successfully.</p>
-                <p>Please wait for it to be verified before creating another.</p>
-                {% if profileClaimImage %}
-                    <img class="img-fluid shadow mb-4" src="{{ asset(profileClaimImage) }}" alt="governor profile claim" />
-                {% endif %}
+                <p>Your profile claim has been created. Please wait for it to be verified.</p>
+                <img class="img-fluid shadow mb-4" src="{{ asset(profileClaimImage) }}" alt="governor profile claim" />
                 <p><a href="{{ path('index') }}" class="btn btn-primary">Return</a></p>
             {% else %}
                 {% if imageUploadError %}
