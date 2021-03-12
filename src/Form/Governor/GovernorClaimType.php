@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraints\Image;
 
 class GovernorClaimType extends AbstractType
 {
+    const MAX_SIZE = '10M';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -23,7 +25,9 @@ class GovernorClaimType extends AbstractType
                     'label' => 'Governor Profile Screenshot',
                     'mapped' => false,
                     'constraints' => [
-                        new Image([], '10M')
+                        new Image([
+                            'maxSize' => self::MAX_SIZE
+                        ])
                     ],
                 ]
             )

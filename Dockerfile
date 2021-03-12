@@ -10,4 +10,6 @@ RUN set -xe \
     && apk add --no-cache bash icu-dev postgresql-dev \
     && docker-php-ext-install pdo pdo_pgsql intl pcntl
 
+COPY docker/php/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+
 CMD ["php-fpm"]
