@@ -31,6 +31,7 @@ class CommanderNames
     const UID_RICH = 'rich';
     const UID_SAL = 'sal';
     const UID_TAK = 'tak';
+    const UID_THEO = 'theo';
     const UID_TOMY = 'tomy';
     const UID_WIL = 'wil';
     const UID_WU = 'wu';
@@ -64,6 +65,7 @@ class CommanderNames
         self::UID_RICH => 'Richard I',
         self::UID_SAL => 'Saladin',
         self::UID_TAK => 'Takeda',
+        self::UID_THEO => 'Theodora',
         self::UID_TOMY => 'Tomyris',
         self::UID_WIL => 'William I',
         self::UID_WU => 'Wu Zetian',
