@@ -1,6 +1,8 @@
 parameters:
     site_title: '%env(SITE_TITLE)%'
     env(SITE_TITLE): Kingdom X
+    site_analytics_id: '%env(SITE_ANALYTICS_ID)%'
+    env(SITE_ANALYTICS_ID): horse
     api_token: '%env(API_TOKEN)%'
 
 services:
