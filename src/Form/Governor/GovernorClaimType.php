@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Image as ImageConstraint;
+use Symfony\Component\Validator\Constraints\Image;
 
 class GovernorClaimType extends AbstractType
 {
@@ -23,7 +23,7 @@ class GovernorClaimType extends AbstractType
                     'label' => 'Governor Profile Screenshot',
                     'mapped' => false,
                     'constraints' => [
-                        new ImageConstraint(['maxSize' => '10M'])
+                        new Image([], '10M')
                     ],
                 ]
             )
