@@ -67,7 +67,7 @@ class IndexController extends AbstractController
         $searchResult = null;
         $featuredGovs = null;
 
-        $searchTerm = $request->get('search');
+        $searchTerm = trim($request->get('search'));
         if ($searchTerm) {
             try {
                 $searchResult = $this->searchService->search($searchTerm, $this->getUser());
