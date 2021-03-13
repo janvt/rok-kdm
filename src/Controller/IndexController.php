@@ -92,7 +92,7 @@ class IndexController extends AbstractController
         $imageUploadError = false;
         $profileClaimImage = null;
 
-        $profileClaim = $this->govManagementService->getOpenProfileClaim($user);
+        $profileClaim = $this->govManagementService->getPendingProfileClaim($user);
 
         if ($profileClaim) {
             $profileClaimImage = $this->govManagementService->resolveProof($profileClaim);

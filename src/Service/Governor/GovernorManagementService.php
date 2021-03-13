@@ -84,11 +84,11 @@ class GovernorManagementService
      * @param User|UserInterface $user
      * @return GovernorProfileClaim|null
      */
-    public function getOpenProfileClaim(User $user): ?GovernorProfileClaim
+    public function getPendingProfileClaim(User $user): ?GovernorProfileClaim
     {
         return $this->govProfileClaimRepo->findOneBy([
             'user' => $user,
-            'status' => GovernorProfileClaim::STATUS_OPEN
+            'status' => [GovernorProfileClaim::STATUS_OPEN, GovernorProfileClaim::STATUS_MISSING_GOV]
         ]);
     }
 

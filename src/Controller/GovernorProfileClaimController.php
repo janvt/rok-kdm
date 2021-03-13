@@ -61,7 +61,7 @@ class GovernorProfileClaimController extends AbstractController
         $imageUploadError = null;
         $imageUploadForm = $this->createForm(GovernorClaimType::class);
         $imageUploadForm->handleRequest($request);
-        $profileClaim = $this->govManagementService->getOpenProfileClaim($this->getUser());
+        $profileClaim = $this->govManagementService->getPendingProfileClaim($this->getUser());
         $profileClaimImage = null;
 
         if (!$profileClaim) {
