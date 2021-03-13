@@ -6,7 +6,7 @@
     <div class="card-body">
         <div class="officer-notes">
             {% for officerNote in gov.officerNotes %}
-                {% include 'governor/officer_note.html.twig' with {officerNote: officerNote} only %}
+                {% include 'governor/officer_note.html.twig' with {gov: gov, officerNote: officerNote} only %}
             {% endfor %}
         </div>
     </div>

@@ -81,6 +81,31 @@ class GovernorManagementService
     }
 
     /**
+     * @param int $noteId
+     * @return OfficerNote
+     * @throws NotFoundException
+     */
+    public function findOfficerNote(int $noteId): OfficerNote
+    {
+        $note = $this->noteRepo->find($noteId);
+        if (!$note) {
+            throw new NotFoundException('note', $noteId);
+        }
+
+        return $note;
+    }
+
+    public function saveOfficerNote(OfficerNote $note): OfficerNote
+    {
+        return $this->noteRepo->save($note);
+    }
+
+    public function removeOfficerNote(OfficerNote $note)
+    {
+        $this->noteRepo->remove($note);
+    }
+
+    /**
      * @param User|UserInterface $user
      * @return GovernorProfileClaim|null
      */

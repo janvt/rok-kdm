@@ -10,7 +10,7 @@ use App\Form\Governor\AddGovernorType;
 use App\Form\Governor\EditCommandersType;
 use App\Form\Governor\EditEquipmentType;
 use App\Form\Governor\EditGovernorType;
-use App\Form\OfficerNote\AddOfficerNoteType;
+use App\Form\OfficerNote\EditOfficerNoteType;
 use App\Service\FeatureFlag\FeatureFlagService;
 use App\Service\Governor\CommanderService;
 use App\Service\Governor\EquipmentService;
@@ -171,7 +171,7 @@ class GovernorController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function note(string $id, Request $request): Response
+    public function addOfficerNote(string $id, Request $request): Response
     {
         try {
             $gov = $this->govManagementService->findGov($id);
@@ -179,7 +179,7 @@ class GovernorController extends AbstractController
             return new Response('Not found.', Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(AddOfficerNoteType::class, new OfficerNote());
+        $form = $this->createForm(EditOfficerNoteType::class, new OfficerNote());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
@@ -188,10 +188,63 @@ class GovernorController extends AbstractController
             return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);
         }
 
-        return $this->render('governor/add_note.html.twig' , [
+        return $this->render('governor/edit_note.html.twig' , [
             'form' => $form->createView(),
             'gov' => $gov,
         ]);
+    }
+
+    /**
+     * @Route("/{id}/note/{noteId}", name="governor_edit_note", methods={"GET", "POST"}, requirements={"id"="\d+"})
+     * @IsGranted("ROLE_OFFICER")
+     * @param string $id
+     * @param int $noteId
+     * @param Request $request
+     * @return Response
+     */
+    public function editOfficerNote(string $id, int $noteId, Request $request): Response
+    {
+        try {
+            $gov = $this->govManagementService->findGov($id);
+            $note = $this->govManagementService->findOfficerNote($noteId);
+        } catch (NotFoundException $e) {
+            return new NotFoundResponse($e);
+        }
+
+        $form = $this->createForm(EditOfficerNoteType::class, $note);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->govManagementService->saveOfficerNote($form->getData());
+
+            return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);
+        }
+
+        return $this->render('governor/edit_note.html.twig' , [
+            'form' => $form->createView(),
+            'gov' => $gov,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/note/{noteId}/delete", name="governor_delete_note", methods={"GET"}, requirements={"id"="\d+"})
+     * @IsGranted("ROLE_OFFICER")
+     * @param string $id
+     * @param int $noteId
+     * @param Request $request
+     * @return Response
+     */
+    public function deleteOfficerNote(string $id, int $noteId, Request $request): Response
+    {
+        try {
+            $gov = $this->govManagementService->findGov($id);
+            $note = $this->govManagementService->findOfficerNote($noteId);
+        } catch (NotFoundException $e) {
+            return new NotFoundResponse($e);
+        }
+
+        $this->govManagementService->removeOfficerNote($note);
+
+        return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);
     }
 
     /**

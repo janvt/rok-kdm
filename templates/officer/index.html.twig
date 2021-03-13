@@ -22,7 +22,7 @@
         </div>
         <div class="card-body mb-0">
             {% for officerNote in latestOfficerNotes %}
-                {% include 'governor/officer_note.html.twig' with { officerNote: officerNote, gov: officerNote.governor } only %}
+                {% include 'governor/officer_note.html.twig' with { officerNote: officerNote, gov: officerNote.governor, displayGovName: true } only %}
             {% endfor %}
         </div>
     </div>

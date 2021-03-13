@@ -1,7 +1,10 @@
 <div class="card mb-3">
     <div class="card-header">
-        {% if gov|default %}
-            <h4><a href="{{ path('governor', {'id': gov.governorId}) }}">{{ gov.name }}</a></h4>
+        {% if displayGovName|default(false) %}
+            <h4>
+                <a href="{{ path('governor', {'id': gov.governorId}) }}">{{ gov.name }}</a>
+                <small class="text-muted">({{ gov.governorId }})</small>
+            </h4>
         {% endif %}
         <h5>{{ officerNote.tldr }}</h5>
         <span>
@@ -10,6 +13,16 @@
                 by {{ officerNote.createdByOfficer }}
             {% endif %}
         </span>
+
+        <a
+            href="{{ path('governor_delete_note', {id: gov.governorId, noteId: officerNote.id}) }}"
+            class="btn btn-outline-danger btn-sm ml-2 px-2 py-0 float-right"
+            onclick="return confirm('Are you sure?');"
+        >Delete</a>
+        <a
+            href="{{ path('governor_edit_note', {id: gov.governorId, noteId: officerNote.id}) }}"
+            class="btn btn-outline-secondary btn-sm ml-2 px-2 py-0 float-right"
+        >Edit</a>
     </div>
     <div class="card-body">
         <p>{{ officerNote.note }}</p>

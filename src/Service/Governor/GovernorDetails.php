@@ -13,6 +13,7 @@ class GovernorDetails
     public $user;
 
     public $id;
+    public $governorId;
     public $name;
     public $altNames;
 
@@ -46,6 +47,8 @@ class GovernorDetails
         $this->user = $gov->getUser();
 
         $this->id = $gov->getGovernorId();
+        $this->governorId = $gov->getGovernorId();
+
         $this->name = $gov->getName();
         $this->altNames = $gov->getAltNames();
         $this->alliance = $gov->getAlliance();

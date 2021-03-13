@@ -26,4 +26,10 @@ class OfficerNoteRepository extends ServiceEntityRepository
 
         return $officerNote;
     }
+
+    public function remove(OfficerNote $officerNote)
+    {
+        $this->_em->remove($officerNote);
+        $this->_em->flush();
+    }
 }
