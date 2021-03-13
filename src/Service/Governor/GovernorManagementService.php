@@ -106,7 +106,7 @@ class GovernorManagementService
      * @param int $limit
      * @return GovernorProfileClaim[]
      */
-    public function findProfileClaimsByStatus(string $status, int $limit = 20): array
+    public function findProfileClaimsByStatus(string $status, int $limit = 100): array
     {
         return $this->govProfileClaimRepo->findBy(
             [
