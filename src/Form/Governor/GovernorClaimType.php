@@ -22,7 +22,7 @@ class GovernorClaimType extends AbstractType
                 FileType::class,
                 [
                     'required' => false,
-                    'label' => 'Governor Profile Screenshot',
+                    'label' => 'Please submit a governor profile screenshot with the governor id, name and alliance visible.',
                     'mapped' => false,
                     'constraints' => [
                         new Image([
