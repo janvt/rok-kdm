@@ -26,7 +26,10 @@ class GovernorClaimType extends AbstractType
                     'mapped' => false,
                     'constraints' => [
                         new Image([
-                            'maxSize' => self::MAX_SIZE
+                            'maxSize' => self::MAX_SIZE,
+                            'mimeTypes' => [
+                                'image/*',
+                            ]
                         ])
                     ],
                 ]

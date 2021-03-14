@@ -7,12 +7,13 @@ use App\Exception\ImportException;
 use App\Exception\NotFoundException;
 use App\Form\Scribe\ConfigureImportType;
 use App\Form\Scribe\CreateImportType;
-use App\Service\Import\ImportMapping;
+use App\Service\Import\FieldMapping\ImportMapping;
 use App\Service\Import\ImportService;
 use App\Util\NotFoundResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,17 +34,33 @@ class ImportController extends AbstractController
     /**
      * @Route("/create", name="create_import", methods={"GET", "POST"})
      * @param Request $request
+     * @param string $importsDir
      * @return Response
      */
-    public function createImport(Request $request): Response
+    public function createImport(Request $request, string $importsDir): Response
     {
         $form = $this->createForm(CreateImportType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $import = $this->importService->createImport($form->get('csv')->getData(), $this->getUser());
+            $uploadedFileName = null;
+            try {
+                $uploadedFile = $form->get('csvFile')->getData();
+                if ($uploadedFile instanceof UploadedFile) {
+                    $uploadedFileName = date('YmdHis') . '_' . $uploadedFile->getClientOriginalName();
+                    $uploadedFile->move($importsDir, $uploadedFileName);
+                }
 
-            return $this->redirectToRoute('configure_import', ['importId' => $import->getId()]);
+                $import = $this->importService->createImport(
+                    $this->getUser(),
+                    $uploadedFileName,
+                    $form->get('csvInput')->getData()
+                );
+
+                return $this->redirectToRoute('configure_import', ['importId' => $import->getId()]);
+            } catch (ImportException $e) {
+                $form->addError(new FormError($e->getMessage()));
+            }
         }
 
         return $this->render('import/create_import.html.twig', [

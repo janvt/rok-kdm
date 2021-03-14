@@ -5,6 +5,7 @@ namespace App\Service\Import;
 
 
 use App\Exception\ImportException;
+use App\Service\Import\FieldMapping\ImportMapping;
 
 class ImportPreviewRow
 {

@@ -11,6 +11,7 @@ services:
         autoconfigure: true
         bind:
             $uploadsDir: '%kernel.project_dir%/public/uploads/'
+            $importsDir: '%kernel.project_dir%/public/imports/'
             $uploadsPublicDir: 'uploads/'
             $siteTitle: '%env(SITE_TITLE)%'
 

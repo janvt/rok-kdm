@@ -9,6 +9,7 @@ services:
       - phpsocket:/var/run/php
       - .:/var/www
       - ./var/uploads:/var/www/public/uploads
+      - ./var/imports:/var/www/public/imports
     links:
       - db
 

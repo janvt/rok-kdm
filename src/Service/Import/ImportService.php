@@ -9,7 +9,6 @@ use App\Entity\GovernorSnapshot;
 use App\Entity\GovernorStatus;
 use App\Entity\Import;
 use App\Entity\User;
-use App\Exception\APIException;
 use App\Exception\GovDataException;
 use App\Exception\ImportException;
 use App\Exception\NotFoundException;
@@ -18,6 +17,8 @@ use App\Repository\GovernorRepository;
 use App\Repository\GovernorSnapshotRepository;
 use App\Repository\ImportRepository;
 use App\Repository\SnapshotRepository;
+use App\Service\Import\FieldMapping\ImportMapping;
+use App\Service\Import\FieldMapping\ImportMappingGuesser;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ImportService
@@ -27,13 +28,15 @@ class ImportService
     private $allianceRepo;
     private $govSnapshotRepo;
     private $snapshotRepo;
+    private $importsDir;
 
     public function __construct(
         ImportRepository $importRepo,
         GovernorRepository $govRepo,
         AllianceRepository $allianceRepo,
         GovernorSnapshotRepository $govSnapshotRepo,
-        SnapshotRepository $snapshotRepo
+        SnapshotRepository $snapshotRepo,
+        string $importsDir
     )
     {
         $this->importRepo = $importRepo;
@@ -41,6 +44,7 @@ class ImportService
         $this->allianceRepo = $allianceRepo;
         $this->govSnapshotRepo = $govSnapshotRepo;
         $this->snapshotRepo = $snapshotRepo;
+        $this->importsDir = $importsDir;
     }
 
     /**
@@ -59,29 +63,52 @@ class ImportService
     }
 
     /**
-     * @param string $input
      * @param User|UserInterface $user
+     * @param string|null $filePath
+     * @param string|null $input
      * @return Import
+     * @throws ImportException
      */
-    public function createImport(string $input, User $user): Import
+    public function createImport(User $user, ?string $filePath = null, ?string $input = null): Import
     {
         $import = new Import();
         $import->setStatus(Import::STATUS_CONFIGURING);
         $import->setCreated(new \DateTime);
         $import->setUser($user);
-        $import->setInput($input);
-        $import->setMappings($this->guessMappings($input));
+
+        if ($input && $filePath) {
+            throw new ImportException('Only file name or input is supported.');
+        }
+
+        if (!$input && !$filePath) {
+            throw new ImportException('Either file name or input is required.');
+        }
+
+        if ($filePath) {
+            $import->setFilePath($filePath);
+        }
+
+        if ($input) {
+            $import->setInput($input);
+        }
 
         return $this->importRepo->save($import);
     }
 
+    /**
+     * @param Import $import
+     * @return ImportPreview
+     * @throws ImportException
+     */
     public function createPreviewForImport(Import $import): ImportPreview
     {
         $preview = new ImportPreview();
         $preview->snapshot = $import->getSnapshot();
 
+        $reader = $this->getReaderFor($import);
+
         if (!$import->getMappings()) {
-            $import->setMappings($this->guessMappings($import->getInput()));
+            $import->setMappings($this->guessMappings($reader));
         }
 
         if (!$import->getMappings()) {
@@ -89,27 +116,19 @@ class ImportService
             return $preview;
         }
 
-        $importMapping = new ImportMapping($import->getMappings());
+        $importMapping = new ImportMapping($import->getMappings(), $reader->getHeader());
+
         $preview->setMapping($importMapping);
 
-        try {
-            $rowIndex = 0;
-            foreach ($this->processCSV($import->getInput()) as $rowData) {
-                ++ $rowIndex;
+        $rowIndex = 0;
+        foreach ($reader->readLines() as $rowData) {
+            ++ $rowIndex;
 
-                if ($rowIndex === 1) {
-                    $importMapping->setHeader($rowData);
-                    continue;
-                }
-
-                try {
-                    $preview->addRow(new ImportPreviewRow($rowData, $importMapping));
-                } catch (ImportException $e) {
-                    $preview->addIssue('Row #' . $rowIndex . ': ' . $e->getMessage());
-                }
+            try {
+                $preview->addRow(new ImportPreviewRow($rowData, $importMapping));
+            } catch (ImportException $e) {
+                $preview->addIssue('Row #' . $rowIndex . ': ' . $e->getMessage());
             }
-        } catch (ImportException $e) {
-            $preview->addIssue($e->getMessage());
         }
 
         return $preview;
@@ -124,19 +143,15 @@ class ImportService
      * @param Import $import
      * @param bool $addNewGovs
      * @return Import
+     * @throws ImportException
      */
     public function completeImport(Import $import, bool $addNewGovs = true): Import
     {
-        $importMapping = new ImportMapping($import->getMappings());
-        $rowIndex = 0;
-        foreach ($this->processCSV($import->getInput()) as $rowData) {
-            ++$rowIndex;
+        $reader = $this->getReaderFor($import);
 
-            if ($rowIndex === 1) {
-                $importMapping->setHeader($rowData);
-                continue;
-            }
+        $importMapping = new ImportMapping($import->getMappings(), $reader->getHeader());
 
+        foreach ($reader->readLines() as $rowData) {
             try {
                 $data = new ImportPreviewRow($rowData, $importMapping);
 
@@ -162,20 +177,6 @@ class ImportService
         $import->setCompleted(new \DateTime);
 
         return $this->importRepo->save($import);
-    }
-
-    /**
-     * @param string $csvData
-     * @return array
-     * @throws ImportException
-     */
-    public function processCSV(string $csvData): array
-    {
-        try {
-            return array_map('str_getcsv', explode("\n", $csvData));
-        } catch (\Exception $e) {
-            throw new ImportException('Could not parse CSV: ' . $e->getMessage());
-        }
     }
 
     /**
@@ -310,77 +311,32 @@ class ImportService
         return str_replace([',', '.'], '', $value);
     }
 
-    private function guessMappings(string $input): string
+    private function guessMappings(ImportReader $reader): string
     {
         $mappings = [];
-        $csv = $this->processCSV($input);
-        $header = $csv[0];
-        unset($csv);
 
-        foreach (ImportMapping::FIELDS as $field) {
-            $foundField = $this->findFieldInHeader($header, $field);
+        $mappingGuesser = new ImportMappingGuesser($reader->getHeader());
 
-            if (!$foundField) {
-                $foundField = $this->findFieldInHeader(
-                    $header,
-                    str_replace('_', '', $field)
-                );
-            }
 
-            if ($foundField) {
-                $mappings[$field] = $foundField;
-            }
-        }
 
-        return json_encode($mappings);
+        return json_encode($mappingGuesser->getMappings());
     }
 
-    private function findFieldInHeader(array $header, string $field): ?string
+    /**
+     * @param Import $import
+     * @return ImportReader
+     * @throws ImportException
+     */
+    private function getReaderFor(Import $import): ImportReader
     {
-        foreach ($header as $headerField) {
-            $sanitizedHeaderField = \str_replace(' ', '', strtolower($headerField));
-
-            if ($this->fieldMatches($field, $sanitizedHeaderField)) {
-                return $headerField;
-            }
-
-            foreach ($this->getAlternativesForField($field) as $fieldAlternative) {
-                if ($this->fieldMatches($fieldAlternative, $sanitizedHeaderField)) {
-                    return $headerField;
-                }
-            }
+        if ($import->getInput()) {
+            return new StringImportReader($import->getInput());
         }
 
-        return null;
-    }
-
-    private function fieldMatches(string $field, string $haystack): bool
-    {
-        return strpos($haystack, $field) !== false;
-    }
-
-    private function getAlternativesForField(string $field): array
-    {
-        if ($field === ImportMapping::FIELD_ID) {
-            return ['govid', 'governorid', 'rokid', 'playerid'];
+        if ($import->getFilePath()) {
+            return new FileImportReader($this->importsDir . '/' . $import->getFilePath());
         }
 
-        if ($field === ImportMapping::FIELD_NAME) {
-            return ['govname', 'governorname', 'playername'];
-        }
-
-        if ($field === ImportMapping::FIELD_KILLS) {
-            return ['totalkills'];
-        }
-
-        if ($field === ImportMapping::FIELD_DEADS) {
-            return ['dead', 'deaths'];
-        }
-
-        if ($field === ImportMapping::FIELD_RSS_ASSISTANCE) {
-            return ['rssdonation', 'rssdonations'];
-        }
-
-        return [];
+        throw new ImportException('Could not grok reader type for import!');
     }
 }

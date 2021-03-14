@@ -62,6 +62,11 @@ class Import
      */
     private $completed;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $filePath;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -159,6 +164,18 @@ class Import
     public function setCompleted(?\DateTimeInterface $completed): self
     {
         $this->completed = $completed;
+
+        return $this;
+    }
+
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function setFilePath(?string $filePath): self
+    {
+        $this->filePath = $filePath;
 
         return $this;
     }

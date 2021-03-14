@@ -4,6 +4,8 @@
 namespace App\Service\Import;
 
 
+use App\Service\Import\FieldMapping\ImportMapping;
+
 class ImportPreview
 {
     /** @var ImportPreviewRow[] */

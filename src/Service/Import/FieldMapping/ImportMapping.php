@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service\Import;
+namespace App\Service\Import\FieldMapping;
 
 
 use Symfony\Component\Form\FormInterface;
@@ -37,10 +37,14 @@ class ImportMapping
     private $mappings = [];
     private $header = [];
 
-    public function __construct(?string $mappings)
+    public function __construct(?string $mappings, ?array $header = null)
     {
         if ($mappings) {
             $this->mappings = json_decode($mappings);
+        }
+
+        if ($header) {
+            $this->header = $header;
         }
     }
 
@@ -72,10 +76,5 @@ class ImportMapping
         }
 
         return null;
-    }
-
-    public function setHeader(array $header)
-    {
-        $this->header = $header;
     }
 }
