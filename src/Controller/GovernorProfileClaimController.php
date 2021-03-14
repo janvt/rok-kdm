@@ -156,7 +156,7 @@ class GovernorProfileClaimController extends AbstractController
             return new Response('Not found', Response::HTTP_NOT_FOUND);
         }
 
-        $searchTerm = $request->get('search');
+        $searchTerm = trim($request->get('search'));
         $searchResult = [];
         if ($searchTerm) {
             try {
