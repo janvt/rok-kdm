@@ -338,27 +338,25 @@ class ImportService
     private function findFieldInHeader(array $header, string $field): ?string
     {
         foreach ($header as $headerField) {
-            $transformedFields = [
-                $headerField,
-                \strtoupper($headerField),
-                \strtolower($headerField),
-                \ucwords($headerField),
-                \ucfirst($headerField),
-                \str_replace(' ', '', strtolower($headerField))
-            ];
+            $sanitizedHeaderField = \str_replace(' ', '', strtolower($headerField));
 
-            if (in_array($field, $transformedFields)) {
+            if ($this->fieldMatches($field, $sanitizedHeaderField)) {
                 return $headerField;
             }
 
             foreach ($this->getAlternativesForField($field) as $fieldAlternative) {
-                if (in_array($fieldAlternative, $transformedFields)) {
+                if ($this->fieldMatches($fieldAlternative, $sanitizedHeaderField)) {
                     return $headerField;
                 }
             }
         }
 
         return null;
+    }
+
+    private function fieldMatches(string $field, string $haystack): bool
+    {
+        return strpos($haystack, $field) !== false;
     }
 
     private function getAlternativesForField(string $field): array
