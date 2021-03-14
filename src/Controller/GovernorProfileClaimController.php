@@ -19,6 +19,7 @@ use App\Util\NotFoundResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,16 +58,19 @@ class GovernorProfileClaimController extends AbstractController
     public function createClaim(Request $request): Response
     {
         $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException();
+        }
 
         $imageUploadError = null;
         $imageUploadForm = $this->createForm(GovernorClaimType::class);
         $imageUploadForm->handleRequest($request);
-        $profileClaim = $this->govManagementService->getPendingProfileClaim($this->getUser());
+        $profileClaim = $this->govManagementService->getPendingProfileClaim($user);
         $profileClaimImage = null;
 
         if (!$profileClaim) {
             if ($imageUploadForm->isSubmitted() && $imageUploadForm->isValid()) {
-                /** @var File $uploadedImage */
+                /** @var UploadedFile $uploadedImage */
                 if ($uploadedImage = $imageUploadForm['image']->getData()) {
                     try {
                         $image = $this->imageService->handleImageUpload(
