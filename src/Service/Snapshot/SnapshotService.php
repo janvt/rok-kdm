@@ -196,6 +196,15 @@ class SnapshotService
         return $this->snapshotRepo->save($snapshot);
     }
 
+    public function markGovSnapshotsCompleted(Snapshot $snapshot, ?int $alliance = null)
+    {
+        $govSnapshots = $this->govSnapshotRepo->getGovSnapshotsForSnapshot($snapshot, true, $alliance);
+        foreach($govSnapshots as $govSnapshot) {
+            $govSnapshot->setCompleted(new \DateTime);
+            $this->govSnapshotRepo->save($govSnapshot);
+        }
+    }
+
     /**
      * @return Snapshot[]
      */

@@ -108,6 +108,30 @@ class ScribeController extends AbstractController
     }
 
     /**
+     * @Route("/snapshot/{snapshotUid}/mark_gs_completed", methods={"GET"}, name="scribe_snapshot_mark_gs_completed")
+     * @param string $snapshotUid
+     * @param Request $request
+     * @return Response
+     * @IsGranted("ROLE_SCRIBE_ADMIN")
+     */
+    public function scribeGovSnapshotsMarkCompleted(string $snapshotUid, Request $request): Response
+    {
+        $alliance = (int) $request->query->get('alliance');
+        try {
+            $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
+
+            $this->snapshotService->markGovSnapshotsCompleted($snapshot, $alliance);
+        } catch (NotFoundException $e) {
+            return new NotFoundResponse($e);
+        }
+
+        return $this->redirectToRoute('scribe_snapshot_detail', [
+            'snapshotUid' => $snapshot->getUid(),
+            'alliance' => $alliance
+        ]);
+    }
+
+    /**
      * @Route("/snapshot/{snapshotUid}/mark_active", methods={"GET"}, name="scribe_snapshot_mark_active")
      * @param string $snapshotUid
      * @return Response

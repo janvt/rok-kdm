@@ -66,15 +66,19 @@
                         href="{{ path('scribe_snapshot_mark_completed', {snapshotUid: snapshotInfo.uid}) }}"
                         class="btn btn-warning ml-3"
                         title="Marks snapshot as completed!"
-                >Mark as completed</a>
+                >Mark Snapshot completed</a>
             {% else %}
                 <a
                         href="{{ path('scribe_snapshot_mark_active', {snapshotUid: snapshotInfo.uid}) }}"
                         class="btn btn-success ml-3"
                         title="Marks snapshot as active! Allows data input."
                 >Set active</a>
-
             {% endif %}
+            <a
+                    href="{{ path('scribe_snapshot_mark_gs_completed', {snapshotUid: snapshotInfo.uid}) }}?alliance={{ alliance }}"
+                    class="btn btn-warning ml-3"
+                    title="Marks all governor snapshots as completed!"
+            >Mark All Gov Snapshots completed</a>
         </div>
     </div>
 {% endif %}
