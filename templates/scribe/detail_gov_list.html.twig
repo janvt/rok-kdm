@@ -1,0 +1,22 @@
+<div class="col-sm">
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">{{ title }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for govSnapshot in govSnapshots %}
+            <tr>
+                <td>
+                    {{ govSnapshot.governor.name }}
+                    <a
+                            href="{{ path('scribe_gov_snapshot_edit', { id: govSnapshot.id }) }}?snapshot={{ snapshotInfo.uid }}&alliance={{ alliance }}"
+                            class="btn btn-outline-secondary btn-sm px-1 py-0"
+                    >Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

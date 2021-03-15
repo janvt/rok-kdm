@@ -132,6 +132,7 @@ class ScribeController extends AbstractController
      */
     public function scribeSnapshotDetail(string $snapshotUid, Request $request): Response
     {
+        $alliance = $request->query->get('alliance');
         try {
             $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
 
@@ -139,13 +140,14 @@ class ScribeController extends AbstractController
                 return $this->redirectToRoute('scribe_index');
             }
 
-            $snapshotInfo = $this->snapshotService->createSnapshotInfo($snapshot, $request->get('alliance'));
+            $snapshotInfo = $this->snapshotService->createSnapshotInfo($snapshot, $alliance);
         } catch (NotFoundException $e) {
             return new NotFoundResponse($e);
         }
 
         return $this->render('scribe/detail.html.twig', [
             'snapshotInfo' => $snapshotInfo,
+            'alliance' => $alliance
         ]);
     }
 
@@ -180,7 +182,10 @@ class ScribeController extends AbstractController
                 if ($request->get('snapshot')) {
                     return $this->redirectToRoute(
                         'scribe_snapshot_detail',
-                        ['snapshotUid' => $request->get('snapshot')]
+                        [
+                            'snapshotUid' => $request->query->get('snapshot'),
+                            'alliance' => $request->query->get('alliance')
+                        ]
                     );
                 }
 
@@ -198,9 +203,10 @@ class ScribeController extends AbstractController
      * @Route("/snapshot/{snapshotUid}/create/{govId}", methods={"GET"}, name="scribe_gov_snapshot_create")
      * @param int $govId
      * @param string $snapshotUid
+     * @param Request $request
      * @return Response
      */
-    public function createGovSnapshot(int $govId, string $snapshotUid) {
+    public function createGovSnapshot(int $govId, string $snapshotUid, Request $request) {
         try {
             $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
 
@@ -215,7 +221,8 @@ class ScribeController extends AbstractController
 
         return $this->redirectToRoute('scribe_gov_snapshot_edit', [
             'id' => $govSnapshot->getId(),
-            'snapshot' => $snapshot->getUid()
+            'snapshot' => $snapshot->getUid(),
+            'alliance' => $request->query->get('alliance')
         ]);
     }
 }
