@@ -19,5 +19,13 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "engines": {
+        "node": "12.x.x",
+        "npm": "^6.9.0"
+    },
+    "volta": {
+        "node": "12.20.2",
+        "yarn": "1.22.10"
     }
 }
