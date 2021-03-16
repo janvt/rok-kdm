@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{% if gov %}Edit {{ gov.governorId }}{% else %}Add New Governor{% endif %}{% endblock %}
 {% block page_title %}{% endblock %}
 
 {% block body %}
