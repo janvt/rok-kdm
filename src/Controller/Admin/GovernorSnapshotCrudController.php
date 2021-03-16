@@ -2,9 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Alliance;
 use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
 use App\Entity\Role;
+use App\Entity\Snapshot;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -28,9 +30,6 @@ class GovernorSnapshotCrudController extends AbstractCrudController
                 'governor.name',
                 'snapshot.name',
                 'snapshot.uid',
-                'alliance.tag',
-                'alliance.name',
-                'kingdom'
             ])
             ->setEntityPermission(Role::ROLE_SCRIBE)
             ->setDefaultSort(['created' => 'DESC'])
@@ -42,7 +41,8 @@ class GovernorSnapshotCrudController extends AbstractCrudController
         $governor = AssociationField::new('governor')
             ->setFieldFqcn(Governor::class);
         $created = DateTimeField::new('created');
-        $snapshot = AssociationField::new('snapshot');
+        $snapshot = AssociationField::new('snapshot')
+            ->setFieldFqcn(Snapshot::class);
         $alliance = TextField::new('alliance');
         $kingdom = TextField::new('kingdom');
         $power = IntegerField::new('power');
