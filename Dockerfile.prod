@@ -34,6 +34,17 @@ COPY . /var/www
 RUN composer dump-autoload --classmap-authoritative
 
 
+FROM node:12.21.0 as node
+
+RUN rm -rf /var/www && mkdir /var/www
+WORKDIR /var/www
+
+COPY --from=composer /var/www/ /var/www/
+
+RUN yarn install
+RUN yarn build
+
+
 FROM base
 
 ARG APP_ENV=prod
@@ -42,7 +53,7 @@ ARG APP_DEBUG=0
 ENV APP_ENV $APP_ENV
 ENV APP_DEBUG $APP_DEBUG
 
-COPY --from=composer /var/www/ /var/www/
+COPY --from=node /var/www/ /var/www/
 
 # Memory limit increase is required by the dev image
 RUN php -d memory_limit=256M bin/console cache:clear

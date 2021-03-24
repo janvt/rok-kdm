@@ -1,5 +1,6 @@
 *
 
+!/assets/
 !/bin/
 !/config/
 !/public/
@@ -10,4 +11,7 @@
 !/.env
 !/composer.*
 !/symfony.lock
+!/package.json
+!/webpack.config.js
+!/yarn.lock
 !/docker/
