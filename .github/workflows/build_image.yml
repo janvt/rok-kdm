@@ -32,5 +32,5 @@ jobs:
           push: true
           tags: janvt/roks:web
           file: Dockerfile.prod.nginx
-          build_args: |
+          build-args: |
             ASSET_IMAGE=janvt/roks:app
