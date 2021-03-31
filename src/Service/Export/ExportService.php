@@ -8,6 +8,7 @@ use App\Entity\Alliance;
 use App\Entity\Governor;
 use App\Exception\ExportException;
 use App\Repository\GovernorRepository;
+use App\Service\Governor\CommanderNames;
 use App\Service\Governor\GovernorDetailsService;
 
 class ExportService
@@ -30,7 +31,7 @@ class ExportService
      * @param ExportFilter $filter
      * @return \Generator
      */
-    public function streamFullExport(ExportFilter $filter): \Generator
+    public function streamGovDataExport(ExportFilter $filter): \Generator
     {
         foreach ($this->govRepo->getGovIterator($filter) as $result) {
             /** @var Governor $gov */
@@ -64,11 +65,35 @@ class ExportService
         }
     }
 
-    public function getFileName(ExportFilter $filter): string
+    public function streamCommanderExport(ExportFilter $filter)
+    {
+        foreach ($this->govRepo->getGovIterator($filter) as $result) {
+            /** @var Governor $gov */
+            $gov = $result[0];
+
+            foreach ($gov->getCommanders() as $commander) {
+                yield [
+                    'gov id' => $gov->getGovernorId(),
+                    'name' => $gov->getName(),
+                    'alliance' => $gov->getAlliance() ? $gov->getAlliance()->getTag() : '',
+                    'commander uid' => $commander->getUid(),
+                    'commander name' => CommanderNames::ALL[$commander->getUid()],
+                    'skills' => $commander->getSkills(),
+                    'level' => $commander->getLevel(),
+                ];
+            }
+        }
+    }
+
+    public function getFileName(ExportFilter $filter, $prefix = null): string
     {
         $parts = [
             $this->slugify($this->siteTitle),
         ];
+
+        if ($prefix) {
+            $parts[] = $prefix;
+        }
 
         if ($filter->getAlliance()) {
             $parts[] = $filter->getAlliance()->getTag();

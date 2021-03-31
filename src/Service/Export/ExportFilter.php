@@ -20,8 +20,8 @@ class ExportFilter
     public function __construct(FormInterface $form)
     {
         $this->alliance = $form->get('alliance')->getData();
-        $this->snapshot = $form->get('snapshot')->getData();
-        $this->govStatus = $form->get('govStatus')->getData();
+        $this->snapshot = $form->has('snapshot') ? $form->get('snapshot')->getData() : null;
+        $this->govStatus = $form->has('govStatus') ? $form->get('govStatus')->getData() : null;
     }
 
     /**
