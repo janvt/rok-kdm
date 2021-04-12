@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\FeatureFlag;
 use App\Entity\Governor;
 use App\Entity\OfficerNote;
+use App\Entity\Role;
 use App\Exception\NotFoundException;
 use App\Form\Governor\AddGovernorType;
 use App\Form\Governor\EditCommandersType;
@@ -78,7 +79,7 @@ class GovernorController extends AbstractController
             'gov' => $this->detailsService->createGovernorDetails($gov, true, $this->getUser()),
             'commanders' => $commanders,
             'equipment' => $equipment,
-            'userOwnsGov' => $gov->getUser() && $gov->getUser()->getId() === $this->getUser()->getId(),
+            'canEditProfile' => $this->canEditProfile($gov),
             'ffCommanders' => $this->featureFlagService->isActive(FeatureFlag::COMMANDERS),
             'ffEquipment' => $this->featureFlagService->isActive(FeatureFlag::EQUIPMENT)
         ]);
@@ -102,8 +103,7 @@ class GovernorController extends AbstractController
             return new NotFoundResponse($e);
         }
 
-        $user = $this->getUser();
-        if (!$gov->getUser() || $gov->getUser()->getId() !== $user->getId()) {
+        if (!$this->canEditProfile($gov)) {
             return new Response('Access Denied!', Response::HTTP_UNAUTHORIZED);
         }
 
@@ -142,8 +142,7 @@ class GovernorController extends AbstractController
             return new NotFoundResponse($e);
         }
 
-        $user = $this->getUser();
-        if (!$gov->getUser() || $gov->getUser()->getId() !== $user->getId()) {
+        if (!$this->canEditProfile($gov)) {
             return new Response('Access Denied!', Response::HTTP_UNAUTHORIZED);
         }
 
@@ -306,5 +305,15 @@ class GovernorController extends AbstractController
             'form' => $form->createView(),
             'gov' => $this->detailsService->createGovernorDetails($gov, true, $this->getUser()),
         ]);
+    }
+
+    private function canEditProfile(Governor $gov): bool
+    {
+        return $this->userOwnsGov($gov) || $this->isGranted(Role::ROLE_SCRIBE);
+    }
+
+    private function userOwnsGov(Governor $gov): bool
+    {
+        return $gov->getUser() && $gov->getUser()->getId() === $this->getUser()->getId();
     }
 }

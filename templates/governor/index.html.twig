@@ -29,7 +29,7 @@
         </div>
     {% endif %}
 
-    {% if userOwnsGov and (ffCommanders or ffEquipment) %}
+    {% if canEditProfile and (ffCommanders or ffEquipment) %}
     <div class="card mb-3  shadow-sm">
         <div class="card-header">
             <h3>Profile Actions</h3>
