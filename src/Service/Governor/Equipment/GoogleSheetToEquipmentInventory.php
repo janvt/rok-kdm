@@ -46,6 +46,8 @@ class GoogleSheetToEquipmentInventory
         foreach (self::MAP as $field => $position) {
             if ($len > $position && $this->data[$position]) {
                 $equipment->{'set' . $field}((float) $this->data[$position]);
+            } else {
+                $equipment->{'set' . $field}(null);
             }
         }
     }
