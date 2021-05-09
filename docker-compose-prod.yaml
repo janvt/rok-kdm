@@ -9,6 +9,7 @@ services:
       - phpsocket:/var/run/php
       - ./var/uploads:/var/www/public/uploads
       - ./var/imports:/var/www/public/imports
+      - ./google_sheets_credentials.json:/var/www/google_sheets_credentials.json
     links:
       - db
 

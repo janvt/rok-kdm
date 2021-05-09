@@ -8,6 +8,7 @@ services:
     volumes:
       - phpsocket:/var/run/php
       - .:/var/www
+      - ./google_sheets_credentials.json:/var/www/google_sheets_credentials.json
     links:
       - db
 
