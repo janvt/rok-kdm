@@ -29,29 +29,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/g")
  * @IsGranted("ROLE_KINGDOM_MEMBER")
  */
-class GovernorController extends AbstractController
+class GovernorController extends AbstractGovernorController
 {
-    private $govManagementService;
-    private $detailsService;
-    private $commanderService;
-    private $equipmentService;
-    private $featureFlagService;
-
-    public function __construct(
-        GovernorManagementService $governorManagementService,
-        GovernorDetailsService $detailsService,
-        CommanderService $commanderService,
-        EquipmentService $equipmentService,
-        FeatureFlagService $featureFlagService
-    )
-    {
-        $this->govManagementService = $governorManagementService;
-        $this->detailsService = $detailsService;
-        $this->commanderService = $commanderService;
-        $this->equipmentService = $equipmentService;
-        $this->featureFlagService = $featureFlagService;
-    }
-
     /**
      * @Route("/{id}", name="governor", methods={"GET"}, requirements={"id"="\d+"})
      * @param string $id
@@ -120,45 +99,6 @@ class GovernorController extends AbstractController
         }
 
         return $this->render('governor/edit_commanders.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/equipment", name="governor_edit_equipment", methods={"GET", "POST"}, requirements={"id"="\d+"})
-     * @param string $id
-     * @param Request $request
-     * @return Response
-     */
-    public function editEquipment(string $id, Request $request): Response
-    {
-        if (!$this->featureFlagService->isActive(FeatureFlag::EQUIPMENT)) {
-            return new Response('Forbidden!', Response::HTTP_FORBIDDEN);
-        }
-
-        try {
-            $gov = $this->govManagementService->findGov($id);
-        } catch (NotFoundException $e) {
-            return new NotFoundResponse($e);
-        }
-
-        if (!$this->canEditProfile($gov)) {
-            return new Response('Access Denied!', Response::HTTP_UNAUTHORIZED);
-        }
-
-        $this->equipmentService->ensureAllEquipment($gov);
-
-        $form = $this->createForm(EditEquipmentType::class, $gov);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->govManagementService->save($form->getData());
-
-            if ($form->get('saveAndReturn')->isClicked()) {
-                return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);
-            }
-        }
-
-        return $this->render('governor/edit_equipment.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -305,15 +245,5 @@ class GovernorController extends AbstractController
             'form' => $form->createView(),
             'gov' => $this->detailsService->createGovernorDetails($gov, true, $this->getUser()),
         ]);
-    }
-
-    private function canEditProfile(Governor $gov): bool
-    {
-        return $this->userOwnsGov($gov) || $this->isGranted(Role::ROLE_SCRIBE);
-    }
-
-    private function userOwnsGov(Governor $gov): bool
-    {
-        return $gov->getUser() && $gov->getUser()->getId() === $this->getUser()->getId();
     }
 }
