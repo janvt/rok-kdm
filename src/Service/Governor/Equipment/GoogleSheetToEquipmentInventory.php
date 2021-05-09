@@ -23,6 +23,7 @@ class GoogleSheetToEquipmentInventory
         'CavalryMarchSpeed' => 13,
         'InfantryMarchSpeed' => 14,
         'ArcherMarchSpeed' => 15,
+        'BarbDamage' => 16,
     ];
 
     public function __construct(array $data)

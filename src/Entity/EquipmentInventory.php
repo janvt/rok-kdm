@@ -122,6 +122,11 @@ class EquipmentInventory
      */
     private $archer_march_speed;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $barb_damage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -315,6 +320,18 @@ class EquipmentInventory
     public function setArcherMarchSpeed(?float $archer_march_speed): self
     {
         $this->archer_march_speed = $archer_march_speed;
+
+        return $this;
+    }
+
+    public function getBarbDamage(): ?float
+    {
+        return $this->barb_damage;
+    }
+
+    public function setBarbDamage(?float $barb_damage): self
+    {
+        $this->barb_damage = $barb_damage;
 
         return $this;
     }
