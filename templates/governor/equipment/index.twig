@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Equipment{% endblock %}
+{% block page_title %}Equipment Sets{% endblock %}
+
+{% block body %}
+    {% for loadout in equipmentLoadouts %}
+    <div class="card officer-actions mb-3 shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">{{ loadout.name }}</h5>
+            {% if canEdit %}
+            <a
+                    href="{{ path('governor_equipment_loadout_delete', {id: gov.governorId, loadoutId: loadout.id}) }}"
+                    class="btn btn-outline-danger btn-sm ml-2 px-2 py-0 float-right"
+                    onclick="return confirm('Are you sure?');"
+            >Delete</a>
+            <a
+                    href="{{ path('governor_equipment_loadout_edit', {id: gov.governorId, loadoutId: loadout.id}) }}"
+                    class="btn btn-outline-secondary btn-sm ml-2 px-2 py-0 float-right"
+            >Edit</a>
+            {% endif %}
+        </div>
+        <div class="card-body mb-0">
+            {% for item in loadout.items %}
+                <p>{{ item.name }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="card officer-actions mb-3 shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">Actions</h5>
+        </div>
+        <div class="card-body">
+            <a class="btn btn-primary" href="{{ path('governor_equipment_loadout_add', {'id': gov.id}) }}">Add Set</a>
+        </div>
+    </div>
+{% endblock %}

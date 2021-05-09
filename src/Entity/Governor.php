@@ -91,12 +91,18 @@ class Governor
      */
     private $altNames;
 
+    /**
+     * @ORM\OneToMany(targetEntity=EquipmentLoadout::class, mappedBy="governor", orphanRemoval=true)
+     */
+    private $equipmentLoadouts;
+
     public function __construct()
     {
         $this->snapshots = new ArrayCollection();
         $this->officerNotes = new ArrayCollection();
         $this->commanders = new ArrayCollection();
         $this->equipment = new ArrayCollection();
+        $this->equipmentLoadouts = new ArrayCollection();
     }
 
     /**
@@ -299,6 +305,36 @@ class Governor
     public function setAltNames(?string $altNames): self
     {
         $this->altNames = $altNames;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EquipmentLoadout[]
+     */
+    public function getEquipmentLoadouts(): Collection
+    {
+        return $this->equipmentLoadouts;
+    }
+
+    public function addEquipmentLoadout(EquipmentLoadout $equipmentLoadout): self
+    {
+        if (!$this->equipmentLoadouts->contains($equipmentLoadout)) {
+            $this->equipmentLoadouts[] = $equipmentLoadout;
+            $equipmentLoadout->setGovernor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipmentLoadout(EquipmentLoadout $equipmentLoadout): self
+    {
+        if ($this->equipmentLoadouts->removeElement($equipmentLoadout)) {
+            // set the owning side to null (unless already changed)
+            if ($equipmentLoadout->getGovernor() === $this) {
+                $equipmentLoadout->setGovernor(null);
+            }
+        }
 
         return $this;
     }

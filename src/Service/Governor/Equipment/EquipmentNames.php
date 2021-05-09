@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service\Governor;
+namespace App\Service\Governor\Equipment;
 
 
 class EquipmentNames

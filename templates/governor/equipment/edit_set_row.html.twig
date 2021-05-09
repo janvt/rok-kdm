@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-sm-8">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                {{ form_label(form['slot' ~ slot], null, {'label_attr': {'class': 'input-group-text'}}) }}
+            </div>
+            {{ form_widget(form['slot' ~ slot]) }}
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                {{ form_label(form['slot' ~ slot ~ 'Special'], null, {'label_attr': {'class': 'input-group-text'}}) }}
+            </div>
+            {{ form_widget(form['slot' ~ slot ~ 'Special']) }}
+        </div>
+    </div>
+</div>

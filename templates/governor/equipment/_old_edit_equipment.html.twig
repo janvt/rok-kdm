@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Equipment{% endblock %}
+{% block page_title %}Edit Equipment{% endblock %}
+
+{% block body %}
+    <div class="card officer-actions mb-3  shadow-sm">
+        <div class="card-header">
+            <h5>Crafted, Blueprints and Special Talents</h5>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+
+            {% for item in form.equipment %}
+                {% include 'governor/edit_equipment_field.html.twig' with {item: item} only %}
+            {% endfor %}
+
+            <div class="form-group">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.saveAndReturn, {'attr': {'class': 'btn btn-primary ml-2'}}) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

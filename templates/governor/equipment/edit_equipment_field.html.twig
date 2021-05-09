@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-sm-4">
+        {{ constant('App\\Service\\Governor\\EquipmentNames::ALL')[item.vars.data.uid] }}
+    </div>
+
+    <div class="col-sm-1">
+        {{ form_widget(item.crafted) }}
+    </div>
+
+    <div class="col-sm-2 pl-4">
+        {{ form_widget(item.blueprint) }}
+    </div>
+
+    <div class="col-sm-4">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                {{ form_label(item.specialTalent, null, {'label_attr': {'class': 'input-group-text'}}) }}
+            </div>
+            {{ form_widget(item.specialTalent) }}
+        </div>
+    </div>
+</div>

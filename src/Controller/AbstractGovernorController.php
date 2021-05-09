@@ -6,7 +6,7 @@ use App\Entity\Governor;
 use App\Entity\Role;
 use App\Service\FeatureFlag\FeatureFlagService;
 use App\Service\Governor\CommanderService;
-use App\Service\Governor\EquipmentService;
+use App\Service\Governor\Equipment\EquipmentService;
 use App\Service\Governor\GovernorDetailsService;
 use App\Service\Governor\GovernorManagementService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

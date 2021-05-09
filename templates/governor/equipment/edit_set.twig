@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Equipment{% endblock %}
+{% block page_title %}Equipment Sets{% endblock %}
+
+{% block body %}
+    <div class="card officer-actions mb-3 shadow-sm">
+        <div class="card-header">
+            <h5>Edit Equipment Loadout: {{ loadout.name }}</h5>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    {{ form_label(form.name, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                </div>
+                {{ form_widget(form.name) }}
+            </div>
+
+            {% for slot in constant('App\\Entity\\EquipmentInventory::SLOT_NAMES') %}
+                {% include 'governor/equipment/edit_set_row.html.twig' with ({form: form, slot: slot}) only %}
+            {% endfor %}
+
+            <div class="form-group">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.saveAndReturn, {'attr': {'class': 'btn btn-primary ml-2'}}) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
