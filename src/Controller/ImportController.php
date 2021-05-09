@@ -148,7 +148,7 @@ class ImportController extends AbstractController
         $service = new Google_Service_Sheets($client);
 
         $spreadsheetId = '127OlRcd_tZbTgxoz2YPELjqBcoWPKiecAHnO9GraysU';
-        $range = 'Sheet1!A2:M';
+        $range = 'Sheet1!A2:P';
         $response = $service->spreadsheets_values->get($spreadsheetId, $range);
         $values = $response->getValues();
 

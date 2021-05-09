@@ -107,6 +107,21 @@ class EquipmentInventory
      */
     private $set;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $cavalry_march_speed;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $infantry_march_speed;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $archer_march_speed;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -264,6 +279,42 @@ class EquipmentInventory
     public function setSet(?string $set): self
     {
         $this->set = $set;
+
+        return $this;
+    }
+
+    public function getCavalryMarchSpeed(): ?float
+    {
+        return $this->cavalry_march_speed;
+    }
+
+    public function setCavalryMarchSpeed(?float $cavalry_march_speed): self
+    {
+        $this->cavalry_march_speed = $cavalry_march_speed;
+
+        return $this;
+    }
+
+    public function getInfantryMarchSpeed(): ?float
+    {
+        return $this->infantry_march_speed;
+    }
+
+    public function setInfantryMarchSpeed(?float $infantry_march_speed): self
+    {
+        $this->infantry_march_speed = $infantry_march_speed;
+
+        return $this;
+    }
+
+    public function getArcherMarchSpeed(): ?float
+    {
+        return $this->archer_march_speed;
+    }
+
+    public function setArcherMarchSpeed(?float $archer_march_speed): self
+    {
+        $this->archer_march_speed = $archer_march_speed;
 
         return $this;
     }
