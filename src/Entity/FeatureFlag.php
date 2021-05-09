@@ -66,6 +66,10 @@ class FeatureFlag
 
     public function getRoles(): array
     {
+        if (!$this->roles) {
+            return [];
+        }
+
         return array_unique(array_map('trim', explode(',', $this->roles)));
     }
 
