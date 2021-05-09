@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Google Sheet Import{% endblock %}
+{% block page_title %}{% endblock %}
+
+{% block body %}
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header">
+            <h3>Equipment Inventory Import</h3>
+        </div>
+        <div class="card-body mb-0">
+            Imported {{ num }} rows.
+            {{ err }} errors.
+        </div>
+    </div>
+{% endblock %}

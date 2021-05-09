@@ -53,47 +53,47 @@ class EquipmentInventory
     private $name;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $cavalry_attack;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $cavalry_defense;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $cavalry_health;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $infantry_attack;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $infantry_defense;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $infantry_health;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $archer_attack;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $archer_defense;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $archer_health;
 
@@ -136,108 +136,108 @@ class EquipmentInventory
         return $this;
     }
 
-    public function getCavalryAttack(): ?int
+    public function getCavalryAttack(): ?float
     {
         return $this->cavalry_attack;
     }
 
-    public function setCavalryAttack(?int $cavalry_attack): self
+    public function setCavalryAttack(?float $cavalry_attack): self
     {
         $this->cavalry_attack = $cavalry_attack;
 
         return $this;
     }
 
-    public function getCavalryDefense(): ?int
+    public function getCavalryDefense(): ?float
     {
         return $this->cavalry_defense;
     }
 
-    public function setCavalryDefense(?int $cavalry_defense): self
+    public function setCavalryDefense(?float $cavalry_defense): self
     {
         $this->cavalry_defense = $cavalry_defense;
 
         return $this;
     }
 
-    public function getCavalryHealth(): ?int
+    public function getCavalryHealth(): ?float
     {
         return $this->cavalry_health;
     }
 
-    public function setCavalryHealth(?int $cavalry_health): self
+    public function setCavalryHealth(?float $cavalry_health): self
     {
         $this->cavalry_health = $cavalry_health;
 
         return $this;
     }
 
-    public function getInfantryAttack(): ?int
+    public function getInfantryAttack(): ?float
     {
         return $this->infantry_attack;
     }
 
-    public function setInfantryAttack(?int $infantry_attack): self
+    public function setInfantryAttack(?float $infantry_attack): self
     {
         $this->infantry_attack = $infantry_attack;
 
         return $this;
     }
 
-    public function getInfantryDefense(): ?int
+    public function getInfantryDefense(): ?float
     {
         return $this->infantry_defense;
     }
 
-    public function setInfantryDefense(?int $infantry_defense): self
+    public function setInfantryDefense(?float $infantry_defense): self
     {
         $this->infantry_defense = $infantry_defense;
 
         return $this;
     }
 
-    public function getInfantryHealth(): ?int
+    public function getInfantryHealth(): ?float
     {
         return $this->infantry_health;
     }
 
-    public function setInfantryHealth(?int $infantry_health): self
+    public function setInfantryHealth(?float $infantry_health): self
     {
         $this->infantry_health = $infantry_health;
 
         return $this;
     }
 
-    public function getArcherAttack(): ?int
+    public function getArcherAttack(): ?float
     {
         return $this->archer_attack;
     }
 
-    public function setArcherAttack(?int $archer_attack): self
+    public function setArcherAttack(?float $archer_attack): self
     {
         $this->archer_attack = $archer_attack;
 
         return $this;
     }
 
-    public function getArcherDefense(): ?int
+    public function getArcherDefense(): ?float
     {
         return $this->archer_defense;
     }
 
-    public function setArcherDefense(?int $archer_defense): self
+    public function setArcherDefense(?float $archer_defense): self
     {
         $this->archer_defense = $archer_defense;
 
         return $this;
     }
 
-    public function getArcherHealth(): ?int
+    public function getArcherHealth(): ?float
     {
         return $this->archer_health;
     }
 
-    public function setArcherHealth(?int $archer_health): self
+    public function setArcherHealth(?float $archer_health): self
     {
         $this->archer_health = $archer_health;
 

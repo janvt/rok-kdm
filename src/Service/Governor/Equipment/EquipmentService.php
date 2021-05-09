@@ -5,6 +5,7 @@ namespace App\Service\Governor\Equipment;
 
 
 use App\Entity\Equipment;
+use App\Entity\EquipmentInventory;
 use App\Entity\EquipmentLoadout;
 use App\Entity\Governor;
 use App\Exception\NotFoundException;
@@ -105,5 +106,33 @@ class EquipmentService
     public function deleteLoadout(EquipmentLoadout $loadout)
     {
         $this->loadoutRepo->remove($loadout);
+    }
+
+    public function importInventory(array $values): EquipmentInventoryImportResult
+    {
+        $result = new EquipmentInventoryImportResult();
+
+        foreach ($values as $data) {
+            if (\count($data) < 3) {
+                $result->addInvalidRow();
+                continue;
+            }
+
+            $gsMap = new GoogleSheetToEquipmentInventory($data);
+
+            $equipment = $this->inventoryRepo->findOneBy(['uid' => $gsMap->getUid()]);
+            if (!$equipment) {
+                $equipment = new EquipmentInventory();
+                $equipment->setUid($data[0]);
+            }
+
+            $gsMap->map($equipment);
+
+            $this->inventoryRepo->save($equipment);
+
+            $result->addRowImported();
+        }
+
+        return $result;
     }
 }

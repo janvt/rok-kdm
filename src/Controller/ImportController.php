@@ -8,15 +8,19 @@ use App\Exception\NotFoundException;
 use App\Form\Scribe\ConfigureImportType;
 use App\Form\Scribe\CreateImportType;
 use App\Form\Scribe\GoogleSheetImportType;
+use App\Service\Governor\Equipment\EquipmentService;
 use App\Service\Import\FieldMapping\ImportMapping;
 use App\Service\Import\ImportService;
 use App\Util\NotFoundResponse;
+use Google_Client;
+use Google_Service_Sheets;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -121,6 +125,38 @@ class ImportController extends AbstractController
         return $this->render('import/configure_import.html.twig', [
             'form' => $form->createView(),
             'preview' => $importPreview
+        ]);
+    }
+
+    /**
+     * @Route("/equipment_inventory", name="import_equipment_inventory", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function importEquipmentInventory(
+        Request $request,
+        KernelInterface $appKernel,
+        EquipmentService $equipmentService
+    ): Response
+    {
+        $client = new Google_Client();
+        $client->setApplicationName('ROK KDM');
+        $client->setScopes(Google_Service_Sheets::SPREADSHEETS_READONLY);
+        $client->setAuthConfig($appKernel->getProjectDir() . '/google_sheets_credentials.json');
+        $client->setAccessType('offline');
+
+        $service = new Google_Service_Sheets($client);
+
+        $spreadsheetId = '127OlRcd_tZbTgxoz2YPELjqBcoWPKiecAHnO9GraysU';
+        $range = 'Sheet1!A2:M';
+        $response = $service->spreadsheets_values->get($spreadsheetId, $range);
+        $values = $response->getValues();
+
+        $result = $equipmentService->importInventory($values);
+
+        return $this->render('import/equipment_inventory.html.twig', [
+            'num' => $result->getRowsImported(),
+            'err' => $result->getInvalidRows()
         ]);
     }
 

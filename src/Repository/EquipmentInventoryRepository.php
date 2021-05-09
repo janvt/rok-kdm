@@ -19,32 +19,11 @@ class EquipmentInventoryRepository extends ServiceEntityRepository
         parent::__construct($registry, EquipmentInventory::class);
     }
 
-    // /**
-    //  * @return EquipmentInventory[] Returns an array of EquipmentInventory objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function save(EquipmentInventory $equipment): EquipmentInventory
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $this->_em->persist($equipment);
+        $this->_em->flush();
 
-    /*
-    public function findOneBySomeField($value): ?EquipmentInventory
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $equipment;
     }
-    */
 }

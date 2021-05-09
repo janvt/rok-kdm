@@ -9,6 +9,7 @@
 !/translations/
 !/var/
 !/.env
+!/google_sheets_credentials.json
 !/composer.*
 !/symfony.lock
 !/package.json
