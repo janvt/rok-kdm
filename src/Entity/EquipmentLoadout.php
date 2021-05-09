@@ -33,12 +33,22 @@ class EquipmentLoadout
     /**
      * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
      */
-    private $slot_head;
+    private $slot_helms;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $slot_head_special;
+    private $slot_helms_special;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     */
+    private $slot_weapons;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slot_weapons_special;
 
     /**
      * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
@@ -53,12 +63,52 @@ class EquipmentLoadout
     /**
      * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
      */
-    private $slot_weapon;
+    private $slot_gloves;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $slot_weapon_special;
+    private $slot_gloves_special;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     */
+    private $slot_legs;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slot_legs_special;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     */
+    private $slot_boots;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slot_boots_special;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     */
+    private $slot_accessories_1;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slot_accessories_1_special;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     */
+    private $slot_accessories_2;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slot_accessories_2_special;
 
     public function getId(): ?int
     {
@@ -89,26 +139,50 @@ class EquipmentLoadout
         return $this;
     }
 
-    public function getSlotHead(): ?EquipmentInventory
+    public function getSlotHelms(): ?EquipmentInventory
     {
-        return $this->slot_head;
+        return $this->slot_helms;
     }
 
-    public function setSlotHead(?EquipmentInventory $slot_head): self
+    public function setSlotHelms(?EquipmentInventory $slot_helms): self
     {
-        $this->slot_head = $slot_head;
+        $this->slot_helms = $slot_helms;
 
         return $this;
     }
 
-    public function getSlotHeadSpecial(): ?string
+    public function getSlotHelmsSpecial(): ?string
     {
-        return $this->slot_head_special;
+        return $this->slot_helms_special;
     }
 
-    public function setSlotHeadSpecial(?string $slot_head_special): self
+    public function setSlotHelmsSpecial(?string $slot_helms_special): self
     {
-        $this->slot_head_special = $slot_head_special;
+        $this->slot_helms_special = $slot_helms_special;
+
+        return $this;
+    }
+
+    public function getSlotWeapons(): ?EquipmentInventory
+    {
+        return $this->slot_weapons;
+    }
+
+    public function setSlotWeapons(?EquipmentInventory $slot_weapons): self
+    {
+        $this->slot_weapons = $slot_weapons;
+
+        return $this;
+    }
+
+    public function getSlotWeaponsSpecial(): ?string
+    {
+        return $this->slot_weapons_special;
+    }
+
+    public function setSlotWeaponsSpecial(?string $slot_weapons_special): self
+    {
+        $this->slot_weapons_special = $slot_weapons_special;
 
         return $this;
     }
@@ -137,26 +211,122 @@ class EquipmentLoadout
         return $this;
     }
 
-    public function getSlotWeapon(): ?EquipmentInventory
+    public function getSlotGloves(): ?EquipmentInventory
     {
-        return $this->slot_weapon;
+        return $this->slot_gloves;
     }
 
-    public function setSlotWeapon(?EquipmentInventory $slot_weapon): self
+    public function setSlotGloves(?EquipmentInventory $slot_gloves): self
     {
-        $this->slot_weapon = $slot_weapon;
+        $this->slot_gloves = $slot_gloves;
 
         return $this;
     }
 
-    public function getSlotWeaponSpecial(): ?string
+    public function getSlotGlovesSpecial(): ?string
     {
-        return $this->slot_weapon_special;
+        return $this->slot_gloves_special;
     }
 
-    public function setSlotWeaponSpecial(?string $slot_weapon_special): self
+    public function setSlotGlovesSpecial(?string $slot_gloves_special): self
     {
-        $this->slot_weapon_special = $slot_weapon_special;
+        $this->slot_gloves_special = $slot_gloves_special;
+
+        return $this;
+    }
+
+    public function getSlotLegs(): ?EquipmentInventory
+    {
+        return $this->slot_legs;
+    }
+
+    public function setSlotLegs(?EquipmentInventory $slot_legs): self
+    {
+        $this->slot_legs = $slot_legs;
+
+        return $this;
+    }
+
+    public function getSlotLegsSpecial(): ?string
+    {
+        return $this->slot_legs_special;
+    }
+
+    public function setSlotLegsSpecial(?string $slot_legs_special): self
+    {
+        $this->slot_legs_special = $slot_legs_special;
+
+        return $this;
+    }
+
+    public function getSlotBoots(): ?EquipmentInventory
+    {
+        return $this->slot_boots;
+    }
+
+    public function setSlotBoots(?EquipmentInventory $slot_boots): self
+    {
+        $this->slot_boots = $slot_boots;
+
+        return $this;
+    }
+
+    public function getSlotBootsSpecial(): ?string
+    {
+        return $this->slot_boots_special;
+    }
+
+    public function setSlotBootsSpecial(?string $slot_boots_special): self
+    {
+        $this->slot_boots_special = $slot_boots_special;
+
+        return $this;
+    }
+
+    public function getSlotAccessories1(): ?EquipmentInventory
+    {
+        return $this->slot_accessories_1;
+    }
+
+    public function setSlotAccessories1(?EquipmentInventory $slot_accessories_1): self
+    {
+        $this->slot_accessories_1 = $slot_accessories_1;
+
+        return $this;
+    }
+
+    public function getSlotAccessories1Special(): ?string
+    {
+        return $this->slot_accessories_1_special;
+    }
+
+    public function setSlotAccessories1Special(?string $slot_accessories_1_special): self
+    {
+        $this->slot_accessories_1_special = $slot_accessories_1_special;
+
+        return $this;
+    }
+
+    public function getSlotAccessories2(): ?EquipmentInventory
+    {
+        return $this->slot_accessories_2;
+    }
+
+    public function setSlotAccessories2(?EquipmentInventory $slot_accessories_2): self
+    {
+        $this->slot_accessories_2 = $slot_accessories_2;
+
+        return $this;
+    }
+
+    public function getSlotAccessories2Special(): ?string
+    {
+        return $this->slot_accessories_2_special;
+    }
+
+    public function setSlotAccessories2Special(?string $slot_accessories_2_special): self
+    {
+        $this->slot_accessories_2_special = $slot_accessories_2_special;
 
         return $this;
     }

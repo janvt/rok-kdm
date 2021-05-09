@@ -35,15 +35,18 @@ class EquipmentLoadoutType extends AbstractType
             ->add('saveAndReturn', SubmitType::class)
         ;
 
-        foreach(EquipmentInventory::SLOT_NAMES as $slot) {
+        foreach(EquipmentInventory::SLOTS as $slot) {
+            $isAccessorySlot = \strpos($slot, 'Acc') !== false;
+            $dbKey = $isAccessorySlot ? 'accessory' : \strtolower($slot);
+
             $builder
                 ->add(
                     'slot' . $slot,
                     ChoiceType::class,
                     [
                         'required' => false,
-                        'label' => $slot,
-                        'choices' => $this->getSlotChoices(\strtolower($slot))
+                        'label' => $isAccessorySlot ? 'Accessory' : $slot,
+                        'choices' => $this->getSlotChoices($dbKey)
                     ]
                 )
                 ->add(

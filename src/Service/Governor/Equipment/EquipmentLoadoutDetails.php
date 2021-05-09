@@ -26,7 +26,7 @@ class EquipmentLoadoutDetails
     {
         $items = [];
 
-        foreach (EquipmentInventory::SLOT_NAMES as $slot) {
+        foreach (EquipmentInventory::SLOTS as $slot) {
             if ($slotItem = $this->loadout->{'getSlot' . $slot}()) {
                 $items[] = $slotItem;
             }

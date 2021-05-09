@@ -133,36 +133,6 @@ class EquipmentController extends AbstractGovernorController
     }
 
     /**
-     * @Route("/equipment_old", name="governor_edit_equipment_old", methods={"GET", "POST"})
-     * @param string $id
-     * @param Request $request
-     * @return Response
-     */
-    public function editEquipmentOld(string $id, Request $request): Response
-    {
-        $gov = $this->pageLoadShit($id);
-        if ($gov instanceof Response) {
-            return $gov;
-        }
-
-        $this->equipmentService->ensureAllEquipment($gov);
-
-        $form = $this->createForm(EditEquipmentType::class, $gov);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->govManagementService->save($form->getData());
-
-            if ($form->get('saveAndReturn')->isClicked()) {
-                return $this->redirectToRoute('governor', ['id' => $gov->getGovernorId()]);
-            }
-        }
-
-        return $this->render('governor/edit_equipment.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
      * @param int $id
      * @return Response|Governor
      */

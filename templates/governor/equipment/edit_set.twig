@@ -18,7 +18,7 @@
                 {{ form_widget(form.name) }}
             </div>
 
-            {% for slot in constant('App\\Entity\\EquipmentInventory::SLOT_NAMES') %}
+            {% for slot in constant('App\\Entity\\EquipmentInventory::SLOTS') %}
                 {% include 'governor/equipment/edit_set_row.html.twig' with ({form: form, slot: slot}) only %}
             {% endfor %}
 

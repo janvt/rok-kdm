@@ -10,10 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class EquipmentInventory
 {
-    const SLOT_HEAD = 'head';
-    const SLOT_CHEST = 'chest';
-    const SLOT_WEAPON = 'weapon';
-
     const UID_SPECIAL_TALENT_LEADERSHIP = 'st_leadership';
     const UID_SPECIAL_TALENT_INFANTRY = 'st_infantry';
     const UID_SPECIAL_TALENT_CAVALRY = 'st_cavalry';
@@ -28,10 +24,15 @@ class EquipmentInventory
         'Integration' => self::UID_SPECIAL_TALENT_INTEGRATION,
     ];
 
-    const SLOT_NAMES = [
-        'Head',
+    const SLOTS = [
+        'Helms',
+        'Weapons',
         'Chest',
-        'Weapon'
+        'Gloves',
+        'Legs',
+        'Boots',
+        'Accessories1',
+        'Accessories2',
     ];
 
     /**
