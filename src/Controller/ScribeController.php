@@ -157,7 +157,7 @@ class ScribeController extends AbstractController
      */
     public function scribeSnapshotDetail(string $snapshotUid, Request $request): Response
     {
-        $alliance = $request->query->get('alliance');
+        $alliance = (int) $request->query->get('alliance');
         try {
             $snapshot = $this->snapshotService->getSnapshotForUid($snapshotUid);
 

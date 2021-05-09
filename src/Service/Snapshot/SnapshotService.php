@@ -75,7 +75,7 @@ class SnapshotService
         return $snapshotInfos;
     }
 
-    public function createSnapshotInfo(Snapshot $snapshot, int $allianceFilter = null): SnapshotInfo
+    public function createSnapshotInfo(Snapshot $snapshot, ?int $allianceFilter = null): SnapshotInfo
     {
         return new SnapshotInfo(
             $snapshot,

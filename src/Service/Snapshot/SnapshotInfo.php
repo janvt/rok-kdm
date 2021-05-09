@@ -38,7 +38,7 @@ class SnapshotInfo
         array $snapshotToGovs,
         array $govSnapshots,
         array $missing,
-        int $allianceFilter = null
+        ?int $allianceFilter = null
     )
     {
         $this->snapshot = $snapshot;
