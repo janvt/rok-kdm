@@ -28,7 +28,7 @@ class EquipmentLoadoutDetails
 
         foreach (EquipmentInventory::SLOTS as $slot) {
             if ($slotItem = $this->loadout->{'getSlot' . $slot}()) {
-                $items[] = $slotItem;
+                $items[] = new EquipmentLoadoutItemDetails($slotItem, $this->loadout->{'getSlot' . $slot . 'Special'}());
             }
         }
 
