@@ -179,6 +179,11 @@ class ImportService
         return $this->importRepo->save($import);
     }
 
+    public function googleSheetImport(string $sheetId, object $config)
+    {
+
+    }
+
     /**
      * @param object $data
      * @return Governor

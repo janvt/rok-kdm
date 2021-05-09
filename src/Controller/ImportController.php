@@ -7,6 +7,7 @@ use App\Exception\ImportException;
 use App\Exception\NotFoundException;
 use App\Form\Scribe\ConfigureImportType;
 use App\Form\Scribe\CreateImportType;
+use App\Form\Scribe\GoogleSheetImportType;
 use App\Service\Import\FieldMapping\ImportMapping;
 use App\Service\Import\ImportService;
 use App\Util\NotFoundResponse;
@@ -121,5 +122,43 @@ class ImportController extends AbstractController
             'form' => $form->createView(),
             'preview' => $importPreview
         ]);
+    }
+
+    /**
+     * @Route("/google_sheet", name="google_sheet_import", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function googleSheetImport(Request $request): Response
+    {
+        $form = $this->createForm(GoogleSheetImportType::class, [
+            'sheetId' => '10y5OlcZOKsR9ZsZRNKkEBretmZtmu1MsrJnyb070O_s',
+            'config' => json_encode($this->getSheetConfig())
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->importService->googleSheetImport(
+                    $form->get('sheetId')->getData(),
+                    \json_decode($form->get('config')->getData())
+                );
+            } catch (ImportException $e) {
+                $form->addError(new FormError($e->getMessage()));
+            }
+        }
+
+        return $this->render('import/google_sheet_import.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    private function getSheetConfig(): array
+    {
+        return [
+            'Master' => [
+                'id' => 'Player ID'
+            ]
+        ];
     }
 }

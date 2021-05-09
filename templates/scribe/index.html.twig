@@ -29,6 +29,9 @@
         {% if is_granted(constant('App\\Entity\\Role::ROLE_SCRIBE_ADMIN')) %}
         <a  class="btn btn-warning" href="{{ path('scribe_snapshot_create') }}">Create Snapshot</a>
         {% endif %}
+        {% if is_granted(constant('App\\Entity\\Role::ROLE_SUPERADMIN')) %}
+        <a  class="btn btn-outline-primary ml-2" href="{{ path('google_sheet_import') }}">Import Google Sheet</a>
+        {% endif %}
         <a class="btn btn-outline-primary ml-2" href="{{ path('create_import') }}">Import</a>
         <a class="btn btn-outline-primary ml-2" href="{{ path('export_index') }}">Export</a>
     </div>

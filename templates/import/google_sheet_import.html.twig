@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Google Sheet Import{% endblock %}
+{% block page_title %}{% endblock %}
+
+{% block body %}
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header">
+            <h3>Google Sheet Import</h3>
+        </div>
+        <div class="card-body mb-0">
+            {{ form_start(form) }}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    {{ form_label(form.sheetId, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                </div>
+                {{ form_widget(form.sheetId) }}
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    {{ form_label(form.config, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                </div>
+                {{ form_widget(form.config) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
