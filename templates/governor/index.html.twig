@@ -14,8 +14,8 @@
         {% include 'governor/commanders.html.twig' with {commanders: commanders} only %}
     {% endif %}
 
-    {% if equipment|default %}
-        {% include 'governor/equipment.html.twig' with {equipment: equipment} only %}
+    {% if equipmentLoadouts|default %}
+        {% include 'governor/equipment.html.twig' %}
     {% endif %}
 
     {% if gov.altNames %}

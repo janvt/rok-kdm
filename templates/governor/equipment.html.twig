@@ -1,17 +1,3 @@
-<div class="card shadow-sm mb-3">
-    <div class="card-header">
-        <h3>Equipment</h3>
-    </div>
-    <div class="card-body pb-1 gov-stats clearfix">
-    {% for item in equipment %}
-        <div class="search-pill pill-border mb-3{% if item.specialTalent %} border-specialized{% endif %}">
-            <span
-                    class="pill-label"
-                    {% if item.specialTalent %}title="{{ constant('App\\Service\\Governor\\EquipmentNames::SPECIAL_TALENTS')[item.specialTalent] }} Special Talent"{% endif %}
-            >
-                {{ constant('App\\Service\\Governor\\EquipmentNames::ALL')[item.uid] }}
-            </span>
-        </div>
-    {% endfor %}
-    </div>
-</div>
+{% for loadout in equipmentLoadouts %}
+    {% include 'governor/equipment/equipment_loadout.html.twig' with ({loadout: loadout, gov: gov, canEdit: canEditProfile}) only %}
+{% endfor %}

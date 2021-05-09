@@ -42,15 +42,15 @@ class GovernorController extends AbstractGovernorController
             $commanders = $this->commanderService->getAllForGov($gov);
         }
 
-        $equipment = null;
+        $equipmentLoadouts = null;
         if ($this->featureFlagService->isActive(FeatureFlag::EQUIPMENT)) {
-            $equipment = $this->equipmentService->getAllForGov($gov);
+            $equipmentLoadouts = $this->equipmentService->getLoadouts($gov);
         }
 
         return $this->render('governor/index.html.twig', [
             'gov' => $this->detailsService->createGovernorDetails($gov, true, $this->getUser()),
             'commanders' => $commanders,
-            'equipment' => $equipment,
+            'equipmentLoadouts' => $equipmentLoadouts,
             'canEditProfile' => $this->canEditProfile($gov),
             'ffCommanders' => $this->featureFlagService->isActive(FeatureFlag::COMMANDERS),
             'ffEquipment' => $this->featureFlagService->isActive(FeatureFlag::EQUIPMENT)
