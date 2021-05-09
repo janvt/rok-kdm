@@ -30,6 +30,11 @@ class FeatureFlag
      */
     private $active;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $roles;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,6 +60,18 @@ class FeatureFlag
     public function setActive(?bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return array_unique(array_map('trim', explode(',', $this->roles)));
+    }
+
+    public function setRoles($roles): self
+    {
+        $this->roles = is_array($roles) ? implode(',', $roles) : $roles;
 
         return $this;
     }

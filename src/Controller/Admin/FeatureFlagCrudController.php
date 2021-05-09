@@ -7,6 +7,7 @@ use App\Entity\Role;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class FeatureFlagCrudController extends AbstractCrudController
@@ -29,8 +30,22 @@ class FeatureFlagCrudController extends AbstractCrudController
     {
         $uid = TextField::new('uid');
         $active = BooleanField::new('active');
+        $roles = ChoiceField::new('roles')
+            ->setChoices($this->getRoleChoices())
+            ->allowMultipleChoices()
+            ->setPermission(Role::ROLE_EDIT_ROLES);
 
         yield $uid;
         yield $active;
+        yield $roles;
+    }
+
+    private function getRoleChoices(): array {
+        $roleChoices = [];
+        foreach (Role::ALL as $role) {
+            $roleChoices[$role] = $role;
+        }
+
+        return $roleChoices;
     }
 }
