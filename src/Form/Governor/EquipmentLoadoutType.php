@@ -37,7 +37,7 @@ class EquipmentLoadoutType extends AbstractType
 
         foreach(EquipmentInventory::SLOTS as $slot) {
             $isAccessorySlot = \strpos($slot, 'Acc') !== false;
-            $dbKey = $isAccessorySlot ? 'accessory' : \strtolower($slot);
+            $dbKey = $isAccessorySlot ? 'accessories' : \strtolower($slot);
 
             $builder
                 ->add(
