@@ -30,10 +30,8 @@ class SnapshotToGovernorCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $governor = AssociationField::new('governor')
-            ->setFieldFqcn(Governor::class);
-        $snapshot = AssociationField::new('snapshot')
-            ->setFieldFqcn(Snapshot::class);
+        $governor = AssociationField::new('governor');
+        $snapshot = AssociationField::new('snapshot');
         $created = DateTimeField::new('created');
         $updated = DateTimeField::new('updated');
         $completed = DateTimeField::new('completed');
