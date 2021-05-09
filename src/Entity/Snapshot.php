@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Ignore;
  */
 class Snapshot
 {
+    const STATUS_INACTIVE = 'inactive';
     const STATUS_ACTIVE = 'active';
     const STATUS_COMPLETED = 'completed';
 

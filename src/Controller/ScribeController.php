@@ -53,6 +53,7 @@ class ScribeController extends AbstractController
     {
         $snapshot = new Snapshot();
         $snapshot->setCreated(new \DateTime);
+        $snapshot->setStatus(Snapshot::STATUS_INACTIVE);
         $form = $this->createForm(CreateSnapshotType::class, $snapshot);
         $form->handleRequest($request);
 

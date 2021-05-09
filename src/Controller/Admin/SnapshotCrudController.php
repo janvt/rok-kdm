@@ -34,6 +34,7 @@ class SnapshotCrudController extends AbstractCrudController
         $name = TextField::new('name');
         $status = ChoiceField::new('status')
             ->setChoices([
+                'Inactive' => Snapshot::STATUS_INACTIVE,
                 'Active' => Snapshot::STATUS_ACTIVE,
                 'Completed' => Snapshot::STATUS_COMPLETED
             ]);
