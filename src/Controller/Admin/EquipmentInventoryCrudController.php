@@ -20,7 +20,7 @@ class EquipmentInventoryCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Equipment Inventory')
             ->setEntityLabelInPlural('Equipment')
-            ->setSearchFields(['uid', 'name']);
+            ->setSearchFields(['uid', 'name', 'set', 'tier']);
     }
 
     public function configureFields(string $pageName): iterable
@@ -28,9 +28,11 @@ class EquipmentInventoryCrudController extends AbstractCrudController
         $uid = TextField::new('uid');
         $name = TextField::new('name');
         $set = TextField::new('set');
+        $tier = TextField::new('tier');
 
+        $standardFields = [$uid, $name, $set, $tier];
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$uid, $name, $set];
+            return $standardFields;
         }
 
         $fields = [];
@@ -40,10 +42,6 @@ class EquipmentInventoryCrudController extends AbstractCrudController
             }
         }
 
-        return array_merge([
-            $uid,
-            $name,
-            $set
-        ], $fields);
+        return array_merge($standardFields, $fields);
     }
 }

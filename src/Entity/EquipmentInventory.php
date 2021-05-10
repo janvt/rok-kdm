@@ -138,6 +138,11 @@ class EquipmentInventory
      */
     private $barb_damage;
 
+    /**
+     * @ORM\Column(type="string", length=255, options={"default": "advanced"})
+     */
+    private $tier;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -348,6 +353,18 @@ class EquipmentInventory
     public function setBarbDamage(?float $barb_damage): self
     {
         $this->barb_damage = $barb_damage;
+
+        return $this;
+    }
+
+    public function getTier(): ?string
+    {
+        return $this->tier;
+    }
+
+    public function setTier(string $tier): self
+    {
+        $this->tier = $tier;
 
         return $this;
     }

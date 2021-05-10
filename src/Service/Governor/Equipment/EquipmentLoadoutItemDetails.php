@@ -25,6 +25,11 @@ class EquipmentLoadoutItemDetails
         return $this->equipment->getName();
     }
 
+    public function getTier(): string
+    {
+        return $this->equipment->getTier();
+    }
+
     public function getSpecialTalent(): ?string
     {
         if ($this->specialTalent) {
