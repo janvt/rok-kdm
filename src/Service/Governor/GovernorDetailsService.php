@@ -140,14 +140,15 @@ class GovernorDetailsService
 
     private function setKvkRanking(int $kvkNumber, Governor $governor, GovernorDetails $details)
     {
+        $kvkUid = 'kvk' . $kvkNumber;
         $kvkSnapshots = $this->snapshotService->getKVKSnapshots();
-        if (!isset($kvkSnapshots[$kvkNumber])) {
+        if (!isset($kvkSnapshots[$kvkUid])) {
             return;
         }
 
         $govKvkSnapshot = $this->govSnapshotRepo->findOneBy([
             'governor' => $governor,
-            'snapshot' => $kvkSnapshots[$kvkNumber]
+            'snapshot' => $kvkSnapshots[$kvkUid]
         ]);
 
         if ($govKvkSnapshot) {

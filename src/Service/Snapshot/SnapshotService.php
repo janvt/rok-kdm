@@ -216,7 +216,10 @@ class SnapshotService
                 $kvkUids[] = 'kvk' . $kvkNumber;
             }
 
-            $this->kvkSnapshots = $this->snapshotRepo->loadByUid($kvkUids);
+            $this->kvkSnapshots = [];
+            foreach($this->snapshotRepo->loadByUid($kvkUids) as $kvkSnapshot) {
+                $this->kvkSnapshots[$kvkSnapshot->getUid()] = $kvkSnapshot;
+            }
         }
 
         return $this->kvkSnapshots;
