@@ -1,6 +1,5 @@
 <div class="card officer-actions mb-3 shadow-sm">
     <div class="card-header">
-        <h5 class="mb-0">{{ loadout.name }}</h5>
         {% if canEdit %}
             <a
                     href="{{ path('governor_equipment_loadout_delete', {id: gov.governorId, loadoutId: loadout.id}) }}"
@@ -9,11 +8,12 @@
             >Delete</a>
             <a
                     href="{{ path('governor_equipment_loadout_edit', {id: gov.governorId, loadoutId: loadout.id}) }}"
-                    class="btn btn-outline-secondary btn-sm ml-2 px-2 py-0 float-right"
+                    class="btn btn-outline-primary btn-sm ml-2 px-2 py-0 float-right"
             >Edit</a>
         {% endif %}
+        <h5 class="mb-0">{{ loadout.name }}</h5>
     </div>
-    <div class="card-body mb-0">
+    <div class="card-body pb-1">
         {% for item in loadout.items %}
             <div class="search-pill pill-border mb-3 border-tier-{{ item.tier }}">
                 {% if item.specialTalent %}
