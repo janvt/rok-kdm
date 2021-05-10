@@ -76,7 +76,7 @@ class GovernorDetails
         $this->officerNotes = $notes;
     }
 
-    public function setKvkRankingData(int $kvkNumber, int $ranking, int $contribution)
+    public function setKvkRankingData(int $kvkNumber, ?int $ranking, ?int $contribution)
     {
         $this->kvkRankings[$kvkNumber] = [
             'kvkNumber' => $kvkNumber,
