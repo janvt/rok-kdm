@@ -24,6 +24,17 @@ class EquipmentInventory
         'Integration' => self::UID_SPECIAL_TALENT_INTEGRATION,
     ];
 
+    const SLOTS_DB = [
+        'helms',
+        'weapons',
+        'chest',
+        'gloves',
+        'legs',
+        'boots',
+        'accessories_1',
+        'accessories_2',
+    ];
+
     const SLOTS = [
         'Helms',
         'Weapons',
@@ -127,6 +138,11 @@ class EquipmentInventory
      */
     private $barb_damage;
 
+    /**
+     * @ORM\Column(type="string", length=255, options={"default": "advanced"})
+     */
+    private $tier;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +170,11 @@ class EquipmentInventory
         $this->name = $name;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     public function getCavalryAttack(): ?float
@@ -332,6 +353,18 @@ class EquipmentInventory
     public function setBarbDamage(?float $barb_damage): self
     {
         $this->barb_damage = $barb_damage;
+
+        return $this;
+    }
+
+    public function getTier(): ?string
+    {
+        return $this->tier;
+    }
+
+    public function setTier(string $tier): self
+    {
+        $this->tier = $tier;
 
         return $this;
     }

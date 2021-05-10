@@ -1,3 +1,26 @@
 .border-specialized {
   border-color: $expertise;
 }
+
+.border-tier-legendary {
+  border-color: $tier-legendary;
+}
+
+.border-tier-epic {
+  border-color: $tier-epic;
+}
+
+.border-tier-elite {
+  border-color: $tier-elite;
+}
+
+.border-tier-advanced {
+  border-color: $tier-advanced;
+}
+
+.special-talent-label {
+  border-width: 0 1px 0 0 ;
+  padding: 0 8px 0 0;
+  margin-right: 4px;
+  font-size: 0.85rem;
+}

@@ -11,19 +11,19 @@ class GoogleSheetToEquipmentInventory
     private $data;
 
     const MAP = [
-        'CavalryAttack' => 4,
-        'CavalryDefense' => 5,
-        'CavalryHealth' => 6,
-        'InfantryAttack' => 7,
-        'InfantryDefense' => 8,
-        'InfantryHealth' => 9,
-        'ArcherAttack' => 10,
-        'ArcherDefense' => 11,
-        'ArcherHealth' => 12,
-        'CavalryMarchSpeed' => 13,
-        'InfantryMarchSpeed' => 14,
-        'ArcherMarchSpeed' => 15,
-        'BarbDamage' => 16,
+        'CavalryAttack' => 5,
+        'CavalryDefense' => 6,
+        'CavalryHealth' => 7,
+        'InfantryAttack' => 8,
+        'InfantryDefense' => 9,
+        'InfantryHealth' => 10,
+        'ArcherAttack' => 11,
+        'ArcherDefense' => 12,
+        'ArcherHealth' => 13,
+        'CavalryMarchSpeed' => 14,
+        'InfantryMarchSpeed' => 15,
+        'ArcherMarchSpeed' => 16,
+        'BarbDamage' => 17,
     ];
 
     public function __construct(array $data)
@@ -45,6 +45,10 @@ class GoogleSheetToEquipmentInventory
 
         if ($len > 3 && $this->data[3]) {
             $equipment->setSet($this->data[3]);
+        }
+
+        if ($len > 4 && $this->data[4]) {
+            $equipment->setTier($this->data[4]);
         }
 
         foreach (self::MAP as $field => $position) {

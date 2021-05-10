@@ -15,10 +15,13 @@
     </div>
     <div class="card-body mb-0">
         {% for item in loadout.items %}
-            <div class="search-pill pill-border mb-3{% if item.specialTalent %} border-specialized{% endif %}">
-                    <span class="pill-label" {% if item.specialTalent %}title="{{ item.specialTalent }}"{% endif %}>
-                        {{ item.name }}
-                    </span>
+            <div class="search-pill pill-border mb-3 border-tier-{{ item.tier }}">
+                {% if item.specialTalent %}
+                    <span class="pill-border border-tier-{{ item.tier }} special-talent-label text-muted">SP</span>
+                {% endif %}
+                <span class="pill-label" {% if item.specialTalent %}title="{{ item.specialTalent }}"{% endif %}>
+                    {{ item.name }}
+                </span>
             </div>
         {% endfor %}
     </div>

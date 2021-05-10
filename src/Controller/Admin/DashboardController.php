@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\Alliance;
 use App\Entity\Commander;
 use App\Entity\Equipment;
+use App\Entity\EquipmentInventory;
+use App\Entity\EquipmentLoadout;
 use App\Entity\FeatureFlag;
 use App\Entity\Governor;
 use App\Entity\GovernorSnapshot;
@@ -76,7 +78,8 @@ class DashboardController extends AbstractDashboardController
             }
 
             if ($ffEquipment) {
-                yield MenuItem::linkToCrud('Equipment', 'fas fa-folder-open', Equipment::class);
+                yield MenuItem::linkToCrud('Equipment Inventory', 'fas fa-folder-open', EquipmentInventory::class);
+                yield MenuItem::linkToCrud('Equipment Loadouts', 'fas fa-folder-open', EquipmentLoadout::class);
             }
         }
 
