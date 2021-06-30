@@ -318,11 +318,7 @@ class ImportService
 
     private function guessMappings(ImportReader $reader): string
     {
-        $mappings = [];
-
         $mappingGuesser = new ImportMappingGuesser($reader->getHeader());
-
-
 
         return json_encode($mappingGuesser->getMappings());
     }

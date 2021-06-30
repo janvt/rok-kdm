@@ -4,8 +4,6 @@
 namespace App\Service\Import\FieldMapping;
 
 
-use function GuzzleHttp\Psr7\str;
-
 class ImportMappingGuesser
 {
     private $header;

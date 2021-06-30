@@ -20,6 +20,7 @@ class ImportMapping
         'alliance',
         'power',
         'highest_power',
+        'vip',
         self::FIELD_DEADS,
         self::FIELD_KILLS,
         't1kills',
