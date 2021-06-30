@@ -22,6 +22,8 @@ class GovernorDetails
     public $power;
     public $highestPower;
 
+    public $vip;
+
     public $deads;
     public $helps;
 
@@ -58,6 +60,9 @@ class GovernorDetails
 
         $this->power = $mergedSnapshot->getPower();
         $this->highestPower = $mergedSnapshot->getHighestPower();
+
+        $this->vip = $mergedSnapshot->getVip();
+
         $this->deads = $mergedSnapshot->getDeads();
         $this->helps = $mergedSnapshot->getHelps();
         $this->rssGathered = $mergedSnapshot->getRssGathered();

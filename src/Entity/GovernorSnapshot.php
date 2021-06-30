@@ -143,6 +143,11 @@ class GovernorSnapshot
      */
     private $completed;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $vip;
+
     public static function fromGov(Governor $governor, \DateTime $created): GovernorSnapshot
     {
         $snapshot = new self();
@@ -422,6 +427,18 @@ class GovernorSnapshot
     public function setCompleted(?\DateTimeInterface $completed): self
     {
         $this->completed = $completed;
+
+        return $this;
+    }
+
+    public function getVip(): ?int
+    {
+        return $this->vip;
+    }
+
+    public function setVip(?int $vip): self
+    {
+        $this->vip = $vip;
 
         return $this;
     }

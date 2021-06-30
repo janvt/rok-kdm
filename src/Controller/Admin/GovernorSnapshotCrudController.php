@@ -45,6 +45,7 @@ class GovernorSnapshotCrudController extends AbstractCrudController
         $kingdom = TextField::new('kingdom');
         $power = IntegerField::new('power');
         $highestPower = IntegerField::new('highest_power');
+        $vip = IntegerField::new('vip');
         $kills = IntegerField::new('kills');
         $deads = IntegerField::new('deads');
         $rank = IntegerField::new('rank');
@@ -58,12 +59,17 @@ class GovernorSnapshotCrudController extends AbstractCrudController
         $rssGathered = IntegerField::new('rss_gathered');
         $rssAssistance = IntegerField::new('rss_assistance');
 
+        if (Crud::PAGE_INDEX === $pageName) {
+            return [$governor, $created, $snapshot, $power, $vip, $kills, $t4kills, $t5kills, $deads];
+        }
+
         $allFields = [
             $governor,
             $alliance,
             $kingdom,
             $power,
             $highestPower,
+            $vip,
             $deads,
             $kills,
             $t1kills,
@@ -80,10 +86,6 @@ class GovernorSnapshotCrudController extends AbstractCrudController
 
         if ($this->isGranted(Role::ROLE_SUPERADMIN)) {
             $allFields[] = $snapshot;
-        }
-
-        if (Crud::PAGE_INDEX === $pageName) {
-            return [$governor, $created, $snapshot, $power, $kills, $t4kills, $t5kills, $deads];
         }
 
         return $allFields;
