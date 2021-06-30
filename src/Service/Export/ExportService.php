@@ -4,9 +4,8 @@
 namespace App\Service\Export;
 
 
-use App\Entity\Alliance;
 use App\Entity\Governor;
-use App\Exception\ExportException;
+use App\Repository\EquipmentLoadoutRepository;
 use App\Repository\GovernorRepository;
 use App\Service\Governor\CommanderNames;
 use App\Service\Governor\GovernorDetailsService;
@@ -15,22 +14,22 @@ class ExportService
 {
     private $govDetailsService;
     private $govRepo;
+    private $equipmentLoadoutRepo;
     private $siteTitle;
 
     public function __construct(
         GovernorDetailsService $govDetailsService,
         GovernorRepository $govRepo,
+        EquipmentLoadoutRepository $equipmentLoadoutRepo,
         string $siteTitle
     ) {
         $this->govDetailsService = $govDetailsService;
         $this->govRepo = $govRepo;
+        $this->equipmentLoadoutRepo = $equipmentLoadoutRepo;
+
         $this->siteTitle = $siteTitle;
     }
 
-    /**
-     * @param ExportFilter $filter
-     * @return \Generator
-     */
     public function streamGovDataExport(ExportFilter $filter): \Generator
     {
         foreach ($this->govRepo->getGovIterator($filter) as $result) {
@@ -65,7 +64,7 @@ class ExportService
         }
     }
 
-    public function streamCommanderExport(ExportFilter $filter)
+    public function streamCommanderExport(ExportFilter $filter): \Generator
     {
         foreach ($this->govRepo->getGovIterator($filter) as $result) {
             /** @var Governor $gov */
@@ -80,6 +79,47 @@ class ExportService
                     'commander name' => CommanderNames::ALL[$commander->getUid()],
                     'skills' => $commander->getSkills(),
                     'level' => $commander->getLevel(),
+                ];
+            }
+        }
+    }
+
+    public function streamEquipmentExport(ExportFilter $filter): \Generator
+    {
+        foreach ($this->govRepo->getGovIterator($filter) as $result) {
+            /** @var Governor $gov */
+            $gov = $result[0];
+
+            foreach ($this->equipmentLoadoutRepo->findBy(['governor' => $gov]) as $equipmentLoadout) {
+                yield [
+                    'gov id' => $gov->getGovernorId(),
+                    'name' => $gov->getName(),
+                    'alliance' => $gov->getAlliance() ? $gov->getAlliance()->getTag() : '',
+                    'set' => $equipmentLoadout->getName(),
+                    'helms uid' => $equipmentLoadout->getSlotHelms()->getUid(),
+                    'helms name' => $equipmentLoadout->getSlotHelms()->getName(),
+                    'helms special' => $equipmentLoadout->getSlotHelmsSpecial(),
+                    'weapons uid' => $equipmentLoadout->getSlotWeapons()->getUid(),
+                    'weapons name' => $equipmentLoadout->getSlotWeapons()->getName(),
+                    'weapons special' => $equipmentLoadout->getSlotWeaponsSpecial(),
+                    'chest uid' => $equipmentLoadout->getSlotChest()->getUid(),
+                    'chest name' => $equipmentLoadout->getSlotChest()->getName(),
+                    'chest special' => $equipmentLoadout->getSlotChestSpecial(),
+                    'gloves uid' => $equipmentLoadout->getSlotGloves()->getUid(),
+                    'gloves name' => $equipmentLoadout->getSlotGloves()->getName(),
+                    'gloves special' => $equipmentLoadout->getSlotGlovesSpecial(),
+                    'legs uid' => $equipmentLoadout->getSlotLegs()->getUid(),
+                    'legs name' => $equipmentLoadout->getSlotLegs()->getName(),
+                    'legs special' => $equipmentLoadout->getSlotLegsSpecial(),
+                    'boots uid' => $equipmentLoadout->getSlotBoots()->getUid(),
+                    'boots name' => $equipmentLoadout->getSlotBoots()->getName(),
+                    'boots special' => $equipmentLoadout->getSlotBootsSpecial(),
+                    'accessories 1 uid' => $equipmentLoadout->getSlotAccessories1()->getUid(),
+                    'accessories 1 name' => $equipmentLoadout->getSlotAccessories1()->getName(),
+                    'accessories 1 special' => $equipmentLoadout->getSlotAccessories1Special(),
+                    'accessories 2 uid' => $equipmentLoadout->getSlotAccessories2()->getUid(),
+                    'accessories 2 name' => $equipmentLoadout->getSlotAccessories2()->getName(),
+                    'accessories 2 special' => $equipmentLoadout->getSlotAccessories2Special(),
                 ];
             }
         }

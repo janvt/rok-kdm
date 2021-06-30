@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Export Equipment Data{% endblock %}
+
+{% block body %}
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header pb-0">
+            <h3>Filters</h3>
+        </div>
+        <div class="card-body pb-0">
+            {% if exportError %}
+            <div class="text-danger mb-3">
+                {{ exportError }}
+            </div>
+            {% endif %}
+            {{ form_start(form) }}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    {{ form_label(form.alliance, null, {'label_attr': {'class': 'input-group-text'}}) }}
+                </div>
+                {{ form_widget(form.alliance) }}
+            </div>
+        </div>
+    </div>
+
+    {{ form_widget(form.export, {'attr': {'class': 'btn btn-primary'}}) }}
+    {{ form_end(form) }}
+{% endblock %}

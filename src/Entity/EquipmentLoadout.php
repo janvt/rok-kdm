@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\EquipmentLoadoutRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,7 +29,7 @@ class EquipmentLoadout
     private $governor;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class, fetch="EAGER")
      */
     private $slot_helms;
 
@@ -41,7 +39,7 @@ class EquipmentLoadout
     private $slot_helms_special;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class, fetch="EAGER")
      */
     private $slot_weapons;
 
@@ -51,7 +49,7 @@ class EquipmentLoadout
     private $slot_weapons_special;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class, fetch="EAGER")
      */
     private $slot_chest;
 
@@ -61,7 +59,7 @@ class EquipmentLoadout
     private $slot_chest_special;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class, fetch="EAGER")
      */
     private $slot_gloves;
 
@@ -71,7 +69,7 @@ class EquipmentLoadout
     private $slot_gloves_special;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class, fetch="EAGER")
      */
     private $slot_legs;
 
@@ -81,7 +79,7 @@ class EquipmentLoadout
     private $slot_legs_special;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class, fetch="EAGER")
      */
     private $slot_boots;
 
@@ -91,7 +89,7 @@ class EquipmentLoadout
     private $slot_boots_special;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class, fetch="EAGER")
      */
     private $slot_accessories_1;
 
@@ -101,7 +99,7 @@ class EquipmentLoadout
     private $slot_accessories_1_special;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class)
+     * @ORM\ManyToOne(targetEntity=EquipmentInventory::class, fetch="EAGER")
      */
     private $slot_accessories_2;
 

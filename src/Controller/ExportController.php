@@ -138,4 +138,55 @@ class ExportController extends AbstractController
             'exportError' => $exportError
         ]);
     }
+
+    /**
+     * @Route("/equipment", name="export_equipment_data", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function exportEquipment(Request $request): Response
+    {
+        $exportError = null;
+
+        $form = $this->createForm(ExportCommandersType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $exportService = $this->exportService;
+            $filter = new ExportFilter($form);
+
+            try {
+                $response = new StreamedResponse(function() use ($exportService, $filter) {
+                    $handle = fopen('php://output', 'w+');
+                    $header = false;
+
+                    foreach ($exportService->streamEquipmentExport($filter) as $row) {
+                        if (!$header) {
+                            fputcsv($handle, array_keys($row), ',');
+                            $header = true;
+                        }
+
+                        fputcsv($handle, $row, ',');
+                    }
+
+                    fclose($handle);
+                });
+
+                $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+                $response->headers->set(
+                    'Content-Disposition',
+                    'attachment; filename="' . $this->exportService->getFileName($filter, 'equipment') . '.csv"'
+                );
+
+                return $response;
+            } catch(ExportException $e) {
+                $exportError = $e->getMessage();
+            }
+        }
+
+        return $this->render('export/export_equipment.html.twig', [
+            'form' => $form->createView(),
+            'exportError' => $exportError
+        ]);
+    }
 }
