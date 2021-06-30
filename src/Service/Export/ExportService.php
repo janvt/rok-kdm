@@ -4,6 +4,7 @@
 namespace App\Service\Export;
 
 
+use App\Entity\EquipmentInventory;
 use App\Entity\Governor;
 use App\Repository\EquipmentLoadoutRepository;
 use App\Repository\GovernorRepository;
@@ -91,36 +92,24 @@ class ExportService
             $gov = $result[0];
 
             foreach ($this->equipmentLoadoutRepo->findBy(['governor' => $gov]) as $equipmentLoadout) {
-                yield [
+                $loadoutData = [
                     'gov id' => $gov->getGovernorId(),
                     'name' => $gov->getName(),
                     'alliance' => $gov->getAlliance() ? $gov->getAlliance()->getTag() : '',
-                    'set' => $equipmentLoadout->getName(),
-                    'helms uid' => $equipmentLoadout->getSlotHelms()->getUid(),
-                    'helms name' => $equipmentLoadout->getSlotHelms()->getName(),
-                    'helms special' => $equipmentLoadout->getSlotHelmsSpecial(),
-                    'weapons uid' => $equipmentLoadout->getSlotWeapons()->getUid(),
-                    'weapons name' => $equipmentLoadout->getSlotWeapons()->getName(),
-                    'weapons special' => $equipmentLoadout->getSlotWeaponsSpecial(),
-                    'chest uid' => $equipmentLoadout->getSlotChest()->getUid(),
-                    'chest name' => $equipmentLoadout->getSlotChest()->getName(),
-                    'chest special' => $equipmentLoadout->getSlotChestSpecial(),
-                    'gloves uid' => $equipmentLoadout->getSlotGloves()->getUid(),
-                    'gloves name' => $equipmentLoadout->getSlotGloves()->getName(),
-                    'gloves special' => $equipmentLoadout->getSlotGlovesSpecial(),
-                    'legs uid' => $equipmentLoadout->getSlotLegs()->getUid(),
-                    'legs name' => $equipmentLoadout->getSlotLegs()->getName(),
-                    'legs special' => $equipmentLoadout->getSlotLegsSpecial(),
-                    'boots uid' => $equipmentLoadout->getSlotBoots()->getUid(),
-                    'boots name' => $equipmentLoadout->getSlotBoots()->getName(),
-                    'boots special' => $equipmentLoadout->getSlotBootsSpecial(),
-                    'accessories 1 uid' => $equipmentLoadout->getSlotAccessories1()->getUid(),
-                    'accessories 1 name' => $equipmentLoadout->getSlotAccessories1()->getName(),
-                    'accessories 1 special' => $equipmentLoadout->getSlotAccessories1Special(),
-                    'accessories 2 uid' => $equipmentLoadout->getSlotAccessories2()->getUid(),
-                    'accessories 2 name' => $equipmentLoadout->getSlotAccessories2()->getName(),
-                    'accessories 2 special' => $equipmentLoadout->getSlotAccessories2Special(),
+                    'set' => $equipmentLoadout->getName()
                 ];
+
+                foreach (EquipmentInventory::SLOTS as $slot) {
+                    /** @var EquipmentInventory|null $currentSlot */
+                    $currentSlot = $equipmentLoadout->{'getSlot' . $slot}();
+                    $slotName = \strtolower($slot);
+
+                    $loadoutData[$slotName . ' uid'] = $currentSlot ? $currentSlot->getUid() : null;
+                    $loadoutData[$slotName . ' name'] = $currentSlot ? $currentSlot->getName() : null;
+                    $loadoutData[$slotName . ' special'] = $equipmentLoadout->{'getSlot' . $slot . 'Special'}();
+                }
+
+                yield $loadoutData;
             }
         }
     }
