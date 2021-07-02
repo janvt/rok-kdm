@@ -19,6 +19,9 @@
             <div class="row mb-0">
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.powerMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.highest_powerMapping} only %}
+                {% include 'import/configure_import_field_mapping.html.twig' with {field: form.vipMapping} only %}
+            </div>
+            <div class="row mb-0">
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.killsMapping} only %}
                 {% include 'import/configure_import_field_mapping.html.twig' with {field: form.deadsMapping} only %}
             </div>

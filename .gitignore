@@ -22,6 +22,7 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
-/public/uploads/
+/public/uploads
+/public/imports
 
 google_sheets_credentials.json

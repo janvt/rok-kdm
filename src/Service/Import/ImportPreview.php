@@ -20,6 +20,9 @@ class ImportPreview
 
     public $powerMapping;
     public $highest_powerMapping;
+
+    public $vipMapping;
+
     public $killsMapping;
     public $t1killsMapping;
     public $t2killsMapping;
