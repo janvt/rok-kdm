@@ -66,7 +66,7 @@ class ImportMapping
 
     public function getMappingForField(string $name)
     {
-        return isset($this->mappings->{$name}) ? $this->mappings->{$name} : null;
+        return $this->mappings->{$name} ?? null;
     }
 
     public function getIndexForField(string $name)

@@ -40,6 +40,7 @@ class ConfigureImportType extends AbstractType
             ->add('allianceMapping', TextType::class, ['label' => 'alliance', 'required' => false])
             ->add('powerMapping', TextType::class, ['label' => 'power', 'required' => false])
             ->add('highest_powerMapping', TextType::class, ['label' => 'highest', 'required' => false])
+            ->add('vipMapping', TextType::class, ['label' => 'vip', 'required' => false])
             ->add('killsMapping', TextType::class, ['label' => 'kills', 'required' => false])
             ->add('t1killsMapping', TextType::class, ['label' => 't1', 'required' => false])
             ->add('t2killsMapping', TextType::class, ['label' => 't2', 'required' => false])
